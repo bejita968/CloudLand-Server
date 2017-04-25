@@ -1,0 +1,141 @@
+package org.dragonet.cloudland.server.scheduler.implementation;
+
+import org.dragonet.cloudland.server.map.GameMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Phaser;
+
+/**
+ * Manager for world thread pool.
+ * <p>
+ * This is a little magical and finnicky, so tread with caution when messing with the phasers
+ */
+public class WorldScheduler {
+    private final Object advanceCondition = new Object();
+    private final ExecutorService worldExecutor = Executors.newCachedThreadPool();
+    private final Phaser tickBegin = new Phaser(1);
+    private final Phaser tickEnd = new Phaser(1);
+    private final List<WorldEntry> worlds = new CopyOnWriteArrayList<>();
+    private volatile int currentTick = -1;
+
+    public List<GameMap> getWorlds() {
+        Builder<GameMap> ret = ImmutableList.builder();
+        for (WorldEntry entry : worlds) {
+            ret.add(entry.world);
+        }
+        return ret.build();
+    }
+
+    public GameMap getWorld(String name) {
+        for (WorldEntry went : worlds) {
+            if (went.world.name.equals(name)) {
+                return went.world;
+            }
+        }
+        return null;
+    }
+
+    public GameMap addWorld(GameMap world) {
+        WorldEntry went = new WorldEntry(world);
+        worlds.add(went);
+        try {
+            went.task = new WorldThread(world);
+            tickBegin.register();
+            tickEnd.register();
+            worldExecutor.submit(went.task);
+            return world;
+        } catch (Throwable t) {
+            tickBegin.arriveAndDeregister();
+            tickEnd.arriveAndDeregister();
+            worlds.remove(went);
+            return null;
+        }
+    }
+
+    public boolean removeWorld(GameMap world) {
+        for (WorldEntry entry : worlds) {
+            if (entry.world.equals(world)) {
+                if (entry.task != null) {
+                    entry.task.interrupt();
+                }
+                worlds.remove(entry);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    int beginTick() throws InterruptedException {
+        tickEnd.awaitAdvanceInterruptibly(currentTick); // Make sure previous tick is complete
+        return currentTick = tickBegin.arrive();
+    }
+
+    boolean isTickComplete(int tick) {
+        return tickEnd.getPhase() > tick || tickEnd.getPhase() < 0;
+    }
+
+    void stop() {
+        tickBegin.forceTermination();
+        tickEnd.forceTermination();
+        worldExecutor.shutdownNow();
+    }
+
+    void doTickEnd() {
+        int currentTick = this.currentTick;
+        // Mark ourselves as arrived so world threads automatically trigger advance once done
+        int endPhase = tickEnd.arriveAndAwaitAdvance();
+        if (endPhase != currentTick + 1) {
+            // GlowServer.logger.warning("Tick end barrier " + endPhase + " has advanced differently from tick begin barrier:" + currentTick + 1);
+        }
+        synchronized (advanceCondition) {
+            advanceCondition.notifyAll();
+        }
+    }
+
+    public Object getAdvanceCondition() {
+        return advanceCondition;
+    }
+
+    private static class WorldEntry {
+        private final GameMap world;
+        private WorldThread task;
+
+        private WorldEntry(GameMap world) {
+            this.world = world;
+        }
+    }
+
+    private class WorldThread extends Thread {
+        private final GameMap world;
+
+        public WorldThread(GameMap world) {
+            super("CloudLand-world-" + world.name);
+            this.world = world;
+        }
+
+        @Override
+        public void run() {
+            try {
+                while (!isInterrupted() && !tickEnd.isTerminated()) {
+                    tickBegin.arriveAndAwaitAdvance();
+                    try {
+                        world.tick();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // GlowServer.logger.log(Level.SEVERE, "Error occurred while pulsing world " + world.getName(), e);
+                    } finally {
+                        tickEnd.arriveAndAwaitAdvance();
+                    }
+                }
+            } finally {
+                tickBegin.arriveAndDeregister();
+                tickEnd.arriveAndDeregister();
+            }
+        }
+    }
+}
