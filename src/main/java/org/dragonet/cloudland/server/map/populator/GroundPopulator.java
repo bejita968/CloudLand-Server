@@ -10,16 +10,24 @@ import org.dragonet.cloudland.server.util.NukkitRandom;
  */
 public class GroundPopulator implements Populator {
 
-    private final static ItemPrototype GRASS = ItemPrototype.get("cloudland:grass");
-    private final static ItemPrototype DIRT = ItemPrototype.get("cloudland:dirt");
-    private final static int LOG_ID = ItemPrototype.toId("cloudland:log");
-    private final static int LEAVES_ID = ItemPrototype.toId("cloudland:leaves");
+    private static ItemPrototype GRASS = ItemPrototype.get("cloudland:grass");
+    private static ItemPrototype DIRT = ItemPrototype.get("cloudland:dirt");
+    private static int LOG_ID = ItemPrototype.toId("cloudland:log");
+    private static int LEAVES_ID = ItemPrototype.toId("cloudland:leaves");
 
-    private final static ItemPrototype[] cover = new ItemPrototype[]{
-            GRASS,
-            DIRT,
-            DIRT,
-            DIRT};
+    private static ItemPrototype[] cover;
+
+    public GroundPopulator(){
+        GRASS = ItemPrototype.get("cloudland:grass");
+        DIRT = ItemPrototype.get("cloudland:dirt");
+        LOG_ID = ItemPrototype.toId("cloudland:log");
+        LEAVES_ID = ItemPrototype.toId("cloudland:leaves");
+        cover = new ItemPrototype[]{
+                GRASS,
+                DIRT,
+                DIRT,
+                DIRT};
+    }
 
     @Override
     public void populate(Chunk chunk, NukkitRandom random) {

@@ -19,7 +19,10 @@ public abstract class BlockBehavior {
 
     private static final Map<Integer, BlockBehavior> register = new HashMap<>();
 
-    static {
+    private static boolean initiated = false;
+    public static void init() {
+        if(initiated) return;
+
         register(ItemPrototype.toId("cloudland:stone"), new StoneBehavior());
         register(ItemPrototype.toId("cloudland:dirt"), new DirtBehavior());
         register(ItemPrototype.toId("cloudland:grass"), new DirtBehavior());
@@ -27,6 +30,8 @@ public abstract class BlockBehavior {
         register(ItemPrototype.toId("cloudland:water"), new WaterBehavior());
         register(ItemPrototype.toId("cloudland:log"), new LogBehavior());
         register(ItemPrototype.toId("cloudland:leaves"), new LeavesBehavior());
+
+        initiated = true;
     }
 
     private static void register(ItemPrototype item, BlockBehavior behavior) {

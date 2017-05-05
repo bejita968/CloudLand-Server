@@ -12,8 +12,8 @@ import org.dragonet.cloudland.server.util.math.NukkitMath;
  */
 public class TreePopulator implements Populator {
 
-    private final static int DIRT_ID = ItemPrototype.toId("cloudland:dirt");
-    private final static int GRASS_ID = ItemPrototype.toId("cloudland:grass");
+    private static int DIRT_ID = ItemPrototype.toId("cloudland:dirt");
+    private static int GRASS_ID = ItemPrototype.toId("cloudland:grass");
 
     private final GameMap level;
     private int randomAmount;
@@ -24,12 +24,19 @@ public class TreePopulator implements Populator {
     public TreePopulator(GameMap level, int type) {
         this.level = level;
         this.type = type;
+        init();
     }
 
     public TreePopulator(GameMap level, int type, int baseAmount) {
         this.level = level;
         this.type = type;
         this.baseAmount = baseAmount;
+        init();
+    }
+
+    private void init(){
+        DIRT_ID = ItemPrototype.toId("cloudland:dirt");
+        GRASS_ID = ItemPrototype.toId("cloudland:grass");
     }
 
     public void setRandomAmount(int randomAmount) {

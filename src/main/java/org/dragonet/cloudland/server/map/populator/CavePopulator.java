@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class CavePopulator implements Populator {
 
-    private final static int WATER_ID = ItemPrototype.toId("cloudland:water");
+    private static int WATER_ID ;
 
     protected int checkAreaSize = 8;
 
@@ -37,6 +37,7 @@ public class CavePopulator implements Populator {
 
     public CavePopulator(GameMap map) {
         this.map = map;
+        WATER_ID = ItemPrototype.toId("cloudland:water");
     }
 
     @Override

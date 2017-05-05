@@ -17,7 +17,10 @@ public final class ItemPrototype {
     private final static Map<Integer, String> idToName = new HashMap<>();
     private final static Map<String, Integer> nameToId = new HashMap<>();
 
-    static {
+    private static boolean initiated = false;
+    public static void init() {
+        if(initiated) return;
+
         // Register internal definitions
         register(0, "cloudland:air", createSimpleItem(0, 0));
         register(1, "cloudland:stone", createSimpleItem(1, 16));
@@ -27,6 +30,8 @@ public final class ItemPrototype {
         register(5, "cloudland:water", createSimpleItem(5, 16));
         register(6, "cloudland:log", createSimpleItem(6, 16));
         register(7, "cloudland:leaves", createSimpleItem(7, 16));
+
+        initiated = true;
     }
 
     @Getter
