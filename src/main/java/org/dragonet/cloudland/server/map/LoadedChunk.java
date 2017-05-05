@@ -83,8 +83,7 @@ public class LoadedChunk extends Chunk {
                         .setX((getX() << 4) + x)
                         .setY(y)
                         .setZ((getZ() << 4) + z)
-                        .setId(getBlockId(x & 0xF, y, z & 0xF))
-                        .setMeta(getBlockMeta(x & 0xF, y, z & 0xF))
+                        .setId(getBlock(x & 0xF, y, z & 0xF))
                         .build()));
     }
 
@@ -96,9 +95,8 @@ public class LoadedChunk extends Chunk {
                 int localX = pos.getFloorX();
                 int localY = pos.getFloorY();
                 int localZ = pos.getFloorZ();
-                int id = getBlockId(localX, localY, localZ);
-                int meta = getBlockMeta(localX, localY, localZ);
-                BlockBehavior behavior = BlockBehavior.get(id, meta);
+                int id = getBlock(localX, localY, localZ);
+                BlockBehavior behavior = BlockBehavior.get(id);
                 if(behavior == null) {
                     if(toRemove == null) toRemove = new ArrayList<>();
                     toRemove.add(pos);

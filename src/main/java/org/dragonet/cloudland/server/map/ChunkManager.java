@@ -104,33 +104,21 @@ public class ChunkManager {
      * @param y
      * @param z
      * @param id
-     * @param meta
      * @return
      */
-    public boolean setBlockAt(int x, int y, int z, int id, int meta) {
+    public boolean setBlockAt(int x, int y, int z, int id) {
         LoadedChunk c = getChunk(x >> 4, z >> 4, true, false);
         int bx = x & 0xf;
         int bz = z & 0xf;
-        if(c.getBlockId(bx, y, bz) == id && c.getBlockMeta(bx, y, bz) == meta) return false;
-        c.setBlockId(bx, y, bz, id);
-        c.setBlockMeta(bx, y, bz, meta);
+        if(c.getBlock(bx, y, bz) == id) return false;
+        c.setBlock(bx, y, bz, id);
         return true;
     }
 
-    public int getBlockIdAt(int x, int y, int z) {
+    public int getBlockAt(int x, int y, int z) {
         LoadedChunk c = getChunk(x >> 4, z >> 4, false, false);
         if(c == null) return 0;
-        return c.getBlockId(x & 0xF, y ,z & 0xF);
-    }
-
-    public int getBlockMetaAt(int x, int y, int z) {
-        LoadedChunk c = getChunk(x >> 4, z >> 4, false, false);
-        if(c == null) return 0;
-        return c.getBlockMeta(x & 0xF, y ,z & 0xF);
-    }
-
-    public void setBlockIdAt(int x, int y, int z, int id) {
-        setBlockAt(x, y, z, id, 0);
+        return c.getBlock(x & 0xF, y ,z & 0xF);
     }
 
     public void tick(){

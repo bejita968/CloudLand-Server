@@ -1,6 +1,6 @@
 package org.dragonet.cloudland.server.map.generator;
 
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.chunk.Chunk;
 import org.dragonet.cloudland.server.map.populator.CavePopulator;
@@ -20,6 +20,9 @@ import java.util.Random;
  * Created on 2017/1/10.
  */
 public class DefaultGenerator implements Generator {
+
+    private final static int WATER_ID = ItemPrototype.toId("cloudland:water");
+    private final static int STONE_ID = ItemPrototype.toId("cloudland:stone");
 
     private final GameMap map;
     private final long seed;
@@ -182,17 +185,17 @@ public class DefaultGenerator implements Generator {
                 for (int geny = 0; geny <= generateHeight; geny++) {
                     if (geny <= bedrockDepth && (geny == 0 || nukkitRandom.nextRange(1, 5) == 1)) {
                         // chunk.setBlock(genx, geny, genz, Block.BEDROCK);
-                        chunk.setBlockId(genx, geny, genz, Items.STONE.getId());
+                        chunk.setBlock(genx, geny, genz, STONE_ID);
                     } else if (geny > genyHeight) { /*
                         if ((biome.getId() == Biome.ICE_PLAINS || biome.getId() == Biome.TAIGA) && geny == seaHeight) {
                             chunk.setBlock(genx, geny, genz, Block.ICE);
                         } else {
                             chunk.setBlock(genx, geny, genz, Block.STILL_WATER);
                         }*/
-                        chunk.setBlockId(genx, geny, genz, Items.WATER.getId());
+                        chunk.setBlock(genx, geny, genz, WATER_ID);
                     } else {
                         // chunk.setBlock(genx, geny, genz, Block.STONE);
-                        chunk.setBlockId(genx, geny, genz, Items.STONE.getId());
+                        chunk.setBlock(genx, geny, genz, STONE_ID);
                     }
                 }
             }

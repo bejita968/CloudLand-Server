@@ -20,24 +20,22 @@ public class ClientUseItemHandler implements CLMessageHandler<Movement.ClientUse
         }
         Item holding = session.getPlayer().getInventory().getHoldingItem();
         // System.out.println("MAP == NULL ? " + (session.getPlayer().getMap() == null));
-        long block = session.getPlayer().getMap().getFullBlockAt(message.getBlockX(), message.getBlockY(), message.getBlockZ());
-        int blockId = (int)((block >> 32) & 0xFFFFFFFF);
-        int blockMeta = (int)(block & 0xFFFFFFFF);
+        int blockId = session.getPlayer().getMap().getBlockAt(message.getBlockX(), message.getBlockY(), message.getBlockZ());
         Direction dir = Direction.values()[message.getDirection()];
-        BlockBehavior behavior = BlockBehavior.get(blockId, blockMeta);
+        BlockBehavior behavior = BlockBehavior.get(blockId);
         if(behavior != null){
             boolean touch = behavior.onTouch(session.getPlayer(), session.getPlayer().getMap(), message.getBlockX(), message.getBlockY(), message.getBlockZ(), dir, holding);
             if(!touch) return;
         }
         if(holding != null){
             // Use a item to touch a block
-            BlockBehavior placing = BlockBehavior.get(holding.getId(), holding.getMeta());
+            BlockBehavior placing = BlockBehavior.get(holding.getId());
             if(placing != null) {
                 // Place a block
                 int[] appliedPosition = dir.add(message.getBlockX(), message.getBlockY(), message.getBlockZ());
                 Item placingResult = placing.onPlace(session.getPlayer(), session.getPlayer().getMap(), appliedPosition[0], appliedPosition[1], appliedPosition[2], holding);
                 if(placingResult != null) {
-                    session.getPlayer().getMap().setBlockAt(appliedPosition[0], appliedPosition[1], appliedPosition[2], placingResult.getId(), placingResult.getMeta());
+                    session.getPlayer().getMap().setBlockAt(appliedPosition[0], appliedPosition[1], appliedPosition[2], placingResult.getId());
                     holding.setCount(holding.getCount() - 1);
                     if(holding.getCount() <= 0) {
                         session.getPlayer().getInventory().setSlot(session.getPlayer().getInventory().getSelectedSlot(), null);

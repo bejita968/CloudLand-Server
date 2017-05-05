@@ -4,7 +4,7 @@ import org.dragonet.cloudland.net.protocol.GUI;
 import org.dragonet.cloudland.net.protocol.Metadata;
 import org.dragonet.cloudland.server.entity.PlayerEntity;
 import org.dragonet.cloudland.server.item.Item;
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,7 +45,7 @@ public class InventoryElement extends BaseGUIElement {
         if(player.getCursorItem() != null && player.getCursorItem().getId() != 0) {
             // there is something on his/her hand
             if(param1 < items.length && items[param1] != null && items[param1].getId() != 0) {
-                Items slotItem = Items.get(items[param1]);
+                ItemPrototype slotItem = ItemPrototype.get(items[param1]);
                 if(player.getCursorItem().isMergeableWith(items[param1])) {
                     // try to merge
                     if(items[param1].getCount() + player.getCursorItem().getCount() <= slotItem.getMaxStack()) {

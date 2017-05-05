@@ -1,7 +1,7 @@
 package org.dragonet.cloudland.server.map.object;
 
 import org.dragonet.cloudland.server.behavior.BlockBehavior;
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.ChunkManager;
 import org.dragonet.cloudland.server.util.NukkitRandom;
 
@@ -13,12 +13,20 @@ import java.util.Map;
  * Nukkit Project
  */
 public abstract class ObjectTree {
+
+    private final static ItemPrototype LOG = ItemPrototype.get("cloudland:log");
+    private final static ItemPrototype LEAVES = ItemPrototype.get("cloudland:leaves");
+
+    private final static int DIRT_ID = ItemPrototype.toId("cloudland:dirt");
+    private final static int LOG_ID = ItemPrototype.toId("cloudland:log");
+    private final static int LEAVES_ID = ItemPrototype.toId("cloudland:leaves");
+
     public final Map<Integer, Boolean> overridable = new HashMap<Integer, Boolean>() {
         {
-            put(Items.AIR.getId(), true);
+            put(0, true);
             // put(Block.SAPLING, true);
-            put(Items.LOG.getId(), true);
-            put(Items.LEAVES.getId(), true);
+            put(LOG_ID, true);
+            put(LEAVES_ID, true);
             // put(Block.SNOW_LAYER, true);
             // put(Block.LOG2, true);
             // put(Block.LEAVES2, true);
@@ -29,12 +37,12 @@ public abstract class ObjectTree {
         return 0;
     }
 
-    public Items getTrunkBlock() {
-        return Items.LOG;
+    public ItemPrototype getTrunkBlock() {
+        return LOG;
     }
 
-    public Items getLeafBlock() {
-        return Items.LEAVES;
+    public ItemPrototype getLeafBlock() {
+        return LEAVES;
     }
 
     public int getTreeHeight() {
@@ -87,7 +95,7 @@ public abstract class ObjectTree {
             }
             for (int xx = -radiusToCheck; xx < (radiusToCheck + 1); ++xx) {
                 for (int zz = -radiusToCheck; zz < (radiusToCheck + 1); ++zz) {
-                    if (!this.overridable.containsKey(map.getBlockIdAt(x + xx, y + yy, z + zz))) {
+                    if (!this.overridable.containsKey(map.getBlockAt(x + xx, y + yy, z + zz))) {
                         return false;
                     }
                 }
@@ -111,10 +119,9 @@ public abstract class ObjectTree {
                     if (xOff == mid && zOff == mid && (yOff == 0 || random.nextBoundedInt(2) == 0)) {
                         continue;
                     }
-                    int id = map.getBlockIdAt(xx, yy, zz);
-                    int meta = map.getBlockMetaAt(xx, yy, zz);
-                    if (id == 0 || !BlockBehavior.get(id, meta).isSolid()) {
-                        map.setBlockAt(xx, yy, zz, getLeafBlock().getId(), getLeafBlock().getMeta());
+                    int id = map.getBlockAt(xx, yy, zz);
+                    if (id == 0 || !BlockBehavior.get(id).isSolid()) {
+                        map.setBlockAt(xx, yy, zz, getLeafBlock().getId());
                     }
                 }
             }
@@ -123,12 +130,12 @@ public abstract class ObjectTree {
 
     protected void placeTrunk(ChunkManager map, int x, int y, int z, NukkitRandom random, int trunkHeight) {
         // The base dirt block
-        map.setBlockIdAt(x, y - 1, z, Items.DIRT.getId());
+        map.setBlockAt(x, y - 1, z, DIRT_ID);
 
         for (int yy = 0; yy < trunkHeight; ++yy) {
-            int blockId = map.getBlockIdAt(x, y + yy, z);
+            int blockId = map.getBlockAt(x, y + yy, z);
             if (this.overridable.containsKey(blockId)) {
-                map.setBlockAt(x, y + yy, z, getTrunkBlock().getId(), getTrunkBlock().getMeta());
+                map.setBlockAt(x, y + yy, z, getTrunkBlock().getId());
             }
         }
     }

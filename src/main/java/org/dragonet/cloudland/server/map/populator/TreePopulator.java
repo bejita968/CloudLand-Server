@@ -1,6 +1,6 @@
 package org.dragonet.cloudland.server.map.populator;
 
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.chunk.Chunk;
 import org.dragonet.cloudland.server.map.object.ObjectTree;
@@ -11,6 +11,9 @@ import org.dragonet.cloudland.server.util.math.NukkitMath;
  * Created on 2017/2/26.
  */
 public class TreePopulator implements Populator {
+
+    private final static int DIRT_ID = ItemPrototype.toId("cloudland:dirt");
+    private final static int GRASS_ID = ItemPrototype.toId("cloudland:grass");
 
     private final GameMap level;
     private int randomAmount;
@@ -57,10 +60,10 @@ public class TreePopulator implements Populator {
     private int getHighestWorkableBlock(int x, int z) {
         int y;
         for (y = 127; y > 0; --y) {
-            int b = this.level.getBlockIdAt(x, y, z);
-            if (b == Items.DIRT.getId() || b == Items.GRASS.getId()) {
+            int b = this.level.getBlockAt(x, y, z);
+            if (b == DIRT_ID || b == GRASS_ID) {
                 break;
-            } else if (b != Items.AIR.getId()){
+            } else if (b != 0){
                 return -1;
             }
         }

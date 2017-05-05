@@ -9,7 +9,7 @@ import org.dragonet.cloudland.server.gui.InternalGUIElement;
 import org.dragonet.cloudland.server.inventory.InventoryHolder;
 import org.dragonet.cloudland.server.inventory.PlayerInventory;
 import org.dragonet.cloudland.server.item.Item;
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.LoadedChunk;
 import org.dragonet.cloudland.server.network.BinaryMetadata;
@@ -233,9 +233,8 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
         if(c == null) return;
         int bx = x & 0xF;
         int bz = z & 0xF;
-        int id = c.getBlockId(bx, y, bz);
-        int meta = c.getBlockMeta(bx, y, bz);
-        BlockBehavior behavior = BlockBehavior.get(id, meta);
+        int id = c.getBlock(bx, y, bz);
+        BlockBehavior behavior = BlockBehavior.get(id);
         if(behavior != null) {
             boolean succ = behavior.onStartBreak(this, getMap(), x, y, z, inventory.getHoldingItem());
             if(!succ) {
@@ -255,15 +254,13 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
         LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, true, true);
         int bx = x & 0xF;
         int bz = z & 0xF;
-        int id = c.getBlockId(bx, y, bz);
-        int meta = c.getBlockMeta(bx, y, bz);
-        BlockBehavior behavior = BlockBehavior.get(id, meta);
+        int id = c.getBlock(bx, y, bz);
+        BlockBehavior behavior = BlockBehavior.get(id);
         boolean result = false; // unknown blocks can not be broken
         if(behavior != null) result = behavior.onEndBreak(this, getMap(), x, y, z, inventory.getHoldingItem(), System.currentTimeMillis() - breakTime + BREAK_LAG_TOLERATION);
         if(result) {
             //System.out.println("SUCCESS BREAKING AT " + String.format("(%d, %d, %d)", x, y, z));
-            c.setBlockId(bx, y, bz, 0);
-            c.setBlockMeta(bx, y, bz, 0);
+            c.setBlock(bx, y, bz, 0);
 
             getMap().broadcastBlockUpdate(x, y, z); // function of GameMap
 
@@ -276,7 +273,7 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
                         if(!ItemEntity.class.isAssignableFrom(e.getClass())) return;
                         ItemEntity comparing = (ItemEntity)e;
                         if(!comparing.getItem().equals(drop)) return; // Already filtered non-merge-able items
-                        if(comparing.getItem().getCount() + drop.getCount() > Items.get(drop).getMaxStack()) return;
+                        if(comparing.getItem().getCount() + drop.getCount() > ItemPrototype.get(drop).getMaxStack()) return;
                         comparing.getItem().setCount(comparing.getItem().getCount() + drop.getCount());
                         drop.setCount(-1); // drop.count < 0 means already merged
                         comparing.markMetaChanged(); // Mark changed so it will be broadcast to all viewers
@@ -300,8 +297,7 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
                 .setX(x)
                 .setY(y)
                 .setZ(z)
-                .setId(c.getBlockId(x & 0xF, y & 0xF, z & 0xF))
-                .setMeta(c.getBlockMeta(x & 0xF, y & 0xF, z & 0xF))
+                .setId(c.getBlock(x & 0xF, y & 0xF, z & 0xF))
                 .build());
     }
 
@@ -381,6 +377,6 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
     public void setCursorItem(Item cursorItem) {
         this.cursorItem = cursorItem;
         session.sendNetworkMessage(GUI.ServerCursorItemMessage.newBuilder()
-                .setItem((cursorItem == null ? new Item(0,0,0) : cursorItem).serialize()).build());
+                .setItem((cursorItem == null ? Item.AIR : cursorItem).serialize()).build());
     }
 }

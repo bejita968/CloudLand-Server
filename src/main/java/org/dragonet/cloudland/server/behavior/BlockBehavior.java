@@ -3,10 +3,13 @@ package org.dragonet.cloudland.server.behavior;
 import org.dragonet.cloudland.server.behavior.block.*;
 import org.dragonet.cloudland.server.entity.PlayerEntity;
 import org.dragonet.cloudland.server.item.Item;
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.util.Direction;
 import org.dragonet.cloudland.server.util.UnsignedLongKeyMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created on 2017/1/17.
@@ -14,35 +17,32 @@ import org.dragonet.cloudland.server.util.UnsignedLongKeyMap;
 public abstract class BlockBehavior {
 
 
-    private static final UnsignedLongKeyMap<BlockBehavior> register = new UnsignedLongKeyMap<>(false);
+    private static final Map<Integer, BlockBehavior> register = new HashMap<>();
 
     static {
-        register(Items.STONE, new StoneBehavior());
-        register(Items.DIRT, new DirtBehavior());
-        register(Items.GRASS, new DirtBehavior());
-        register(Items.SAND, new SandBehavior());
-        register(Items.WATER, new WaterBehavior());
-        register(Items.LOG, new LogBehavior());
-        register(Items.LEAVES, new LeavesBehavior());
+        register(ItemPrototype.toId("cloudland:stone"), new StoneBehavior());
+        register(ItemPrototype.toId("cloudland:dirt"), new DirtBehavior());
+        register(ItemPrototype.toId("cloudland:grass"), new DirtBehavior());
+        register(ItemPrototype.toId("cloudland:sand"), new SandBehavior());
+        register(ItemPrototype.toId("cloudland:water"), new WaterBehavior());
+        register(ItemPrototype.toId("cloudland:log"), new LogBehavior());
+        register(ItemPrototype.toId("cloudland:leaves"), new LeavesBehavior());
     }
 
-    private static void register(Items item, BlockBehavior behavior) {
-        register(item.getId(), item.getMeta(), behavior);
+    private static void register(ItemPrototype item, BlockBehavior behavior) {
+        register(item.getId(), behavior);
     }
 
-    private static void register(int block, int meta, BlockBehavior behavior){
-        long key = (block & 0xFFFFFFFFL) << 32 | (meta & 0xFFFFFFFFL);
-        register.put(key, behavior);
+    private static void register(int block, BlockBehavior behavior){
+        register.put(block, behavior);
     }
 
-    public static BlockBehavior get(Items item) {
-        return get(item.getId(), item.getMeta());
+    public static BlockBehavior get(ItemPrototype item) {
+        return get(item.getId());
     }
 
-    public static BlockBehavior get(int block, int meta) {
-        long key = (block & 0xFFFFFFFFL) << 32 | (meta & 0xFFFFFFFFL);
-        if(!register.containsKey(key)) return null;
-        return register.get(key);
+    public static BlockBehavior get(int block) {
+        return register.get(block);
     }
 
     public boolean onTouch(PlayerEntity player, GameMap map, int x, int y, int z, Direction direction, Item tool) {

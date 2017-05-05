@@ -1,6 +1,6 @@
 package org.dragonet.cloudland.server.scheduler.implementation;
 
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.LoadedChunk;
 import org.dragonet.cloudland.server.scheduler.BukkitTask;
@@ -14,7 +14,7 @@ public class PulseTask implements Runnable {
     private long delay;
     private boolean single;
 
-    private Items original;
+    private ItemPrototype original;
 
     @Setter
     @Getter
@@ -31,8 +31,8 @@ public class PulseTask implements Runnable {
 
     @Override
     public void run() {
-        long fb = map.getFullBlockAt(location[0], location[1], location[2]);
-        Items block = Items.get((int)(fb >> 32), (int)(fb & 0xFFFFFFFF));
+        int id = map.getBlockAt(location[0], location[1], location[2]);
+        ItemPrototype block = ItemPrototype.get(id);
         if (block == null) {
             task.cancel();
             return;

@@ -3,7 +3,7 @@ package org.dragonet.cloudland.server.behavior.block;
 import org.dragonet.cloudland.server.behavior.BlockBehavior;
 import org.dragonet.cloudland.server.entity.PlayerEntity;
 import org.dragonet.cloudland.server.item.Item;
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 
 /**
@@ -13,7 +13,7 @@ public class LogBehavior extends BlockBehavior {
 
     @Override
     public Item[] getDrops(Item tool) {
-        return new Item[]{Items.LOG.newItemInstance(1)};
+        return new Item[]{ItemPrototype.get("cloudland:log").newItemInstance(1)};
     }
 
     @Override
@@ -23,7 +23,7 @@ public class LogBehavior extends BlockBehavior {
 
     @Override
     public Item onPlace(PlayerEntity player, GameMap map, int x, int y, int z, Item tool) {
-        return Items.LOG.newItemInstance(1);
+        return ItemPrototype.get("cloudland:log").newItemInstance(1);
     }
 
     @Override

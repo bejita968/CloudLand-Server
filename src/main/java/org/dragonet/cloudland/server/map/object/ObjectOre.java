@@ -1,6 +1,6 @@
 package org.dragonet.cloudland.server.map.object;
 
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.util.NukkitRandom;
 import org.dragonet.cloudland.server.util.math.Vector2;
@@ -11,12 +11,14 @@ import org.dragonet.cloudland.server.util.math.VectorMath;
  */
 public class ObjectOre {
 
+    private final static int STONE_ID = ItemPrototype.toId("cloudland:stone");
+
     private final NukkitRandom random;
     public final OreType type;
     private int replaceId;
 
     public ObjectOre(NukkitRandom random, OreType type) {
-        this(random, type, Items.STONE.getId());
+        this(random, type, STONE_ID);
     }
 
     public ObjectOre(NukkitRandom random, OreType type, int replaceId) {
@@ -30,7 +32,7 @@ public class ObjectOre {
     }
 
     public boolean canPlaceObject(GameMap level, int x, int y, int z) {
-        return (level.getBlockIdAt(x, y, z) == replaceId);
+        return (level.getBlockAt(x, y, z) == replaceId);
     }
 
     public void placeObject(GameMap level, int x, int y, int z) {
@@ -70,8 +72,8 @@ public class ObjectOre {
                                 double sizeZ = (z + 0.5 - seedZ) / size;
                                 sizeZ *= sizeZ;
 
-                                if ((sizeX + sizeY + sizeZ) < 1 && level.getBlockIdAt(x, y, z) == replaceId) {
-                                    level.setBlockAt(x, y, z, this.type.material.getId(), this.type.material.getMeta());
+                                if ((sizeX + sizeY + sizeZ) < 1 && level.getBlockAt(x, y, z) == replaceId) {
+                                    level.setBlockAt(x, y, z, this.type.material.getId());
                                 }
                             }
                         }

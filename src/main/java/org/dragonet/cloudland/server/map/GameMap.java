@@ -85,15 +85,13 @@ public class GameMap  {
         }
         int bx = x & 0xf;
         int bz = z & 0xf;
-        if(c.getBlockId(bx, y, bz) == id && c.getBlockMeta(bx, y, bz) == meta) return false;
-        c.setBlockId(bx, y, bz, id);
-        c.setBlockMeta(bx, y, bz, meta);
+        if(c.getBlock(bx, y, bz) == id) return false;
+        c.setBlock(bx, y, bz, id);
         c.forAllHolders((p) -> p.getSession().sendNetworkMessage(Map.ServerUpdateBlockMessage.newBuilder()
                 .setX(x)
                 .setY(y)
                 .setZ(z)
                 .setId(id)
-                .setMeta(meta)
                 .build())
         );
         broadcastBlockUpdate(x, y, z); // function of GameMap
@@ -102,43 +100,29 @@ public class GameMap  {
 
     public boolean removeBlockAt(int x, int y, int z){
         LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, true, true);
-        if(c.getBlockId(x, y, z) == 0) return false;
+        if(c.getBlock(x, y, z) == 0) return false;
         int bx = x & 0xf;
         int bz = z & 0xf;
-        c.setBlockId(bx, y, bz, 0);
-        c.setBlockMeta(bx, y, bz, 0);
+        c.setBlock(bx, y, bz, 0);
         c.forAllHolders((p) -> p.getSession().sendNetworkMessage(Map.ServerUpdateBlockMessage.newBuilder()
                 .setX(x)
                 .setY(y)
                 .setZ(z)
                 .setId(0)
-                .setMeta(0)
                 .build())
         );
         broadcastBlockUpdate(x, y, z); // function of GameMap
         return true;
     }
 
-    public int getBlockIdAt(int x, int y, int z) {
+    public int getBlockAt(int x, int y, int z) {
         LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false, false);
         if(c == null) return -1;
-        return c.getBlockId(x & 0xF, y ,z & 0xF);
+        return c.getBlock(x & 0xF, y ,z & 0xF);
     }
 
-    public int getBlockMetaAt(int x, int y, int z) {
-        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false, false);
-        if(c == null) return 0;
-        return c.getBlockMeta(x & 0xF, y ,z & 0xF);
-    }
-
-    public void setBlockIdAt(int x, int y, int z, int id) {
+    public void setBlockAt(int x, int y, int z, int id) {
         setBlockAt(x, y, z, id, 0);
-    }
-
-    public long getFullBlockAt(int x, int y, int z){
-        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false, false);
-        if(c == null) return 0L;
-        return c.getBlockId(x & 0xF, y ,z & 0xF) << 32 | c.getBlockMeta(x & 0xF, y, z & 0xF);
     }
 
     public void broadcastBlockUpdate(int x, int y, int z) {

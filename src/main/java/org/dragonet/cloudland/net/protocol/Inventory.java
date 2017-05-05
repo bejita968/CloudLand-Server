@@ -24,25 +24,20 @@ public final class Inventory {
     int getId();
 
     /**
-     * <code>optional int32 meta = 2;</code>
-     */
-    int getMeta();
-
-    /**
-     * <code>optional uint32 count = 3;</code>
+     * <code>optional uint32 count = 2;</code>
      */
     int getCount();
 
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
      */
     boolean hasBinaryMeta();
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
      */
     org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata getBinaryMeta();
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
      */
     org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadataOrBuilder getBinaryMetaOrBuilder();
   }
@@ -59,7 +54,6 @@ public final class Inventory {
     }
     private SerializedItem() {
       id_ = 0;
-      meta_ = 0;
       count_ = 0;
     }
 
@@ -95,15 +89,10 @@ public final class Inventory {
             }
             case 16: {
 
-              meta_ = input.readInt32();
-              break;
-            }
-            case 24: {
-
               count_ = input.readUInt32();
               break;
             }
-            case 34: {
+            case 26: {
               org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata.Builder subBuilder = null;
               if (binaryMeta_ != null) {
                 subBuilder = binaryMeta_.toBuilder();
@@ -148,40 +137,31 @@ public final class Inventory {
       return id_;
     }
 
-    public static final int META_FIELD_NUMBER = 2;
-    private int meta_;
-    /**
-     * <code>optional int32 meta = 2;</code>
-     */
-    public int getMeta() {
-      return meta_;
-    }
-
-    public static final int COUNT_FIELD_NUMBER = 3;
+    public static final int COUNT_FIELD_NUMBER = 2;
     private int count_;
     /**
-     * <code>optional uint32 count = 3;</code>
+     * <code>optional uint32 count = 2;</code>
      */
     public int getCount() {
       return count_;
     }
 
-    public static final int BINARYMETA_FIELD_NUMBER = 4;
+    public static final int BINARYMETA_FIELD_NUMBER = 3;
     private org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata binaryMeta_;
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
      */
     public boolean hasBinaryMeta() {
       return binaryMeta_ != null;
     }
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
      */
     public org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata getBinaryMeta() {
       return binaryMeta_ == null ? org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata.getDefaultInstance() : binaryMeta_;
     }
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+     * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
      */
     public org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadataOrBuilder getBinaryMetaOrBuilder() {
       return getBinaryMeta();
@@ -202,14 +182,11 @@ public final class Inventory {
       if (id_ != 0) {
         output.writeInt32(1, id_);
       }
-      if (meta_ != 0) {
-        output.writeInt32(2, meta_);
-      }
       if (count_ != 0) {
-        output.writeUInt32(3, count_);
+        output.writeUInt32(2, count_);
       }
       if (binaryMeta_ != null) {
-        output.writeMessage(4, getBinaryMeta());
+        output.writeMessage(3, getBinaryMeta());
       }
     }
 
@@ -222,17 +199,13 @@ public final class Inventory {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, id_);
       }
-      if (meta_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, meta_);
-      }
       if (count_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(3, count_);
+          .computeUInt32Size(2, count_);
       }
       if (binaryMeta_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getBinaryMeta());
+          .computeMessageSize(3, getBinaryMeta());
       }
       memoizedSize = size;
       return size;
@@ -252,8 +225,6 @@ public final class Inventory {
       boolean result = true;
       result = result && (getId()
           == other.getId());
-      result = result && (getMeta()
-          == other.getMeta());
       result = result && (getCount()
           == other.getCount());
       result = result && (hasBinaryMeta() == other.hasBinaryMeta());
@@ -273,8 +244,6 @@ public final class Inventory {
       hash = (19 * hash) + getDescriptorForType().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId();
-      hash = (37 * hash) + META_FIELD_NUMBER;
-      hash = (53 * hash) + getMeta();
       hash = (37 * hash) + COUNT_FIELD_NUMBER;
       hash = (53 * hash) + getCount();
       if (hasBinaryMeta()) {
@@ -401,8 +370,6 @@ public final class Inventory {
         super.clear();
         id_ = 0;
 
-        meta_ = 0;
-
         count_ = 0;
 
         if (binaryMetaBuilder_ == null) {
@@ -434,7 +401,6 @@ public final class Inventory {
       public org.dragonet.cloudland.net.protocol.Inventory.SerializedItem buildPartial() {
         org.dragonet.cloudland.net.protocol.Inventory.SerializedItem result = new org.dragonet.cloudland.net.protocol.Inventory.SerializedItem(this);
         result.id_ = id_;
-        result.meta_ = meta_;
         result.count_ = count_;
         if (binaryMetaBuilder_ == null) {
           result.binaryMeta_ = binaryMeta_;
@@ -484,9 +450,6 @@ public final class Inventory {
         if (other == org.dragonet.cloudland.net.protocol.Inventory.SerializedItem.getDefaultInstance()) return this;
         if (other.getId() != 0) {
           setId(other.getId());
-        }
-        if (other.getMeta() != 0) {
-          setMeta(other.getMeta());
         }
         if (other.getCount() != 0) {
           setCount(other.getCount());
@@ -546,41 +509,15 @@ public final class Inventory {
         return this;
       }
 
-      private int meta_ ;
-      /**
-       * <code>optional int32 meta = 2;</code>
-       */
-      public int getMeta() {
-        return meta_;
-      }
-      /**
-       * <code>optional int32 meta = 2;</code>
-       */
-      public Builder setMeta(int value) {
-        
-        meta_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 meta = 2;</code>
-       */
-      public Builder clearMeta() {
-        
-        meta_ = 0;
-        onChanged();
-        return this;
-      }
-
       private int count_ ;
       /**
-       * <code>optional uint32 count = 3;</code>
+       * <code>optional uint32 count = 2;</code>
        */
       public int getCount() {
         return count_;
       }
       /**
-       * <code>optional uint32 count = 3;</code>
+       * <code>optional uint32 count = 2;</code>
        */
       public Builder setCount(int value) {
         
@@ -589,7 +526,7 @@ public final class Inventory {
         return this;
       }
       /**
-       * <code>optional uint32 count = 3;</code>
+       * <code>optional uint32 count = 2;</code>
        */
       public Builder clearCount() {
         
@@ -602,13 +539,13 @@ public final class Inventory {
       private com.google.protobuf.SingleFieldBuilderV3<
           org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata, org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata.Builder, org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadataOrBuilder> binaryMetaBuilder_;
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public boolean hasBinaryMeta() {
         return binaryMetaBuilder_ != null || binaryMeta_ != null;
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata getBinaryMeta() {
         if (binaryMetaBuilder_ == null) {
@@ -618,7 +555,7 @@ public final class Inventory {
         }
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public Builder setBinaryMeta(org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata value) {
         if (binaryMetaBuilder_ == null) {
@@ -634,7 +571,7 @@ public final class Inventory {
         return this;
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public Builder setBinaryMeta(
           org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata.Builder builderForValue) {
@@ -648,7 +585,7 @@ public final class Inventory {
         return this;
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public Builder mergeBinaryMeta(org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata value) {
         if (binaryMetaBuilder_ == null) {
@@ -666,7 +603,7 @@ public final class Inventory {
         return this;
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public Builder clearBinaryMeta() {
         if (binaryMetaBuilder_ == null) {
@@ -680,7 +617,7 @@ public final class Inventory {
         return this;
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata.Builder getBinaryMetaBuilder() {
         
@@ -688,7 +625,7 @@ public final class Inventory {
         return getBinaryMetaFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       public org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadataOrBuilder getBinaryMetaOrBuilder() {
         if (binaryMetaBuilder_ != null) {
@@ -699,7 +636,7 @@ public final class Inventory {
         }
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 4;</code>
+       * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata binaryMeta = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata, org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadata.Builder, org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadataOrBuilder> 
@@ -1647,13 +1584,13 @@ public final class Inventory {
   static {
     java.lang.String[] descriptorData = {
       "\n\017Inventory.proto\022#org.dragonet.cloudlan" +
-      "d.net.protocol\032\016Metadata.proto\"\206\001\n\016Seria" +
-      "lizedItem\022\n\n\002id\030\001 \001(\005\022\014\n\004meta\030\002 \001(\005\022\r\n\005c" +
-      "ount\030\003 \001(\r\022K\n\nbinaryMeta\030\004 \001(\01327.org.dra" +
-      "gonet.cloudland.net.protocol.SerializedM" +
-      "etadata\"-\n\034ClientHotbarSelectionMessage\022" +
-      "\r\n\005index\030\001 \001(\021\"+\n\027ClientPickUpItemMessag" +
-      "e\022\020\n\010entityId\030\001 \001(\004b\006proto3"
+      "d.net.protocol\032\016Metadata.proto\"x\n\016Serial" +
+      "izedItem\022\n\n\002id\030\001 \001(\005\022\r\n\005count\030\002 \001(\r\022K\n\nb" +
+      "inaryMeta\030\003 \001(\01327.org.dragonet.cloudland" +
+      ".net.protocol.SerializedMetadata\"-\n\034Clie" +
+      "ntHotbarSelectionMessage\022\r\n\005index\030\001 \001(\021\"" +
+      "+\n\027ClientPickUpItemMessage\022\020\n\010entityId\030\001" +
+      " \001(\004b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1673,7 +1610,7 @@ public final class Inventory {
     internal_static_org_dragonet_cloudland_net_protocol_SerializedItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_dragonet_cloudland_net_protocol_SerializedItem_descriptor,
-        new java.lang.String[] { "Id", "Meta", "Count", "BinaryMeta", });
+        new java.lang.String[] { "Id", "Count", "BinaryMeta", });
     internal_static_org_dragonet_cloudland_net_protocol_ClientHotbarSelectionMessage_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_org_dragonet_cloudland_net_protocol_ClientHotbarSelectionMessage_fieldAccessorTable = new

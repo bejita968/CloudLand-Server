@@ -1,6 +1,6 @@
 package org.dragonet.cloudland.server.map.populator;
 
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.Biome;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.chunk.Chunk;
@@ -14,6 +14,7 @@ import java.util.Random;
  */
 public class CavePopulator implements Populator {
 
+    private final static int WATER_ID = ItemPrototype.toId("cloudland:water");
 
     protected int checkAreaSize = 8;
 
@@ -165,8 +166,8 @@ public class CavePopulator implements Populator {
                 for (int zz = zFrom; (!waterFound) && (zz < zTo); zz++) {
                     for (int yy = yTo + 1; (!waterFound) && (yy >= yFrom - 1); yy--) {
                         if (yy >= 0 && yy < this.worldHeightCap) {
-                            int block = chunk.getBlockId(xx, yy, zz);
-                            if (block == Items.WATER.getId()) {
+                            int block = chunk.getBlock(xx, yy, zz);
+                            if (block == WATER_ID) {
                                 waterFound = true;
                             }
                             if ((yy != yFrom - 1) && (xx != xFrom) && (xx != xTo - 1) && (zz != zFrom) && (zz != zTo - 1))
@@ -207,9 +208,9 @@ public class CavePopulator implements Populator {
 //								if (this.isSuitableBlock(material, materialAbove, biome))
                                 {
                                     if (yy - 1 < 10) {
-                                        chunk.setBlockId(xx, yy, zz, Items.WATER.getId());
+                                        chunk.setBlock(xx, yy, zz, WATER_ID);
                                     } else {
-                                        chunk.setBlockId(xx, yy, zz, 0);
+                                        chunk.setBlock(xx, yy, zz, 0);
 
                                         // If grass was just deleted, try to
                                         // move it down

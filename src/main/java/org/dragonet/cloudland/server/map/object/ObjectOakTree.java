@@ -1,6 +1,6 @@
 package org.dragonet.cloudland.server.map.object;
 
-import org.dragonet.cloudland.server.item.Items;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.ChunkManager;
 import org.dragonet.cloudland.server.util.NukkitRandom;
 
@@ -9,16 +9,20 @@ import org.dragonet.cloudland.server.util.NukkitRandom;
  * Nukkit Project
  */
 public class ObjectOakTree extends ObjectTree {
+
+    private final static ItemPrototype LOG = ItemPrototype.get("cloudland:log");
+    private final static ItemPrototype LEAVES = ItemPrototype.get("cloudland:leaves");
+
     private int treeHeight = 7;
 
     @Override
-    public Items getTrunkBlock() {
-        return Items.LOG;
+    public ItemPrototype getTrunkBlock() {
+        return LOG;
     }
 
     @Override
-    public Items getLeafBlock() {
-        return Items.LEAVES;
+    public ItemPrototype getLeafBlock() {
+        return LEAVES;
     }
 
     @Override

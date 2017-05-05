@@ -42,7 +42,6 @@ public final class SendChunkTask implements Runnable{
                     .setY(y)
                     .setZ(c.getZ())
                     .setChunk(ByteString.copyFrom(s[y].getIds()))
-                    .setMeta(ByteString.copyFrom(s[y].getMeta()))
                     .build());
         }
     }

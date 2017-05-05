@@ -39,12 +39,7 @@ public final class Map {
     com.google.protobuf.ByteString getChunk();
 
     /**
-     * <code>optional bytes meta = 5;</code>
-     */
-    com.google.protobuf.ByteString getMeta();
-
-    /**
-     * <code>optional bytes chunkData = 6;</code>
+     * <code>optional bytes chunkData = 5;</code>
      */
     com.google.protobuf.ByteString getChunkData();
   }
@@ -64,7 +59,6 @@ public final class Map {
       z_ = 0;
       y_ = 0;
       chunk_ = com.google.protobuf.ByteString.EMPTY;
-      meta_ = com.google.protobuf.ByteString.EMPTY;
       chunkData_ = com.google.protobuf.ByteString.EMPTY;
     }
 
@@ -114,11 +108,6 @@ public final class Map {
               break;
             }
             case 42: {
-
-              meta_ = input.readBytes();
-              break;
-            }
-            case 50: {
 
               chunkData_ = input.readBytes();
               break;
@@ -182,19 +171,10 @@ public final class Map {
       return chunk_;
     }
 
-    public static final int META_FIELD_NUMBER = 5;
-    private com.google.protobuf.ByteString meta_;
-    /**
-     * <code>optional bytes meta = 5;</code>
-     */
-    public com.google.protobuf.ByteString getMeta() {
-      return meta_;
-    }
-
-    public static final int CHUNKDATA_FIELD_NUMBER = 6;
+    public static final int CHUNKDATA_FIELD_NUMBER = 5;
     private com.google.protobuf.ByteString chunkData_;
     /**
-     * <code>optional bytes chunkData = 6;</code>
+     * <code>optional bytes chunkData = 5;</code>
      */
     public com.google.protobuf.ByteString getChunkData() {
       return chunkData_;
@@ -224,11 +204,8 @@ public final class Map {
       if (!chunk_.isEmpty()) {
         output.writeBytes(4, chunk_);
       }
-      if (!meta_.isEmpty()) {
-        output.writeBytes(5, meta_);
-      }
       if (!chunkData_.isEmpty()) {
-        output.writeBytes(6, chunkData_);
+        output.writeBytes(5, chunkData_);
       }
     }
 
@@ -253,13 +230,9 @@ public final class Map {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, chunk_);
       }
-      if (!meta_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, meta_);
-      }
       if (!chunkData_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, chunkData_);
+          .computeBytesSize(5, chunkData_);
       }
       memoizedSize = size;
       return size;
@@ -285,8 +258,6 @@ public final class Map {
           == other.getY());
       result = result && getChunk()
           .equals(other.getChunk());
-      result = result && getMeta()
-          .equals(other.getMeta());
       result = result && getChunkData()
           .equals(other.getChunkData());
       return result;
@@ -307,8 +278,6 @@ public final class Map {
       hash = (53 * hash) + getY();
       hash = (37 * hash) + CHUNK_FIELD_NUMBER;
       hash = (53 * hash) + getChunk().hashCode();
-      hash = (37 * hash) + META_FIELD_NUMBER;
-      hash = (53 * hash) + getMeta().hashCode();
       hash = (37 * hash) + CHUNKDATA_FIELD_NUMBER;
       hash = (53 * hash) + getChunkData().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -437,8 +406,6 @@ public final class Map {
 
         chunk_ = com.google.protobuf.ByteString.EMPTY;
 
-        meta_ = com.google.protobuf.ByteString.EMPTY;
-
         chunkData_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
@@ -467,7 +434,6 @@ public final class Map {
         result.z_ = z_;
         result.y_ = y_;
         result.chunk_ = chunk_;
-        result.meta_ = meta_;
         result.chunkData_ = chunkData_;
         onBuilt();
         return result;
@@ -521,9 +487,6 @@ public final class Map {
         }
         if (other.getChunk() != com.google.protobuf.ByteString.EMPTY) {
           setChunk(other.getChunk());
-        }
-        if (other.getMeta() != com.google.protobuf.ByteString.EMPTY) {
-          setMeta(other.getMeta());
         }
         if (other.getChunkData() != com.google.protobuf.ByteString.EMPTY) {
           setChunkData(other.getChunkData());
@@ -661,44 +624,15 @@ public final class Map {
         return this;
       }
 
-      private com.google.protobuf.ByteString meta_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>optional bytes meta = 5;</code>
-       */
-      public com.google.protobuf.ByteString getMeta() {
-        return meta_;
-      }
-      /**
-       * <code>optional bytes meta = 5;</code>
-       */
-      public Builder setMeta(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        meta_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bytes meta = 5;</code>
-       */
-      public Builder clearMeta() {
-        
-        meta_ = getDefaultInstance().getMeta();
-        onChanged();
-        return this;
-      }
-
       private com.google.protobuf.ByteString chunkData_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes chunkData = 6;</code>
+       * <code>optional bytes chunkData = 5;</code>
        */
       public com.google.protobuf.ByteString getChunkData() {
         return chunkData_;
       }
       /**
-       * <code>optional bytes chunkData = 6;</code>
+       * <code>optional bytes chunkData = 5;</code>
        */
       public Builder setChunkData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -710,7 +644,7 @@ public final class Map {
         return this;
       }
       /**
-       * <code>optional bytes chunkData = 6;</code>
+       * <code>optional bytes chunkData = 5;</code>
        */
       public Builder clearChunkData() {
         
@@ -792,12 +726,7 @@ public final class Map {
     int getId();
 
     /**
-     * <code>optional uint32 meta = 5;</code>
-     */
-    int getMeta();
-
-    /**
-     * <code>optional bytes data = 6;</code>
+     * <code>optional bytes data = 5;</code>
      */
     com.google.protobuf.ByteString getData();
   }
@@ -817,7 +746,6 @@ public final class Map {
       y_ = 0;
       z_ = 0;
       id_ = 0;
-      meta_ = 0;
       data_ = com.google.protobuf.ByteString.EMPTY;
     }
 
@@ -866,12 +794,7 @@ public final class Map {
               id_ = input.readUInt32();
               break;
             }
-            case 40: {
-
-              meta_ = input.readUInt32();
-              break;
-            }
-            case 50: {
+            case 42: {
 
               data_ = input.readBytes();
               break;
@@ -935,19 +858,10 @@ public final class Map {
       return id_;
     }
 
-    public static final int META_FIELD_NUMBER = 5;
-    private int meta_;
-    /**
-     * <code>optional uint32 meta = 5;</code>
-     */
-    public int getMeta() {
-      return meta_;
-    }
-
-    public static final int DATA_FIELD_NUMBER = 6;
+    public static final int DATA_FIELD_NUMBER = 5;
     private com.google.protobuf.ByteString data_;
     /**
-     * <code>optional bytes data = 6;</code>
+     * <code>optional bytes data = 5;</code>
      */
     public com.google.protobuf.ByteString getData() {
       return data_;
@@ -977,11 +891,8 @@ public final class Map {
       if (id_ != 0) {
         output.writeUInt32(4, id_);
       }
-      if (meta_ != 0) {
-        output.writeUInt32(5, meta_);
-      }
       if (!data_.isEmpty()) {
-        output.writeBytes(6, data_);
+        output.writeBytes(5, data_);
       }
     }
 
@@ -1006,13 +917,9 @@ public final class Map {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(4, id_);
       }
-      if (meta_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(5, meta_);
-      }
       if (!data_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, data_);
+          .computeBytesSize(5, data_);
       }
       memoizedSize = size;
       return size;
@@ -1038,8 +945,6 @@ public final class Map {
           == other.getZ());
       result = result && (getId()
           == other.getId());
-      result = result && (getMeta()
-          == other.getMeta());
       result = result && getData()
           .equals(other.getData());
       return result;
@@ -1060,8 +965,6 @@ public final class Map {
       hash = (53 * hash) + getZ();
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId();
-      hash = (37 * hash) + META_FIELD_NUMBER;
-      hash = (53 * hash) + getMeta();
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -1190,8 +1093,6 @@ public final class Map {
 
         id_ = 0;
 
-        meta_ = 0;
-
         data_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
@@ -1220,7 +1121,6 @@ public final class Map {
         result.y_ = y_;
         result.z_ = z_;
         result.id_ = id_;
-        result.meta_ = meta_;
         result.data_ = data_;
         onBuilt();
         return result;
@@ -1274,9 +1174,6 @@ public final class Map {
         }
         if (other.getId() != 0) {
           setId(other.getId());
-        }
-        if (other.getMeta() != 0) {
-          setMeta(other.getMeta());
         }
         if (other.getData() != com.google.protobuf.ByteString.EMPTY) {
           setData(other.getData());
@@ -1411,41 +1308,15 @@ public final class Map {
         return this;
       }
 
-      private int meta_ ;
-      /**
-       * <code>optional uint32 meta = 5;</code>
-       */
-      public int getMeta() {
-        return meta_;
-      }
-      /**
-       * <code>optional uint32 meta = 5;</code>
-       */
-      public Builder setMeta(int value) {
-        
-        meta_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional uint32 meta = 5;</code>
-       */
-      public Builder clearMeta() {
-        
-        meta_ = 0;
-        onChanged();
-        return this;
-      }
-
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes data = 6;</code>
+       * <code>optional bytes data = 5;</code>
        */
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
       /**
-       * <code>optional bytes data = 6;</code>
+       * <code>optional bytes data = 5;</code>
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1457,7 +1328,7 @@ public final class Map {
         return this;
       }
       /**
-       * <code>optional bytes data = 6;</code>
+       * <code>optional bytes data = 5;</code>
        */
       public Builder clearData() {
         
@@ -2834,16 +2705,16 @@ public final class Map {
   static {
     java.lang.String[] descriptorData = {
       "\n\tMap.proto\022#org.dragonet.cloudland.net." +
-      "protocol\"e\n\022ServerChunkMessage\022\t\n\001x\030\001 \001(" +
-      "\021\022\t\n\001z\030\002 \001(\021\022\t\n\001y\030\003 \001(\021\022\r\n\005chunk\030\004 \001(\014\022\014" +
-      "\n\004meta\030\005 \001(\014\022\021\n\tchunkData\030\006 \001(\014\"c\n\030Serve" +
-      "rUpdateBlockMessage\022\t\n\001x\030\001 \001(\021\022\t\n\001y\030\002 \001(" +
-      "\021\022\t\n\001z\030\003 \001(\021\022\n\n\002id\030\004 \001(\r\022\014\n\004meta\030\005 \001(\r\022\014" +
-      "\n\004data\030\006 \001(\014\";\n\030ClientRemoveBlockMessage" +
-      "\022\t\n\001x\030\001 \001(\021\022\t\n\001y\030\002 \001(\021\022\t\n\001z\030\003 \001(\021\"o\n\035Ser" +
-      "verUpdateBlockBatchMessage\022N\n\007records\030\001 " +
-      "\003(\0132=.org.dragonet.cloudland.net.protoco",
-      "l.ServerUpdateBlockMessageb\006proto3"
+      "protocol\"W\n\022ServerChunkMessage\022\t\n\001x\030\001 \001(" +
+      "\021\022\t\n\001z\030\002 \001(\021\022\t\n\001y\030\003 \001(\021\022\r\n\005chunk\030\004 \001(\014\022\021" +
+      "\n\tchunkData\030\005 \001(\014\"U\n\030ServerUpdateBlockMe" +
+      "ssage\022\t\n\001x\030\001 \001(\021\022\t\n\001y\030\002 \001(\021\022\t\n\001z\030\003 \001(\021\022\n" +
+      "\n\002id\030\004 \001(\r\022\014\n\004data\030\005 \001(\014\";\n\030ClientRemove" +
+      "BlockMessage\022\t\n\001x\030\001 \001(\021\022\t\n\001y\030\002 \001(\021\022\t\n\001z\030" +
+      "\003 \001(\021\"o\n\035ServerUpdateBlockBatchMessage\022N" +
+      "\n\007records\030\001 \003(\0132=.org.dragonet.cloudland" +
+      ".net.protocol.ServerUpdateBlockMessageb\006",
+      "proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2862,13 +2733,13 @@ public final class Map {
     internal_static_org_dragonet_cloudland_net_protocol_ServerChunkMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_dragonet_cloudland_net_protocol_ServerChunkMessage_descriptor,
-        new java.lang.String[] { "X", "Z", "Y", "Chunk", "Meta", "ChunkData", });
+        new java.lang.String[] { "X", "Z", "Y", "Chunk", "ChunkData", });
     internal_static_org_dragonet_cloudland_net_protocol_ServerUpdateBlockMessage_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_org_dragonet_cloudland_net_protocol_ServerUpdateBlockMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_dragonet_cloudland_net_protocol_ServerUpdateBlockMessage_descriptor,
-        new java.lang.String[] { "X", "Y", "Z", "Id", "Meta", "Data", });
+        new java.lang.String[] { "X", "Y", "Z", "Id", "Data", });
     internal_static_org_dragonet_cloudland_net_protocol_ClientRemoveBlockMessage_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_org_dragonet_cloudland_net_protocol_ClientRemoveBlockMessage_fieldAccessorTable = new

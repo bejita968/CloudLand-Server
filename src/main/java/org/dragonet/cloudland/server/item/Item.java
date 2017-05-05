@@ -14,14 +14,11 @@ public class Item {
     /**
      * used to replace NULLs in networking
      */
-    public final static Item AIR = new Item(0, 0, 0);
+    public final static Item AIR = new Item(0, 0);
     public final static Metadata.SerializedMetadata AIR_SERIALIZED = AIR.serializeToBinary();
 
     @Getter
     private int id;
-
-    @Getter
-    private int meta;
 
     @Getter
     @Setter
@@ -35,21 +32,18 @@ public class Item {
     private BinaryMetadata binaryMeta;
 
     /**
-     * MUST have this constructor since Items uses it!
+     * MUST have this constructor since ItemPrototype uses it!
      * @param id
-     * @param meta
      * @param count
      */
-    public Item(int id, int meta, int count) {
+    public Item(int id, int count) {
         this.id = id;
-        this.meta = meta;
         this.count = count;
     }
 
     public Inventory.SerializedItem serialize() {
         return Inventory.SerializedItem.newBuilder()
                 .setId(id)
-                .setMeta(meta)
                 .setCount(count)
                 .setBinaryMeta(binaryMeta != null ? binaryMeta.serialize() : Metadata.SerializedMetadata.getDefaultInstance())
                 .build();
@@ -60,9 +54,6 @@ public class Item {
         Metadata.SerializedMetadata.MetadataEntry serializedId = Metadata.SerializedMetadata.MetadataEntry.newBuilder()
                 .setType(Metadata.SerializedMetadata.MetadataEntry.DataType.INT32)
                 .setInt32Value(id).build();
-        Metadata.SerializedMetadata.MetadataEntry serializedMeta = Metadata.SerializedMetadata.MetadataEntry.newBuilder()
-                .setType(Metadata.SerializedMetadata.MetadataEntry.DataType.INT32)
-                .setInt32Value(meta).build();
         Metadata.SerializedMetadata.MetadataEntry serializedCount = Metadata.SerializedMetadata.MetadataEntry.newBuilder()
                 .setType(Metadata.SerializedMetadata.MetadataEntry.DataType.INT32)
                 .setInt32Value(count).build();
@@ -70,9 +61,8 @@ public class Item {
                 .setType(Metadata.SerializedMetadata.MetadataEntry.DataType.META)
                 .setMetaValue(binaryMeta == null ? Metadata.SerializedMetadata.getDefaultInstance() : binaryMeta.serialize()).build();
         b.putEntries(0, serializedId);
-        b.putEntries(1, serializedMeta);
-        b.putEntries(2, serializedCount);
-        b.putEntries(3, serializedBinaryMeta);
+        b.putEntries(1, serializedCount);
+        b.putEntries(2, serializedBinaryMeta);
         return b.build();
     }
 
@@ -80,9 +70,9 @@ public class Item {
     public boolean equals(Object obj) {
         if(obj == null || !Item.class.isAssignableFrom(obj.getClass())) return false;
         Item target = (Item)obj;
-        if(!Items.get(id, meta).isCanBeMerged()) return false;
-        if(!Items.get(target.id, target.meta).isCanBeMerged()) return false;
-        return this.id == target.id && (!Items.get(id, meta).isNeedMeta() || this.meta == target.meta);
+        ItemPrototype targetPrototype = ItemPrototype.get(target.id);
+        if(!ItemPrototype.get(target.id).canBeMergedTo(targetPrototype)) return false;
+        return this.id == target.id;
     }
 
     /**
@@ -91,7 +81,7 @@ public class Item {
      */
     @Override
     public Item clone() {
-        return new Item(id, meta, count);
+        return new Item(id, count);
     }
 
     public boolean isMergeableWith(Item item) {
@@ -102,7 +92,7 @@ public class Item {
         // ...
 
         // or just check ID and Meta by default
-        if(id == item.id && meta == item.meta) {
+        if(id == item.id) {
             return true;
         } else {
             return false;

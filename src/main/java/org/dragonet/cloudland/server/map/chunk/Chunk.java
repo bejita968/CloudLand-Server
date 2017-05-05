@@ -66,35 +66,18 @@ public class Chunk {
         return sections[y];
     }
 
-    public int getBlockId(int x, int y, int z){
+    public int getBlock(int x, int y, int z){
         int cY = y >> 4;
         if(sections[cY] == null) return 0;
-        return sections[cY].getBlockId(x, y & 0xF, z);
+        return sections[cY].getBlock(x, y & 0xF, z);
     }
 
-    public int getBlockMeta(int x, int y, int z){
+    public void setBlock(int x, int y, int z, int newId) {
         int cY = y >> 4;
-        if(sections[cY] == null) return 0;
-        return sections[cY].getBlockMeta(x, y & 0xF, z);
+        if(sections[cY] == null) sections[cY] = new ChunkSection(new byte[8192]);
+        sections[cY].setBlock(x, y & 0xF, z, newId);
     }
 
-    public void setBlock(int x, int y, int z, int newId, int newMeta) {
-        int cY = y >> 4;
-        if(sections[cY] == null) sections[cY] = new ChunkSection(new byte[8192], new byte[8192]);
-        sections[cY].setBlock(x, y & 0xF, z, newId, newMeta);
-    }
-
-    public void setBlockId(int x, int y, int z, int newId) {
-        int cY = y >> 4;
-        if(sections[cY] == null) sections[cY] = new ChunkSection(new byte[8192], new byte[8192]);
-        sections[cY].setBlockId(x, y & 0xF, z, newId);
-    }
-
-    public void setBlockMeta(int x, int y, int z, int newMeta) {
-        int cY = y >> 4;
-        if(sections[cY] == null) sections[cY] = new ChunkSection(new byte[8192], new byte[8192]);
-        sections[cY].setBlockMeta(x, y & 0xF, z, newMeta);
-    }
 
     public void markPopulated() {
         populated = true;
