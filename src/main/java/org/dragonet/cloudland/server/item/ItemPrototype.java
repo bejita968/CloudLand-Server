@@ -23,13 +23,13 @@ public final class ItemPrototype {
 
         // Register internal definitions
         register(0, "cloudland:air", createSimpleItem(0, 0));
-        register(1, "cloudland:stone", createSimpleItem(1, 16));
-        register(2, "cloudland:dirt", createSimpleItem(2, 16));
-        register(3, "cloudland:grass", createSimpleItem(3, 16));
-        register(4, "cloudland:sand", createSimpleItem(4, 16));
-        register(5, "cloudland:water", createSimpleItem(5, 16));
-        register(6, "cloudland:log", createSimpleItem(6, 16));
-        register(7, "cloudland:leaves", createSimpleItem(7, 16));
+        register(1, "cloudland:stone", createSimpleBlock(1, 16));
+        register(2, "cloudland:dirt", createSimpleBlock(2, 16));
+        register(3, "cloudland:grass", createSimpleBlock(3, 16));
+        register(4, "cloudland:sand", createSimpleBlock(4, 16));
+        register(5, "cloudland:water", createSimpleBlock(5, 16));
+        register(6, "cloudland:log", createSimpleBlock(6, 16));
+        register(7, "cloudland:leaves", createSimpleBlock(7, 16));
 
         initiated = true;
     }
@@ -118,32 +118,30 @@ public final class ItemPrototype {
      */
     public static ItemPrototype createItem(int id, int maxStack, boolean binaryMetaRequired) {
         if(locked) throw new IllegalStateException("can not create item prototypes after server started, consider using a mod. ");
-        return new ItemPrototype(id, false, null, maxStack, binaryMetaRequired);
+        return new ItemPrototype(id, false, maxStack, binaryMetaRequired);
     }
 
     /**
      * Create a block prototype that does NOT requires binary meta data.
      * @param id
-     * @param behavior
      * @param maxStack
      * @return
      */
-    public static ItemPrototype createSimpleBlock(int id, BlockBehavior behavior, int maxStack) {
+    public static ItemPrototype createSimpleBlock(int id, int maxStack) {
         if(locked) throw new IllegalStateException("can not create item prototypes after server started, consider using a mod. ");
-        return createBlockPrototype(id, behavior, maxStack, false);
+        return createBlock(id, maxStack, false);
     }
 
     /**
      * Create a block prototype.
      * @param id
-     * @param behavior
      * @param maxStack
      * @param binaryMetaRequired
      * @return
      */
-    public static ItemPrototype createBlockPrototype(int id, BlockBehavior behavior, int maxStack, boolean binaryMetaRequired) {
+    public static ItemPrototype createBlock(int id, int maxStack, boolean binaryMetaRequired) {
         if(locked) throw new IllegalStateException("can not create item prototypes after server started, consider using a mod. ");
-        return new ItemPrototype(id, true, behavior, maxStack, binaryMetaRequired);
+        return new ItemPrototype(id, true, maxStack, binaryMetaRequired);
     }
 
     // ========================== INSTANCE VARIABLES AND METHODS ==========================
@@ -153,9 +151,6 @@ public final class ItemPrototype {
 
     @Getter
     private boolean block;
-
-    @Getter
-    private BlockBehavior blockBehavior;
 
     @Getter
     private int maxStack = 16;
@@ -168,6 +163,11 @@ public final class ItemPrototype {
         if(target.id != id) return false;
         if(binaryMetaRequired) return false;
         return true;
+    }
+
+    public BlockBehavior getBlockBehavior(){
+        if(!block) return null;
+        return BlockBehavior.get(id);
     }
 
     public Item newItemInstance(int count ){
