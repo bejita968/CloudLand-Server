@@ -20,8 +20,25 @@ public class PlayerInventory extends BaseInventory {
     @Getter
     private final PlayerEntity player;
 
-    private InventoryElement craftingInput = new InventoryElement();
-    private InventoryElement craftingOutput = new InventoryElement();
+    private InventoryElement craftingInput = new InventoryElement(){
+        @Override
+        public boolean onChange(int slot, PlayerEntity player) {
+            detectCrafting();
+            return true;
+        }
+    };
+    private InventoryElement craftingOutput = new InventoryElement() {
+        @Override
+        public boolean onChange(int slot, PlayerEntity player) {
+            return false; // only pick up
+        }
+
+        @Override
+        public boolean onItemPickedUp(int slot, PlayerEntity player) {
+            finishCrafting();
+            return true;
+        }
+    };
 
     @Getter
     private int selectedSlot;
@@ -103,5 +120,13 @@ public class PlayerInventory extends BaseInventory {
             }
         }
         sendContents();
+    }
+
+    private void detectCrafting(){
+        // TODO: detect crafting, once we added crafting manager to the main server object
+    }
+
+    private void finishCrafting(){
+        // TODO: when player picks up the crafted item, subtract ingredients
     }
 }

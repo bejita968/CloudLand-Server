@@ -47,6 +47,7 @@ public class InventoryElement extends BaseGUIElement {
             if(param1 < items.length && items[param1] != null && items[param1].getId() != 0) {
                 ItemPrototype slotItem = ItemPrototype.get(items[param1]);
                 if(player.getCursorItem().isMergeableWith(items[param1])) {
+                    if(!onItemMerge(param1, player)) return; // call event
                     // try to merge
                     if(items[param1].getCount() + player.getCursorItem().getCount() <= slotItem.getMaxStack()) {
                         // merge all
@@ -64,6 +65,7 @@ public class InventoryElement extends BaseGUIElement {
                     }
                 } else {
                     // there is also something on that slot, so we swap them
+                    if(!onItemSwap(param1, player)) return; // call event
                     Item toSwap = items[param1];
                     items[param1] = player.getCursorItem();
                     player.setCursorItem(toSwap);
@@ -71,6 +73,7 @@ public class InventoryElement extends BaseGUIElement {
                 }
             } else {
                 // there is NOTHING on the slot, so we just place the item there
+                if(!onItemPlacedInside(param1, player)) return; // call event
                 items[param1] = player.getCursorItem();
                 player.setCursorItem(null);
                 //sendContents();
@@ -78,11 +81,38 @@ public class InventoryElement extends BaseGUIElement {
         } else {
             // there is NOTHING on his/her hand
             if(param1 < items.length && items[param1] != null && items[param1].getId() != 0) {
+                if(!onItemPickedUp(param1, player)) return; // call event
+
                 // there is something on that slot, so we just pick that slot up
                 player.setCursorItem(items[param1]);
                 items[param1] = null;
                 //sendContents();
             }
         }
+    }
+
+    public boolean onItemMerge(int slot, PlayerEntity player) {
+        // can be used for listeners, eg. crafting
+        return onChange(slot, player);
+    }
+
+    public boolean onItemPickedUp(int slot, PlayerEntity player) {
+        // can be used for listeners, eg. crafting
+        return onChange(slot, player);
+    }
+
+    public boolean onItemPlacedInside(int slot, PlayerEntity player) {
+        // can be used for listeners, eg. crafting
+        return onChange(slot, player);
+    }
+
+    public boolean onItemSwap(int slot, PlayerEntity player) {
+        // can be used for listeners, eg. crafting
+        return onChange(slot, player);
+    }
+
+    public boolean onChange(int slot, PlayerEntity player) {
+        // can be used for listeners, eg. crafting
+        return true;
     }
 }
