@@ -66,8 +66,7 @@ public abstract class CraftingHandler {
                 return false;
             }
         }
-        
-        detectCrafting(); // process left-overs
+
         return true;
     }
 

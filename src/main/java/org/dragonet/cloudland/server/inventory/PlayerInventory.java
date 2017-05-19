@@ -30,9 +30,19 @@ public class PlayerInventory extends BaseInventory {
             super.onAction(player, elementId, action, param1, param2);
 
             crafting.detectCrafting();
+            sendContents();
         }
     };
     private InventoryElement craftingOutput = new InventoryElement() {
+
+        @Override
+        public void onAction(PlayerEntity player, int elementId, GUI.ClientWindowInteractMessage.WindowAction action, int param1, int param2) {
+            super.onAction(player, elementId, action, param1, param2);
+
+            crafting.detectCrafting();
+            sendContents();
+        }
+
         @Override
         public boolean onChange(int slot, PlayerEntity player) {
             return false; // only pick up
