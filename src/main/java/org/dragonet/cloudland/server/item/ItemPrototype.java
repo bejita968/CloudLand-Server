@@ -22,6 +22,7 @@ public final class ItemPrototype {
         if(initiated) return;
 
         // Register internal definitions
+        // blocks
         register(0, "cloudland:air", createSimpleItem(0, 0));
         register(1, "cloudland:stone", createSimpleBlock(1, 16));
         register(2, "cloudland:dirt", createSimpleBlock(2, 16));
@@ -31,6 +32,10 @@ public final class ItemPrototype {
         register(6, "cloudland:log", createSimpleBlock(6, 16));
         register(7, "cloudland:leaves", createSimpleBlock(7, 16));
         register(8, "cloudland:plank", createSimpleBlock(8, 32));
+        register(9, "cloudland:torch", createSimpleBlock(9, 64));
+
+        // items
+        register(32768, "cloudland:wood_stick", createSimpleItem(32768, 64));
 
         initiated = true;
     }

@@ -45,7 +45,6 @@ public class ShapelessRecipe implements Recipe, Keyed {
      * @param count How many to add (can't be more than 9!)
      * @param ingredient The ingredient to add.
      */
-    @Deprecated
     public ShapelessRecipe addIngredient(int count, ItemPrototype ingredient) {
         Validate.isTrue(ingredients.size() + count <= 9, "Shapeless recipes cannot have more than 9 ingredients");
 

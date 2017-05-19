@@ -31,6 +31,7 @@ public abstract class BlockBehavior {
         register(ItemPrototype.toId("cloudland:log"), new LogBehavior());
         register(ItemPrototype.toId("cloudland:leaves"), new LeavesBehavior());
         register(ItemPrototype.toId("cloudland:plank"), new PlankBehavior());
+        register(ItemPrototype.toId("cloudland:torch"), new TorchBehavior());
 
         initiated = true;
     }

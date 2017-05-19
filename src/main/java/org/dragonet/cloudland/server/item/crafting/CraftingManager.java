@@ -1,6 +1,7 @@
 package org.dragonet.cloudland.server.item.crafting;
 
 import com.google.common.collect.Iterators;
+import org.dragonet.cloudland.server.gui.element.InventoryElement;
 import org.dragonet.cloudland.server.inventory.Inventory;
 import org.dragonet.cloudland.server.item.Item;
 import org.dragonet.cloudland.server.item.ItemPrototype;
@@ -58,16 +59,15 @@ public final class CraftingManager implements Iterable<Recipe> {
      * Remove a layer of items from the crafting matrix and recipe result.
      *
      * @param items The items to remove the ingredients from.
-     * @param inv   The inventory to remove the items from.
      */
-    public void removeItems(Item[] items, Inventory inv) {
+    public void removeItems(Item[] items) {
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null && items[i].getId() != 0 && items[i].getCount() > 0) {
                 int amount = items[i].getCount();
                 if (amount > 1) {
                     items[i].setCount(amount - 1);
                 } else {
-                    inv.setSlot(i + 1, null);
+                    items[i] = null;
                 }
             }
         }
@@ -291,7 +291,15 @@ public final class CraftingManager implements Iterable<Recipe> {
     public void resetRecipes() {
         clearRecipes();
 
-        addRecipe(new ShapelessRecipe(NamespacedKey.cloudland("plank"), ItemPrototype.get("cloudland:plank").newItemInstance(4))
-        .addIngredient(1, ItemPrototype.get("cloudland:log")));
+        addRecipe(
+                new ShapelessRecipe(NamespacedKey.cloudland("log_to_plank"), ItemPrototype.get("cloudland:plank").newItemInstance(4))
+                .addIngredient(1, ItemPrototype.get("cloudland:log"))
+        );
+
+        addRecipe(
+                new ShapedRecipe(NamespacedKey.cloudland("plank_to_stick"), ItemPrototype.get("cloudland:wood_stick").newItemInstance(1))
+                .shape("p ", "p ")
+                .setIngredient('p', ItemPrototype.get("cloudland:plank")).setIngredient(' ', Item.AIR)
+        );
     }
 }

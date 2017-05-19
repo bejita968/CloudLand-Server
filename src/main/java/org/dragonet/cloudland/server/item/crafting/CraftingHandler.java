@@ -39,6 +39,7 @@ public abstract class CraftingHandler {
             return false;
         }
         if(ShapedRecipe.class.isAssignableFrom(r.getClass())) {
+            /*
             ShapedRecipe shaped = (ShapedRecipe)r;
             if(shaped.getShape().length * shaped.getShape()[0].length() != input.items.length) {
                 return false; // not likely to be possible
@@ -58,7 +59,8 @@ public abstract class CraftingHandler {
                         return false;
                     }
                 }
-            }
+            }*/
+            CraftingManager.get().removeItems(input.items);
         } else if(ShapelessRecipe.class.isAssignableFrom(r.getClass())) {
             ShapelessRecipe shapeless = (ShapelessRecipe)r;
             if(!input.removeItems(shapeless.getIngredientList().toArray(new Item[0]))){

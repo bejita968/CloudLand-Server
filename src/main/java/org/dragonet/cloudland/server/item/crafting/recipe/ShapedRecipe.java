@@ -100,9 +100,7 @@ public class ShapedRecipe implements Recipe, Keyed {
      * @param key The character that represents the ingredient in the shape.
      * @param ingredient The ingredient.
      * @return The changed recipe, so you can chain calls.
-     * @deprecated Magic value
      */
-    @Deprecated
     public ShapedRecipe setIngredient(char key, ItemPrototype ingredient) {
         Validate.isTrue(ingredients.containsKey(key), "Symbol does not appear in the shape:", key);
 
