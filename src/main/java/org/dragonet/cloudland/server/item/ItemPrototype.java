@@ -30,6 +30,7 @@ public final class ItemPrototype {
         register(5, "cloudland:water", createSimpleBlock(5, 16));
         register(6, "cloudland:log", createSimpleBlock(6, 16));
         register(7, "cloudland:leaves", createSimpleBlock(7, 16));
+        register(8, "cloudland:plank", createSimpleBlock(8, 32));
 
         initiated = true;
     }

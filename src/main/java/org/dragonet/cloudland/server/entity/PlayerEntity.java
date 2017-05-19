@@ -287,7 +287,7 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
             }
         } else {
             breakTime = -1;
-            getMap().broadcastBlockUpdate(x, y, z); // function of GameMap
+            sendBlockChange(x, y, z);
         }
     }
 

@@ -3,11 +3,11 @@ package org.dragonet.cloudland.server.item.crafting;
 import com.google.common.collect.Iterators;
 import org.dragonet.cloudland.server.inventory.Inventory;
 import org.dragonet.cloudland.server.item.Item;
+import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.item.crafting.recipe.*;
+import org.dragonet.cloudland.server.util.NamespacedKey;
 
-import java.io.InputStream;
 import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * Manager for crafting and smelting recipes
@@ -16,20 +16,23 @@ import java.util.Map.Entry;
  */
 public final class CraftingManager implements Iterable<Recipe> {
 
+    private final static CraftingManager INSTANCE = new CraftingManager();
+
+    public static CraftingManager get() {
+        return INSTANCE;
+    }
+
     private final ArrayList<ShapedRecipe> shapedRecipes = new ArrayList<>();
     private final ArrayList<ShapelessRecipe> shapelessRecipes = new ArrayList<>();
     private final ArrayList<DynamicRecipe> dynamicRecipes = new ArrayList<>();
 
-    public void initialize() {
-        resetRecipes();
+    private boolean initialized = false;
 
-        // Report stats
-        /* GlowServer.logger.info("Recipes: " +
-                shapedRecipes.size() + " shaped, " +
-                shapelessRecipes.size() + " shapeless, " +
-                furnaceRecipes.size() + " furnace, " +
-                dynamicRecipes.size() + " dynamic, " +
-                furnaceFuels.size() + " fuels."); */
+    public void init() {
+        if(initialized) return;
+
+        resetRecipes();
+        initialized = true;
     }
 
     /**
@@ -288,18 +291,7 @@ public final class CraftingManager implements Iterable<Recipe> {
     public void resetRecipes() {
         clearRecipes();
 
-        // Dynamic recipes
-        /*
-        dynamicRecipes.add(new DynamicRecipe(new GlowBannerMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowBannerCopyMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowRepairMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowArmorDyeMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowChargeMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowChargeFadeMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowFireworkMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowBookCopyMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowMapCopyMatcher()));
-        dynamicRecipes.add(new DynamicRecipe(new GlowMapZoomMatcher()));
-        */
+        addRecipe(new ShapelessRecipe(NamespacedKey.cloudland("plank"), ItemPrototype.get("cloudland:plank").newItemInstance(4))
+        .addIngredient(1, ItemPrototype.get("cloudland:log")));
     }
 }

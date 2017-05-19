@@ -6,6 +6,10 @@ import org.dragonet.cloudland.server.gui.InternalGUIElement;
 import org.dragonet.cloudland.server.gui.element.InventoryElement;
 import org.dragonet.cloudland.server.item.Item;
 import lombok.Getter;
+import org.dragonet.cloudland.server.item.crafting.CraftingHandler;
+import org.dragonet.cloudland.server.item.crafting.CraftingManager;
+import org.dragonet.cloudland.server.item.crafting.recipe.Recipe;
+import org.dragonet.cloudland.server.item.crafting.recipe.ShapedRecipe;
 
 /**
  *
@@ -23,7 +27,7 @@ public class PlayerInventory extends BaseInventory {
     private InventoryElement craftingInput = new InventoryElement(){
         @Override
         public boolean onChange(int slot, PlayerEntity player) {
-            detectCrafting();
+            crafting.detectCrafting();
             return true;
         }
     };
@@ -35,10 +39,11 @@ public class PlayerInventory extends BaseInventory {
 
         @Override
         public boolean onItemPickedUp(int slot, PlayerEntity player) {
-            finishCrafting();
-            return true;
+            return crafting.finishCrafting();
         }
     };
+
+    private final CraftingHandler crafting;
 
     @Getter
     private int selectedSlot;
@@ -52,6 +57,13 @@ public class PlayerInventory extends BaseInventory {
         windowId = 0;
         craftingInput.items = new Item[4];
         craftingOutput.items = new Item[1];
+
+        crafting = new CraftingHandler(player, craftingInput, craftingOutput){
+            @Override
+            public void sendContents() {
+                PlayerInventory.this.sendContents();
+            }
+        };
     }
 
     @Override
@@ -120,13 +132,5 @@ public class PlayerInventory extends BaseInventory {
             }
         }
         sendContents();
-    }
-
-    private void detectCrafting(){
-        // TODO: detect crafting, once we added crafting manager to the main server object
-    }
-
-    private void finishCrafting(){
-        // TODO: when player picks up the crafted item, subtract ingredients
     }
 }

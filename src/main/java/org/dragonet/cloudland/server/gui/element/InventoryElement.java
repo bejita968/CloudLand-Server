@@ -8,6 +8,8 @@ import org.dragonet.cloudland.server.item.ItemPrototype;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+
 /**
  * Created on 2017/3/14.
  */
@@ -89,6 +91,48 @@ public class InventoryElement extends BaseGUIElement {
                 //sendContents();
             }
         }
+    }
+
+    /**
+     * Try to remove some items, if there aren't sufficient items it will recover
+     * @param remove what to remove?
+     * @return success or not?
+     */
+    public boolean removeItems(Item[] remove) {
+        Item[] operation = cloneItems();
+        for(int removeIndex = 0; removeIndex < remove.length; removeIndex++) {
+            Item removeItem = remove[removeIndex];
+            if(removeItem == null || removeItem.getCount() == 0) continue;
+            for(int i = 0; i < operation.length; i++) {
+                Item currentItem = operation[i];
+                if(currentItem == null || currentItem.getId() != removeItem.getId()) continue;
+                if(currentItem.getCount() > removeItem.getCount()) {
+                    currentItem.setCount(currentItem.getCount() - removeItem.getCount());
+                    remove[removeIndex] = null;
+                } else if(currentItem.getCount() == removeItem.getCount()) {
+                    operation[i] = null;
+                    remove[removeIndex] = null;
+                } else if(currentItem.getCount() < removeItem.getCount()) {
+                    removeItem.setCount(removeItem.getCount() - currentItem.getCount());
+                    operation[i] = null;
+                }
+            }
+        }
+        for(Item check : remove) {
+            if(check != null && check.getCount() > 0) {
+                return false;
+            }
+        }
+        items = operation; // finally update the items
+        return true;
+    }
+
+    public Item[] cloneItems() {
+        Item[] clone = new Item[items.length];
+        for(int i = 0; i < items.length; i ++) {
+            clone[i] = items[i].clone();
+        }
+        return clone;
     }
 
     public boolean onItemMerge(int slot, PlayerEntity player) {

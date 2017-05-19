@@ -44,8 +44,6 @@ public class ShapelessRecipe implements Recipe, Keyed {
      *
      * @param count How many to add (can't be more than 9!)
      * @param ingredient The ingredient to add.
-     * @return The changed recipe, so you can chain calls.
-     * @deprecated Magic value
      */
     @Deprecated
     public ShapelessRecipe addIngredient(int count, ItemPrototype ingredient) {
@@ -59,13 +57,11 @@ public class ShapelessRecipe implements Recipe, Keyed {
 
     /**
      * Removes multiple instances of an ingredient from the list. If there are
-     * less instances then specified, all will be removed. If the data value
-     * is -1, only ingredients with a -1 data value will be removed.
+     * less instances then specified, all will be removed.
      *
      * @param count The number of copies to remove.
      * @param ingredient The ingredient to remove.
      * @return The changed recipe.
-     * @deprecated Magic value
      */
     @Deprecated
     public ShapelessRecipe removeIngredient(int count, ItemPrototype ingredient) {

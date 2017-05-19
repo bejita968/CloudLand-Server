@@ -87,7 +87,7 @@ public class ShapedRecipe implements Recipe, Keyed {
      * Sets the material that a character in the recipe shape refers to.
      *
      * @param key The character that represents the ingredient in the shape.
-     * @param ingredient The ingredient.
+     * @param item The ingredient.
      * @return The changed recipe, so you can chain calls.
      */
     public ShapedRecipe setIngredient(char key, Item item) {

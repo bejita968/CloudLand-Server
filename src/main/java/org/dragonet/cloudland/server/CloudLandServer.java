@@ -3,6 +3,7 @@ package org.dragonet.cloudland.server;
 import org.dragonet.cloudland.server.behavior.BlockBehavior;
 import org.dragonet.cloudland.server.gui.GUIWindow;
 import org.dragonet.cloudland.server.item.ItemPrototype;
+import org.dragonet.cloudland.server.item.crafting.CraftingManager;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.generator.DefaultGenerator;
 import org.dragonet.cloudland.server.map.generator.Generator;
@@ -85,6 +86,7 @@ public class CloudLandServer {
         // Initiate stuffs
         ItemPrototype.init();
         BlockBehavior.init();
+        CraftingManager.get().init();
 
         // Register generators
         generators.put("default", DefaultGenerator.class);
