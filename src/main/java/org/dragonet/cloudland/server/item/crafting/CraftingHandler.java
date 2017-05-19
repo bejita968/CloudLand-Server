@@ -25,16 +25,17 @@ public abstract class CraftingHandler {
 
     public void detectCrafting(){
         Recipe r = CraftingManager.get().getCraftingRecipe(input.getItems());
-        if(r == null) return;
-        output.items[0] = r.getResult();
-        sendContents();
+        if(r == null) {
+            output.items[0] = null;
+        } else {
+            output.items[0] = r.getResult();
+        }
     }
 
     public boolean finishCrafting(){
         Recipe r = CraftingManager.get().getCraftingRecipe(input.getItems());
         if(r == null) {
             output.items[0] = null;
-            sendContents();
             return false;
         }
         if(ShapedRecipe.class.isAssignableFrom(r.getClass())) {
@@ -53,9 +54,7 @@ public abstract class CraftingHandler {
                     if(input.items[pos].getCount() > 0 && input.items[pos].getCount() >= ingredient.getCount()) {
                         input.items[pos].setCount(input.items[pos].getCount() - ingredient.getCount());
                     } else {
-                        // Player maybe cheated??
                         input.items[pos] = null;
-                        sendContents();
                         return false;
                     }
                 }
@@ -64,10 +63,11 @@ public abstract class CraftingHandler {
             ShapelessRecipe shapeless = (ShapelessRecipe)r;
             if(!input.removeItems(shapeless.getIngredientList().toArray(new Item[0]))){
                 output.items[0] = null;
-                sendContents();
                 return false;
             }
         }
+        
+        detectCrafting(); // process left-overs
         return true;
     }
 

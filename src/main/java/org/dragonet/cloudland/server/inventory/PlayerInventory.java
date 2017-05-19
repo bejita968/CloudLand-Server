@@ -26,9 +26,10 @@ public class PlayerInventory extends BaseInventory {
 
     private InventoryElement craftingInput = new InventoryElement(){
         @Override
-        public boolean onChange(int slot, PlayerEntity player) {
+        public void onAction(PlayerEntity player, int elementId, GUI.ClientWindowInteractMessage.WindowAction action, int param1, int param2) {
+            super.onAction(player, elementId, action, param1, param2);
+
             crafting.detectCrafting();
-            return true;
         }
     };
     private InventoryElement craftingOutput = new InventoryElement() {
@@ -125,11 +126,7 @@ public class PlayerInventory extends BaseInventory {
         } else if(elementId == 1) {
             craftingInput.onAction(player, elementId, action, param1, param2);
         } else if(elementId == 2) {
-            // crafting output, can only be fetched, not placed
-            if(player.getCursorItem() == null || player.getCursorItem().getId() == 0) {
-                player.setCursorItem(craftingOutput.items[0]);
-                craftingOutput.items[0] = null;
-            }
+            craftingOutput.onAction(player, elementId, action, param1, param2);
         }
         sendContents();
     }

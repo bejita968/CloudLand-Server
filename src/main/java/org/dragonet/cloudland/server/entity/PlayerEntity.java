@@ -292,12 +292,13 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
     }
 
     public void sendBlockChange(int x, int y, int z) {
-        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, true, true);
+        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, false, false);
+        if(c == null) return;
         getSession().sendNetworkMessage(org.dragonet.cloudland.net.protocol.Map.ServerUpdateBlockMessage.newBuilder()
                 .setX(x)
                 .setY(y)
                 .setZ(z)
-                .setId(c.getBlock(x & 0xF, y & 0xF, z & 0xF))
+                .setId(c.getBlock(x & 0xF, y, z & 0xF))
                 .build());
     }
 

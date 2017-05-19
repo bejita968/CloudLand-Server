@@ -130,7 +130,9 @@ public class InventoryElement extends BaseGUIElement {
     public Item[] cloneItems() {
         Item[] clone = new Item[items.length];
         for(int i = 0; i < items.length; i ++) {
-            clone[i] = items[i].clone();
+            if(items[i] != null) {
+                clone[i] = items[i].clone();
+            }
         }
         return clone;
     }
