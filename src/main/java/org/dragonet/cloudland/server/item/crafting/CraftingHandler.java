@@ -25,6 +25,7 @@ public abstract class CraftingHandler {
 
     public void detectCrafting(){
         Recipe r = CraftingManager.get().getCraftingRecipe(input.getItems());
+        System.out.println("MATRIX DETECTION IS [" + (r == null ? "(#) NULL" : "(X) NOT NULL") + "]");
         if(r == null) {
             output.items[0] = null;
         } else {
