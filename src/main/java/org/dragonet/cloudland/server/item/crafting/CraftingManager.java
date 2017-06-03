@@ -301,5 +301,11 @@ public final class CraftingManager implements Iterable<Recipe> {
                 .shape("p ", "p ")
                 .setIngredient('p', ItemPrototype.get("cloudland:plank"))
         );
+
+        addRecipe(new ShapedRecipe(NamespacedKey.cloudland("to_torch"), ItemPrototype.get("cloudland:torch").newItemInstance(1))
+                .shape("w ", "s ")
+                .setIngredient('w', ItemPrototype.get("cloudland:log"))
+                .setIngredient('s', ItemPrototype.get("cloudland:wood_stick"))
+        );
     }
 }
