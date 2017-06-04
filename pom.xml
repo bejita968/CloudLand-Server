@@ -4,7 +4,7 @@
 
     <name>CloudLandServer</name>
     <groupId>org.dragonet.cloudland.server</groupId>
-    <artifactId>clserver</artifactId>
+    <artifactId>cloudland-server</artifactId>
     <version>0.0.1-rc1</version>
 
     <properties>
