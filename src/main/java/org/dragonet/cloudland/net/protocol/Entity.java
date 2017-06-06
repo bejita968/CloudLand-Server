@@ -167,6 +167,39 @@ public final class Entity {
      * <code>optional .org.dragonet.cloudland.net.protocol.SerializedMetadata meta = 8;</code>
      */
     org.dragonet.cloudland.net.protocol.Metadata.SerializedMetadataOrBuilder getMetaOrBuilder();
+
+    /**
+     * <pre>
+     * entity slots, for sitting as a example
+     * </pre>
+     *
+     * <code>optional bool entitySlotsEnabled = 50;</code>
+     */
+    boolean getEntitySlotsEnabled();
+
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    java.util.List<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F> 
+        getEntitySlotsList();
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    org.dragonet.cloudland.net.protocol.DataTypes.Vector3F getEntitySlots(int index);
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    int getEntitySlotsCount();
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    java.util.List<? extends org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder> 
+        getEntitySlotsOrBuilderList();
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder getEntitySlotsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code org.dragonet.cloudland.net.protocol.ServerAddEntityMessage}
@@ -187,6 +220,8 @@ public final class Entity {
       z_ = 0D;
       yaw_ = 0F;
       pitch_ = 0F;
+      entitySlotsEnabled_ = false;
+      entitySlots_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -263,6 +298,20 @@ public final class Entity {
 
               break;
             }
+            case 400: {
+
+              entitySlotsEnabled_ = input.readBool();
+              break;
+            }
+            case 410: {
+              if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+                entitySlots_ = new java.util.ArrayList<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F>();
+                mutable_bitField0_ |= 0x00000200;
+              }
+              entitySlots_.add(
+                  input.readMessage(org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.parser(), extensionRegistry));
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -271,6 +320,9 @@ public final class Entity {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+          entitySlots_ = java.util.Collections.unmodifiableList(entitySlots_);
+        }
         makeExtensionsImmutable();
       }
     }
@@ -286,6 +338,7 @@ public final class Entity {
               org.dragonet.cloudland.net.protocol.Entity.ServerAddEntityMessage.class, org.dragonet.cloudland.net.protocol.Entity.ServerAddEntityMessage.Builder.class);
     }
 
+    private int bitField0_;
     public static final int ENTITYID_FIELD_NUMBER = 1;
     private long entityId_;
     /**
@@ -377,6 +430,54 @@ public final class Entity {
       return getMeta();
     }
 
+    public static final int ENTITYSLOTSENABLED_FIELD_NUMBER = 50;
+    private boolean entitySlotsEnabled_;
+    /**
+     * <pre>
+     * entity slots, for sitting as a example
+     * </pre>
+     *
+     * <code>optional bool entitySlotsEnabled = 50;</code>
+     */
+    public boolean getEntitySlotsEnabled() {
+      return entitySlotsEnabled_;
+    }
+
+    public static final int ENTITYSLOTS_FIELD_NUMBER = 51;
+    private java.util.List<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F> entitySlots_;
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    public java.util.List<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F> getEntitySlotsList() {
+      return entitySlots_;
+    }
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    public java.util.List<? extends org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder> 
+        getEntitySlotsOrBuilderList() {
+      return entitySlots_;
+    }
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    public int getEntitySlotsCount() {
+      return entitySlots_.size();
+    }
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F getEntitySlots(int index) {
+      return entitySlots_.get(index);
+    }
+    /**
+     * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+     */
+    public org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder getEntitySlotsOrBuilder(
+        int index) {
+      return entitySlots_.get(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -412,6 +513,12 @@ public final class Entity {
       }
       if (meta_ != null) {
         output.writeMessage(8, getMeta());
+      }
+      if (entitySlotsEnabled_ != false) {
+        output.writeBool(50, entitySlotsEnabled_);
+      }
+      for (int i = 0; i < entitySlots_.size(); i++) {
+        output.writeMessage(51, entitySlots_.get(i));
       }
     }
 
@@ -451,6 +558,14 @@ public final class Entity {
       if (meta_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(8, getMeta());
+      }
+      if (entitySlotsEnabled_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(50, entitySlotsEnabled_);
+      }
+      for (int i = 0; i < entitySlots_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(51, entitySlots_.get(i));
       }
       memoizedSize = size;
       return size;
@@ -496,6 +611,10 @@ public final class Entity {
         result = result && getMeta()
             .equals(other.getMeta());
       }
+      result = result && (getEntitySlotsEnabled()
+          == other.getEntitySlotsEnabled());
+      result = result && getEntitySlotsList()
+          .equals(other.getEntitySlotsList());
       return result;
     }
 
@@ -529,6 +648,13 @@ public final class Entity {
       if (hasMeta()) {
         hash = (37 * hash) + META_FIELD_NUMBER;
         hash = (53 * hash) + getMeta().hashCode();
+      }
+      hash = (37 * hash) + ENTITYSLOTSENABLED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getEntitySlotsEnabled());
+      if (getEntitySlotsCount() > 0) {
+        hash = (37 * hash) + ENTITYSLOTS_FIELD_NUMBER;
+        hash = (53 * hash) + getEntitySlotsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -644,6 +770,7 @@ public final class Entity {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getEntitySlotsFieldBuilder();
         }
       }
       public Builder clear() {
@@ -668,6 +795,14 @@ public final class Entity {
           meta_ = null;
           metaBuilder_ = null;
         }
+        entitySlotsEnabled_ = false;
+
+        if (entitySlotsBuilder_ == null) {
+          entitySlots_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000200);
+        } else {
+          entitySlotsBuilder_.clear();
+        }
         return this;
       }
 
@@ -690,6 +825,8 @@ public final class Entity {
 
       public org.dragonet.cloudland.net.protocol.Entity.ServerAddEntityMessage buildPartial() {
         org.dragonet.cloudland.net.protocol.Entity.ServerAddEntityMessage result = new org.dragonet.cloudland.net.protocol.Entity.ServerAddEntityMessage(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.entityId_ = entityId_;
         result.entityType_ = entityType_;
         result.x_ = x_;
@@ -702,6 +839,17 @@ public final class Entity {
         } else {
           result.meta_ = metaBuilder_.build();
         }
+        result.entitySlotsEnabled_ = entitySlotsEnabled_;
+        if (entitySlotsBuilder_ == null) {
+          if (((bitField0_ & 0x00000200) == 0x00000200)) {
+            entitySlots_ = java.util.Collections.unmodifiableList(entitySlots_);
+            bitField0_ = (bitField0_ & ~0x00000200);
+          }
+          result.entitySlots_ = entitySlots_;
+        } else {
+          result.entitySlots_ = entitySlotsBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -767,6 +915,35 @@ public final class Entity {
         if (other.hasMeta()) {
           mergeMeta(other.getMeta());
         }
+        if (other.getEntitySlotsEnabled() != false) {
+          setEntitySlotsEnabled(other.getEntitySlotsEnabled());
+        }
+        if (entitySlotsBuilder_ == null) {
+          if (!other.entitySlots_.isEmpty()) {
+            if (entitySlots_.isEmpty()) {
+              entitySlots_ = other.entitySlots_;
+              bitField0_ = (bitField0_ & ~0x00000200);
+            } else {
+              ensureEntitySlotsIsMutable();
+              entitySlots_.addAll(other.entitySlots_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.entitySlots_.isEmpty()) {
+            if (entitySlotsBuilder_.isEmpty()) {
+              entitySlotsBuilder_.dispose();
+              entitySlotsBuilder_ = null;
+              entitySlots_ = other.entitySlots_;
+              bitField0_ = (bitField0_ & ~0x00000200);
+              entitySlotsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getEntitySlotsFieldBuilder() : null;
+            } else {
+              entitySlotsBuilder_.addAllMessages(other.entitySlots_);
+            }
+          }
+        }
         onChanged();
         return this;
       }
@@ -792,6 +969,7 @@ public final class Entity {
         }
         return this;
       }
+      private int bitField0_;
 
       private long entityId_ ;
       /**
@@ -1108,6 +1286,284 @@ public final class Entity {
           meta_ = null;
         }
         return metaBuilder_;
+      }
+
+      private boolean entitySlotsEnabled_ ;
+      /**
+       * <pre>
+       * entity slots, for sitting as a example
+       * </pre>
+       *
+       * <code>optional bool entitySlotsEnabled = 50;</code>
+       */
+      public boolean getEntitySlotsEnabled() {
+        return entitySlotsEnabled_;
+      }
+      /**
+       * <pre>
+       * entity slots, for sitting as a example
+       * </pre>
+       *
+       * <code>optional bool entitySlotsEnabled = 50;</code>
+       */
+      public Builder setEntitySlotsEnabled(boolean value) {
+        
+        entitySlotsEnabled_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * entity slots, for sitting as a example
+       * </pre>
+       *
+       * <code>optional bool entitySlotsEnabled = 50;</code>
+       */
+      public Builder clearEntitySlotsEnabled() {
+        
+        entitySlotsEnabled_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F> entitySlots_ =
+        java.util.Collections.emptyList();
+      private void ensureEntitySlotsIsMutable() {
+        if (!((bitField0_ & 0x00000200) == 0x00000200)) {
+          entitySlots_ = new java.util.ArrayList<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F>(entitySlots_);
+          bitField0_ |= 0x00000200;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          org.dragonet.cloudland.net.protocol.DataTypes.Vector3F, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder, org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder> entitySlotsBuilder_;
+
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public java.util.List<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F> getEntitySlotsList() {
+        if (entitySlotsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(entitySlots_);
+        } else {
+          return entitySlotsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public int getEntitySlotsCount() {
+        if (entitySlotsBuilder_ == null) {
+          return entitySlots_.size();
+        } else {
+          return entitySlotsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F getEntitySlots(int index) {
+        if (entitySlotsBuilder_ == null) {
+          return entitySlots_.get(index);
+        } else {
+          return entitySlotsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder setEntitySlots(
+          int index, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F value) {
+        if (entitySlotsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntitySlotsIsMutable();
+          entitySlots_.set(index, value);
+          onChanged();
+        } else {
+          entitySlotsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder setEntitySlots(
+          int index, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder builderForValue) {
+        if (entitySlotsBuilder_ == null) {
+          ensureEntitySlotsIsMutable();
+          entitySlots_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          entitySlotsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder addEntitySlots(org.dragonet.cloudland.net.protocol.DataTypes.Vector3F value) {
+        if (entitySlotsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntitySlotsIsMutable();
+          entitySlots_.add(value);
+          onChanged();
+        } else {
+          entitySlotsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder addEntitySlots(
+          int index, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F value) {
+        if (entitySlotsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntitySlotsIsMutable();
+          entitySlots_.add(index, value);
+          onChanged();
+        } else {
+          entitySlotsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder addEntitySlots(
+          org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder builderForValue) {
+        if (entitySlotsBuilder_ == null) {
+          ensureEntitySlotsIsMutable();
+          entitySlots_.add(builderForValue.build());
+          onChanged();
+        } else {
+          entitySlotsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder addEntitySlots(
+          int index, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder builderForValue) {
+        if (entitySlotsBuilder_ == null) {
+          ensureEntitySlotsIsMutable();
+          entitySlots_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          entitySlotsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder addAllEntitySlots(
+          java.lang.Iterable<? extends org.dragonet.cloudland.net.protocol.DataTypes.Vector3F> values) {
+        if (entitySlotsBuilder_ == null) {
+          ensureEntitySlotsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, entitySlots_);
+          onChanged();
+        } else {
+          entitySlotsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder clearEntitySlots() {
+        if (entitySlotsBuilder_ == null) {
+          entitySlots_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000200);
+          onChanged();
+        } else {
+          entitySlotsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public Builder removeEntitySlots(int index) {
+        if (entitySlotsBuilder_ == null) {
+          ensureEntitySlotsIsMutable();
+          entitySlots_.remove(index);
+          onChanged();
+        } else {
+          entitySlotsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder getEntitySlotsBuilder(
+          int index) {
+        return getEntitySlotsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder getEntitySlotsOrBuilder(
+          int index) {
+        if (entitySlotsBuilder_ == null) {
+          return entitySlots_.get(index);  } else {
+          return entitySlotsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public java.util.List<? extends org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder> 
+           getEntitySlotsOrBuilderList() {
+        if (entitySlotsBuilder_ != null) {
+          return entitySlotsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(entitySlots_);
+        }
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder addEntitySlotsBuilder() {
+        return getEntitySlotsFieldBuilder().addBuilder(
+            org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder addEntitySlotsBuilder(
+          int index) {
+        return getEntitySlotsFieldBuilder().addBuilder(
+            index, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.dragonet.cloudland.net.protocol.Vector3F entitySlots = 51;</code>
+       */
+      public java.util.List<org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder> 
+           getEntitySlotsBuilderList() {
+        return getEntitySlotsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          org.dragonet.cloudland.net.protocol.DataTypes.Vector3F, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder, org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder> 
+          getEntitySlotsFieldBuilder() {
+        if (entitySlotsBuilder_ == null) {
+          entitySlotsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              org.dragonet.cloudland.net.protocol.DataTypes.Vector3F, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder, org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder>(
+                  entitySlots_,
+                  ((bitField0_ & 0x00000200) == 0x00000200),
+                  getParentForChildren(),
+                  isClean());
+          entitySlots_ = null;
+        }
+        return entitySlotsBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3099,6 +3555,2053 @@ public final class Entity {
 
   }
 
+  public interface ServerEntityHierarchicalControlMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 entityId = 1;</code>
+     */
+    long getEntityId();
+
+    /**
+     * <code>optional uint64 targetEntityId = 2;</code>
+     */
+    long getTargetEntityId();
+
+    /**
+     * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+     */
+    int getActionValue();
+    /**
+     * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+     */
+    org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction getAction();
+
+    /**
+     * <pre>
+     * local position for entering or leaving to passenger, world position for leaving outside. 
+     * </pre>
+     *
+     * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+     */
+    boolean hasPosition();
+    /**
+     * <pre>
+     * local position for entering or leaving to passenger, world position for leaving outside. 
+     * </pre>
+     *
+     * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+     */
+    org.dragonet.cloudland.net.protocol.DataTypes.Vector3F getPosition();
+    /**
+     * <pre>
+     * local position for entering or leaving to passenger, world position for leaving outside. 
+     * </pre>
+     *
+     * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+     */
+    org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder getPositionOrBuilder();
+  }
+  /**
+   * <pre>
+   * Establish a parent-child relationship between two entities. 
+   * Once it's done, we will only use RELATIVE position do describe the
+   * child entity. For example, when someone enters a spaceship. 
+   * </pre>
+   *
+   * Protobuf type {@code org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage}
+   */
+  public  static final class ServerEntityHierarchicalControlMessage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage)
+      ServerEntityHierarchicalControlMessageOrBuilder {
+    // Use ServerEntityHierarchicalControlMessage.newBuilder() to construct.
+    private ServerEntityHierarchicalControlMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ServerEntityHierarchicalControlMessage() {
+      entityId_ = 0L;
+      targetEntityId_ = 0L;
+      action_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private ServerEntityHierarchicalControlMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              entityId_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+
+              targetEntityId_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+
+              action_ = rawValue;
+              break;
+            }
+            case 82: {
+              org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder subBuilder = null;
+              if (position_ != null) {
+                subBuilder = position_.toBuilder();
+              }
+              position_ = input.readMessage(org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(position_);
+                position_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.class, org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction}
+     */
+    public enum HierarchicalAction
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>ENTER = 0;</code>
+       */
+      ENTER(0),
+      /**
+       * <code>LEAVING_TO_PASSENGER = 1;</code>
+       */
+      LEAVING_TO_PASSENGER(1),
+      /**
+       * <code>LEAVING_TO_OUTSIDE = 2;</code>
+       */
+      LEAVING_TO_OUTSIDE(2),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>ENTER = 0;</code>
+       */
+      public static final int ENTER_VALUE = 0;
+      /**
+       * <code>LEAVING_TO_PASSENGER = 1;</code>
+       */
+      public static final int LEAVING_TO_PASSENGER_VALUE = 1;
+      /**
+       * <code>LEAVING_TO_OUTSIDE = 2;</code>
+       */
+      public static final int LEAVING_TO_OUTSIDE_VALUE = 2;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static HierarchicalAction valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static HierarchicalAction forNumber(int value) {
+        switch (value) {
+          case 0: return ENTER;
+          case 1: return LEAVING_TO_PASSENGER;
+          case 2: return LEAVING_TO_OUTSIDE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<HierarchicalAction>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          HierarchicalAction> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<HierarchicalAction>() {
+              public HierarchicalAction findValueByNumber(int number) {
+                return HierarchicalAction.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final HierarchicalAction[] VALUES = values();
+
+      public static HierarchicalAction valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private HierarchicalAction(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction)
+    }
+
+    public static final int ENTITYID_FIELD_NUMBER = 1;
+    private long entityId_;
+    /**
+     * <code>optional uint64 entityId = 1;</code>
+     */
+    public long getEntityId() {
+      return entityId_;
+    }
+
+    public static final int TARGETENTITYID_FIELD_NUMBER = 2;
+    private long targetEntityId_;
+    /**
+     * <code>optional uint64 targetEntityId = 2;</code>
+     */
+    public long getTargetEntityId() {
+      return targetEntityId_;
+    }
+
+    public static final int ACTION_FIELD_NUMBER = 3;
+    private int action_;
+    /**
+     * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+     */
+    public int getActionValue() {
+      return action_;
+    }
+    /**
+     * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+     */
+    public org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction getAction() {
+      org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction result = org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction.valueOf(action_);
+      return result == null ? org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction.UNRECOGNIZED : result;
+    }
+
+    public static final int POSITION_FIELD_NUMBER = 10;
+    private org.dragonet.cloudland.net.protocol.DataTypes.Vector3F position_;
+    /**
+     * <pre>
+     * local position for entering or leaving to passenger, world position for leaving outside. 
+     * </pre>
+     *
+     * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+     */
+    public boolean hasPosition() {
+      return position_ != null;
+    }
+    /**
+     * <pre>
+     * local position for entering or leaving to passenger, world position for leaving outside. 
+     * </pre>
+     *
+     * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+     */
+    public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F getPosition() {
+      return position_ == null ? org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.getDefaultInstance() : position_;
+    }
+    /**
+     * <pre>
+     * local position for entering or leaving to passenger, world position for leaving outside. 
+     * </pre>
+     *
+     * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+     */
+    public org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder getPositionOrBuilder() {
+      return getPosition();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (entityId_ != 0L) {
+        output.writeUInt64(1, entityId_);
+      }
+      if (targetEntityId_ != 0L) {
+        output.writeUInt64(2, targetEntityId_);
+      }
+      if (action_ != org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction.ENTER.getNumber()) {
+        output.writeEnum(3, action_);
+      }
+      if (position_ != null) {
+        output.writeMessage(10, getPosition());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (entityId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, entityId_);
+      }
+      if (targetEntityId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, targetEntityId_);
+      }
+      if (action_ != org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction.ENTER.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, action_);
+      }
+      if (position_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, getPosition());
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage)) {
+        return super.equals(obj);
+      }
+      org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage other = (org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage) obj;
+
+      boolean result = true;
+      result = result && (getEntityId()
+          == other.getEntityId());
+      result = result && (getTargetEntityId()
+          == other.getTargetEntityId());
+      result = result && action_ == other.action_;
+      result = result && (hasPosition() == other.hasPosition());
+      if (hasPosition()) {
+        result = result && getPosition()
+            .equals(other.getPosition());
+      }
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + ENTITYID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getEntityId());
+      hash = (37 * hash) + TARGETENTITYID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTargetEntityId());
+      hash = (37 * hash) + ACTION_FIELD_NUMBER;
+      hash = (53 * hash) + action_;
+      if (hasPosition()) {
+        hash = (37 * hash) + POSITION_FIELD_NUMBER;
+        hash = (53 * hash) + getPosition().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Establish a parent-child relationship between two entities. 
+     * Once it's done, we will only use RELATIVE position do describe the
+     * child entity. For example, when someone enters a spaceship. 
+     * </pre>
+     *
+     * Protobuf type {@code org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage)
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.class, org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.Builder.class);
+      }
+
+      // Construct using org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        entityId_ = 0L;
+
+        targetEntityId_ = 0L;
+
+        action_ = 0;
+
+        if (positionBuilder_ == null) {
+          position_ = null;
+        } else {
+          position_ = null;
+          positionBuilder_ = null;
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_descriptor;
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage getDefaultInstanceForType() {
+        return org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.getDefaultInstance();
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage build() {
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage buildPartial() {
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage result = new org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage(this);
+        result.entityId_ = entityId_;
+        result.targetEntityId_ = targetEntityId_;
+        result.action_ = action_;
+        if (positionBuilder_ == null) {
+          result.position_ = position_;
+        } else {
+          result.position_ = positionBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage) {
+          return mergeFrom((org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage other) {
+        if (other == org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.getDefaultInstance()) return this;
+        if (other.getEntityId() != 0L) {
+          setEntityId(other.getEntityId());
+        }
+        if (other.getTargetEntityId() != 0L) {
+          setTargetEntityId(other.getTargetEntityId());
+        }
+        if (other.action_ != 0) {
+          setActionValue(other.getActionValue());
+        }
+        if (other.hasPosition()) {
+          mergePosition(other.getPosition());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long entityId_ ;
+      /**
+       * <code>optional uint64 entityId = 1;</code>
+       */
+      public long getEntityId() {
+        return entityId_;
+      }
+      /**
+       * <code>optional uint64 entityId = 1;</code>
+       */
+      public Builder setEntityId(long value) {
+        
+        entityId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 entityId = 1;</code>
+       */
+      public Builder clearEntityId() {
+        
+        entityId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long targetEntityId_ ;
+      /**
+       * <code>optional uint64 targetEntityId = 2;</code>
+       */
+      public long getTargetEntityId() {
+        return targetEntityId_;
+      }
+      /**
+       * <code>optional uint64 targetEntityId = 2;</code>
+       */
+      public Builder setTargetEntityId(long value) {
+        
+        targetEntityId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 targetEntityId = 2;</code>
+       */
+      public Builder clearTargetEntityId() {
+        
+        targetEntityId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int action_ = 0;
+      /**
+       * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+       */
+      public int getActionValue() {
+        return action_;
+      }
+      /**
+       * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+       */
+      public Builder setActionValue(int value) {
+        action_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction getAction() {
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction result = org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction.valueOf(action_);
+        return result == null ? org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+       */
+      public Builder setAction(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        action_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage.HierarchicalAction action = 3;</code>
+       */
+      public Builder clearAction() {
+        
+        action_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private org.dragonet.cloudland.net.protocol.DataTypes.Vector3F position_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.dragonet.cloudland.net.protocol.DataTypes.Vector3F, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder, org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder> positionBuilder_;
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public boolean hasPosition() {
+        return positionBuilder_ != null || position_ != null;
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F getPosition() {
+        if (positionBuilder_ == null) {
+          return position_ == null ? org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.getDefaultInstance() : position_;
+        } else {
+          return positionBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public Builder setPosition(org.dragonet.cloudland.net.protocol.DataTypes.Vector3F value) {
+        if (positionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          position_ = value;
+          onChanged();
+        } else {
+          positionBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public Builder setPosition(
+          org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder builderForValue) {
+        if (positionBuilder_ == null) {
+          position_ = builderForValue.build();
+          onChanged();
+        } else {
+          positionBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public Builder mergePosition(org.dragonet.cloudland.net.protocol.DataTypes.Vector3F value) {
+        if (positionBuilder_ == null) {
+          if (position_ != null) {
+            position_ =
+              org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.newBuilder(position_).mergeFrom(value).buildPartial();
+          } else {
+            position_ = value;
+          }
+          onChanged();
+        } else {
+          positionBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public Builder clearPosition() {
+        if (positionBuilder_ == null) {
+          position_ = null;
+          onChanged();
+        } else {
+          position_ = null;
+          positionBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder getPositionBuilder() {
+        
+        onChanged();
+        return getPositionFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      public org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder getPositionOrBuilder() {
+        if (positionBuilder_ != null) {
+          return positionBuilder_.getMessageOrBuilder();
+        } else {
+          return position_ == null ?
+              org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.getDefaultInstance() : position_;
+        }
+      }
+      /**
+       * <pre>
+       * local position for entering or leaving to passenger, world position for leaving outside. 
+       * </pre>
+       *
+       * <code>optional .org.dragonet.cloudland.net.protocol.Vector3F position = 10;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          org.dragonet.cloudland.net.protocol.DataTypes.Vector3F, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder, org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder> 
+          getPositionFieldBuilder() {
+        if (positionBuilder_ == null) {
+          positionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              org.dragonet.cloudland.net.protocol.DataTypes.Vector3F, org.dragonet.cloudland.net.protocol.DataTypes.Vector3F.Builder, org.dragonet.cloudland.net.protocol.DataTypes.Vector3FOrBuilder>(
+                  getPosition(),
+                  getParentForChildren(),
+                  isClean());
+          position_ = null;
+        }
+        return positionBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage)
+    }
+
+    // @@protoc_insertion_point(class_scope:org.dragonet.cloudland.net.protocol.ServerEntityHierarchicalControlMessage)
+    private static final org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage();
+    }
+
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ServerEntityHierarchicalControlMessage>
+        PARSER = new com.google.protobuf.AbstractParser<ServerEntityHierarchicalControlMessage>() {
+      public ServerEntityHierarchicalControlMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ServerEntityHierarchicalControlMessage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ServerEntityHierarchicalControlMessage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerEntityHierarchicalControlMessage> getParserForType() {
+      return PARSER;
+    }
+
+    public org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ServerEntityBindingControlMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:org.dragonet.cloudland.net.protocol.ServerEntityBindingControlMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 entityId = 1;</code>
+     */
+    long getEntityId();
+
+    /**
+     * <code>optional uint64 targetEntityId = 2;</code>
+     */
+    long getTargetEntityId();
+
+    /**
+     * <code>optional int32 slotId = 3;</code>
+     */
+    int getSlotId();
+  }
+  /**
+   * <pre>
+   * Used to control the binding between two entities. 
+   * It uses slots, if a player is alredy in another entity,
+   * i will firstly break the relationship and then transform
+   * the state from being a passenger to a slot user. 
+   * For example, you can enter a spaceship(entering) and then
+   * sit on the chair(taking a slot). 
+   * </pre>
+   *
+   * Protobuf type {@code org.dragonet.cloudland.net.protocol.ServerEntityBindingControlMessage}
+   */
+  public  static final class ServerEntityBindingControlMessage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:org.dragonet.cloudland.net.protocol.ServerEntityBindingControlMessage)
+      ServerEntityBindingControlMessageOrBuilder {
+    // Use ServerEntityBindingControlMessage.newBuilder() to construct.
+    private ServerEntityBindingControlMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ServerEntityBindingControlMessage() {
+      entityId_ = 0L;
+      targetEntityId_ = 0L;
+      slotId_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private ServerEntityBindingControlMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              entityId_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+
+              targetEntityId_ = input.readUInt64();
+              break;
+            }
+            case 24: {
+
+              slotId_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.class, org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.Builder.class);
+    }
+
+    public static final int ENTITYID_FIELD_NUMBER = 1;
+    private long entityId_;
+    /**
+     * <code>optional uint64 entityId = 1;</code>
+     */
+    public long getEntityId() {
+      return entityId_;
+    }
+
+    public static final int TARGETENTITYID_FIELD_NUMBER = 2;
+    private long targetEntityId_;
+    /**
+     * <code>optional uint64 targetEntityId = 2;</code>
+     */
+    public long getTargetEntityId() {
+      return targetEntityId_;
+    }
+
+    public static final int SLOTID_FIELD_NUMBER = 3;
+    private int slotId_;
+    /**
+     * <code>optional int32 slotId = 3;</code>
+     */
+    public int getSlotId() {
+      return slotId_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (entityId_ != 0L) {
+        output.writeUInt64(1, entityId_);
+      }
+      if (targetEntityId_ != 0L) {
+        output.writeUInt64(2, targetEntityId_);
+      }
+      if (slotId_ != 0) {
+        output.writeInt32(3, slotId_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (entityId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, entityId_);
+      }
+      if (targetEntityId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, targetEntityId_);
+      }
+      if (slotId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, slotId_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage)) {
+        return super.equals(obj);
+      }
+      org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage other = (org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage) obj;
+
+      boolean result = true;
+      result = result && (getEntityId()
+          == other.getEntityId());
+      result = result && (getTargetEntityId()
+          == other.getTargetEntityId());
+      result = result && (getSlotId()
+          == other.getSlotId());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + ENTITYID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getEntityId());
+      hash = (37 * hash) + TARGETENTITYID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTargetEntityId());
+      hash = (37 * hash) + SLOTID_FIELD_NUMBER;
+      hash = (53 * hash) + getSlotId();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Used to control the binding between two entities. 
+     * It uses slots, if a player is alredy in another entity,
+     * i will firstly break the relationship and then transform
+     * the state from being a passenger to a slot user. 
+     * For example, you can enter a spaceship(entering) and then
+     * sit on the chair(taking a slot). 
+     * </pre>
+     *
+     * Protobuf type {@code org.dragonet.cloudland.net.protocol.ServerEntityBindingControlMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:org.dragonet.cloudland.net.protocol.ServerEntityBindingControlMessage)
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.class, org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.Builder.class);
+      }
+
+      // Construct using org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        entityId_ = 0L;
+
+        targetEntityId_ = 0L;
+
+        slotId_ = 0;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_descriptor;
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage getDefaultInstanceForType() {
+        return org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.getDefaultInstance();
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage build() {
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage buildPartial() {
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage result = new org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage(this);
+        result.entityId_ = entityId_;
+        result.targetEntityId_ = targetEntityId_;
+        result.slotId_ = slotId_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage) {
+          return mergeFrom((org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage other) {
+        if (other == org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.getDefaultInstance()) return this;
+        if (other.getEntityId() != 0L) {
+          setEntityId(other.getEntityId());
+        }
+        if (other.getTargetEntityId() != 0L) {
+          setTargetEntityId(other.getTargetEntityId());
+        }
+        if (other.getSlotId() != 0) {
+          setSlotId(other.getSlotId());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long entityId_ ;
+      /**
+       * <code>optional uint64 entityId = 1;</code>
+       */
+      public long getEntityId() {
+        return entityId_;
+      }
+      /**
+       * <code>optional uint64 entityId = 1;</code>
+       */
+      public Builder setEntityId(long value) {
+        
+        entityId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 entityId = 1;</code>
+       */
+      public Builder clearEntityId() {
+        
+        entityId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long targetEntityId_ ;
+      /**
+       * <code>optional uint64 targetEntityId = 2;</code>
+       */
+      public long getTargetEntityId() {
+        return targetEntityId_;
+      }
+      /**
+       * <code>optional uint64 targetEntityId = 2;</code>
+       */
+      public Builder setTargetEntityId(long value) {
+        
+        targetEntityId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 targetEntityId = 2;</code>
+       */
+      public Builder clearTargetEntityId() {
+        
+        targetEntityId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int slotId_ ;
+      /**
+       * <code>optional int32 slotId = 3;</code>
+       */
+      public int getSlotId() {
+        return slotId_;
+      }
+      /**
+       * <code>optional int32 slotId = 3;</code>
+       */
+      public Builder setSlotId(int value) {
+        
+        slotId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 slotId = 3;</code>
+       */
+      public Builder clearSlotId() {
+        
+        slotId_ = 0;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:org.dragonet.cloudland.net.protocol.ServerEntityBindingControlMessage)
+    }
+
+    // @@protoc_insertion_point(class_scope:org.dragonet.cloudland.net.protocol.ServerEntityBindingControlMessage)
+    private static final org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage();
+    }
+
+    public static org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ServerEntityBindingControlMessage>
+        PARSER = new com.google.protobuf.AbstractParser<ServerEntityBindingControlMessage>() {
+      public ServerEntityBindingControlMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ServerEntityBindingControlMessage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ServerEntityBindingControlMessage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerEntityBindingControlMessage> getParserForType() {
+      return PARSER;
+    }
+
+    public org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ClientEntityInteractMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:org.dragonet.cloudland.net.protocol.ClientEntityInteractMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 targetEntityId = 1;</code>
+     */
+    long getTargetEntityId();
+
+    /**
+     * <pre>
+     * one of three: 0/1/2=left/right/middle
+     * </pre>
+     *
+     * <code>optional fixed32 mouseButton = 2;</code>
+     */
+    int getMouseButton();
+  }
+  /**
+   * Protobuf type {@code org.dragonet.cloudland.net.protocol.ClientEntityInteractMessage}
+   */
+  public  static final class ClientEntityInteractMessage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:org.dragonet.cloudland.net.protocol.ClientEntityInteractMessage)
+      ClientEntityInteractMessageOrBuilder {
+    // Use ClientEntityInteractMessage.newBuilder() to construct.
+    private ClientEntityInteractMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ClientEntityInteractMessage() {
+      targetEntityId_ = 0L;
+      mouseButton_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
+    private ClientEntityInteractMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!input.skipField(tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              targetEntityId_ = input.readUInt64();
+              break;
+            }
+            case 21: {
+
+              mouseButton_ = input.readFixed32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage.class, org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage.Builder.class);
+    }
+
+    public static final int TARGETENTITYID_FIELD_NUMBER = 1;
+    private long targetEntityId_;
+    /**
+     * <code>optional uint64 targetEntityId = 1;</code>
+     */
+    public long getTargetEntityId() {
+      return targetEntityId_;
+    }
+
+    public static final int MOUSEBUTTON_FIELD_NUMBER = 2;
+    private int mouseButton_;
+    /**
+     * <pre>
+     * one of three: 0/1/2=left/right/middle
+     * </pre>
+     *
+     * <code>optional fixed32 mouseButton = 2;</code>
+     */
+    public int getMouseButton() {
+      return mouseButton_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (targetEntityId_ != 0L) {
+        output.writeUInt64(1, targetEntityId_);
+      }
+      if (mouseButton_ != 0) {
+        output.writeFixed32(2, mouseButton_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (targetEntityId_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, targetEntityId_);
+      }
+      if (mouseButton_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(2, mouseButton_);
+      }
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage)) {
+        return super.equals(obj);
+      }
+      org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage other = (org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage) obj;
+
+      boolean result = true;
+      result = result && (getTargetEntityId()
+          == other.getTargetEntityId());
+      result = result && (getMouseButton()
+          == other.getMouseButton());
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      hash = (37 * hash) + TARGETENTITYID_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTargetEntityId());
+      hash = (37 * hash) + MOUSEBUTTON_FIELD_NUMBER;
+      hash = (53 * hash) + getMouseButton();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code org.dragonet.cloudland.net.protocol.ClientEntityInteractMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:org.dragonet.cloudland.net.protocol.ClientEntityInteractMessage)
+        org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage.class, org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage.Builder.class);
+      }
+
+      // Construct using org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        targetEntityId_ = 0L;
+
+        mouseButton_ = 0;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.dragonet.cloudland.net.protocol.Entity.internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_descriptor;
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage getDefaultInstanceForType() {
+        return org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage.getDefaultInstance();
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage build() {
+        org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage buildPartial() {
+        org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage result = new org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage(this);
+        result.targetEntityId_ = targetEntityId_;
+        result.mouseButton_ = mouseButton_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage) {
+          return mergeFrom((org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage other) {
+        if (other == org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage.getDefaultInstance()) return this;
+        if (other.getTargetEntityId() != 0L) {
+          setTargetEntityId(other.getTargetEntityId());
+        }
+        if (other.getMouseButton() != 0) {
+          setMouseButton(other.getMouseButton());
+        }
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long targetEntityId_ ;
+      /**
+       * <code>optional uint64 targetEntityId = 1;</code>
+       */
+      public long getTargetEntityId() {
+        return targetEntityId_;
+      }
+      /**
+       * <code>optional uint64 targetEntityId = 1;</code>
+       */
+      public Builder setTargetEntityId(long value) {
+        
+        targetEntityId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 targetEntityId = 1;</code>
+       */
+      public Builder clearTargetEntityId() {
+        
+        targetEntityId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int mouseButton_ ;
+      /**
+       * <pre>
+       * one of three: 0/1/2=left/right/middle
+       * </pre>
+       *
+       * <code>optional fixed32 mouseButton = 2;</code>
+       */
+      public int getMouseButton() {
+        return mouseButton_;
+      }
+      /**
+       * <pre>
+       * one of three: 0/1/2=left/right/middle
+       * </pre>
+       *
+       * <code>optional fixed32 mouseButton = 2;</code>
+       */
+      public Builder setMouseButton(int value) {
+        
+        mouseButton_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * one of three: 0/1/2=left/right/middle
+       * </pre>
+       *
+       * <code>optional fixed32 mouseButton = 2;</code>
+       */
+      public Builder clearMouseButton() {
+        
+        mouseButton_ = 0;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return this;
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:org.dragonet.cloudland.net.protocol.ClientEntityInteractMessage)
+    }
+
+    // @@protoc_insertion_point(class_scope:org.dragonet.cloudland.net.protocol.ClientEntityInteractMessage)
+    private static final org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage();
+    }
+
+    public static org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ClientEntityInteractMessage>
+        PARSER = new com.google.protobuf.AbstractParser<ClientEntityInteractMessage>() {
+      public ClientEntityInteractMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ClientEntityInteractMessage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ClientEntityInteractMessage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ClientEntityInteractMessage> getParserForType() {
+      return PARSER;
+    }
+
+    public org.dragonet.cloudland.net.protocol.Entity.ClientEntityInteractMessage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_dragonet_cloudland_net_protocol_ServerAddEntityMessage_descriptor;
   private static final 
@@ -3119,6 +5622,21 @@ public final class Entity {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_dragonet_cloudland_net_protocol_ServerClearEntitiesMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3129,22 +5647,38 @@ public final class Entity {
   static {
     java.lang.String[] descriptorData = {
       "\n\014Entity.proto\022#org.dragonet.cloudland.n" +
-      "et.protocol\032\016Metadata.proto\"\363\001\n\026ServerAd" +
-      "dEntityMessage\022\020\n\010entityId\030\001 \001(\004\022C\n\nenti" +
-      "tyType\030\002 \001(\0162/.org.dragonet.cloudland.ne" +
-      "t.protocol.EntityType\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030\004 " +
-      "\001(\001\022\t\n\001z\030\005 \001(\001\022\013\n\003yaw\030\006 \001(\002\022\r\n\005pitch\030\007 \001" +
-      "(\002\022E\n\004meta\030\010 \001(\01327.org.dragonet.cloudlan" +
-      "d.net.protocol.SerializedMetadata\"\357\001\n\031Se" +
-      "rverEntityUpdateMessage\022\020\n\010entityId\030\001 \001(" +
-      "\004\022\024\n\014flagPosition\030\002 \001(\010\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030",
-      "\004 \001(\001\022\t\n\001z\030\005 \001(\001\022\024\n\014flagRotation\030\006 \001(\010\022\013" +
-      "\n\003yaw\030\007 \001(\002\022\r\n\005pitch\030\010 \001(\002\022\020\n\010flagMeta\030\t" +
-      " \001(\010\022E\n\004meta\030\n \001(\01327.org.dragonet.cloudl" +
-      "and.net.protocol.SerializedMetadata\"-\n\031S" +
-      "erverRemoveEntityMessage\022\020\n\010entityId\030\001 \001" +
-      "(\004\"\034\n\032ServerClearEntitiesMessage*\"\n\nEnti" +
-      "tyType\022\n\n\006PLAYER\020\000\022\010\n\004ITEM\020\001b\006proto3"
+      "et.protocol\032\016Metadata.proto\032\017DataTypes.p" +
+      "roto\"\323\002\n\026ServerAddEntityMessage\022\020\n\010entit" +
+      "yId\030\001 \001(\004\022C\n\nentityType\030\002 \001(\0162/.org.drag" +
+      "onet.cloudland.net.protocol.EntityType\022\t" +
+      "\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\t\n\001z\030\005 \001(\001\022\013\n\003yaw\030\006" +
+      " \001(\002\022\r\n\005pitch\030\007 \001(\002\022E\n\004meta\030\010 \001(\01327.org." +
+      "dragonet.cloudland.net.protocol.Serializ" +
+      "edMetadata\022\032\n\022entitySlotsEnabled\0302 \001(\010\022B" +
+      "\n\013entitySlots\0303 \003(\0132-.org.dragonet.cloud",
+      "land.net.protocol.Vector3F\"\357\001\n\031ServerEnt" +
+      "ityUpdateMessage\022\020\n\010entityId\030\001 \001(\004\022\024\n\014fl" +
+      "agPosition\030\002 \001(\010\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\t" +
+      "\n\001z\030\005 \001(\001\022\024\n\014flagRotation\030\006 \001(\010\022\013\n\003yaw\030\007" +
+      " \001(\002\022\r\n\005pitch\030\010 \001(\002\022\020\n\010flagMeta\030\t \001(\010\022E\n" +
+      "\004meta\030\n \001(\01327.org.dragonet.cloudland.net" +
+      ".protocol.SerializedMetadata\"-\n\031ServerRe" +
+      "moveEntityMessage\022\020\n\010entityId\030\001 \001(\004\"\034\n\032S" +
+      "erverClearEntitiesMessage\"\326\002\n&ServerEnti" +
+      "tyHierarchicalControlMessage\022\020\n\010entityId",
+      "\030\001 \001(\004\022\026\n\016targetEntityId\030\002 \001(\004\022n\n\006action" +
+      "\030\003 \001(\0162^.org.dragonet.cloudland.net.prot" +
+      "ocol.ServerEntityHierarchicalControlMess" +
+      "age.HierarchicalAction\022?\n\010position\030\n \001(\013" +
+      "2-.org.dragonet.cloudland.net.protocol.V" +
+      "ector3F\"Q\n\022HierarchicalAction\022\t\n\005ENTER\020\000" +
+      "\022\030\n\024LEAVING_TO_PASSENGER\020\001\022\026\n\022LEAVING_TO" +
+      "_OUTSIDE\020\002\"]\n!ServerEntityBindingControl" +
+      "Message\022\020\n\010entityId\030\001 \001(\004\022\026\n\016targetEntit" +
+      "yId\030\002 \001(\004\022\016\n\006slotId\030\003 \001(\005\"J\n\033ClientEntit",
+      "yInteractMessage\022\026\n\016targetEntityId\030\001 \001(\004" +
+      "\022\023\n\013mouseButton\030\002 \001(\007*\"\n\nEntityType\022\n\n\006P" +
+      "LAYER\020\000\022\010\n\004ITEM\020\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3158,13 +5692,14 @@ public final class Entity {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           org.dragonet.cloudland.net.protocol.Metadata.getDescriptor(),
+          org.dragonet.cloudland.net.protocol.DataTypes.getDescriptor(),
         }, assigner);
     internal_static_org_dragonet_cloudland_net_protocol_ServerAddEntityMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_org_dragonet_cloudland_net_protocol_ServerAddEntityMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_dragonet_cloudland_net_protocol_ServerAddEntityMessage_descriptor,
-        new java.lang.String[] { "EntityId", "EntityType", "X", "Y", "Z", "Yaw", "Pitch", "Meta", });
+        new java.lang.String[] { "EntityId", "EntityType", "X", "Y", "Z", "Yaw", "Pitch", "Meta", "EntitySlotsEnabled", "EntitySlots", });
     internal_static_org_dragonet_cloudland_net_protocol_ServerEntityUpdateMessage_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_org_dragonet_cloudland_net_protocol_ServerEntityUpdateMessage_fieldAccessorTable = new
@@ -3183,7 +5718,26 @@ public final class Entity {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_dragonet_cloudland_net_protocol_ServerClearEntitiesMessage_descriptor,
         new java.lang.String[] { });
+    internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_dragonet_cloudland_net_protocol_ServerEntityHierarchicalControlMessage_descriptor,
+        new java.lang.String[] { "EntityId", "TargetEntityId", "Action", "Position", });
+    internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_dragonet_cloudland_net_protocol_ServerEntityBindingControlMessage_descriptor,
+        new java.lang.String[] { "EntityId", "TargetEntityId", "SlotId", });
+    internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_org_dragonet_cloudland_net_protocol_ClientEntityInteractMessage_descriptor,
+        new java.lang.String[] { "TargetEntityId", "MouseButton", });
     org.dragonet.cloudland.net.protocol.Metadata.getDescriptor();
+    org.dragonet.cloudland.net.protocol.DataTypes.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

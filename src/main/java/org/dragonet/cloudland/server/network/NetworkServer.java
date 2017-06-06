@@ -116,6 +116,8 @@ public class NetworkServer  {
         register.register(0xBE000002, Entity.ServerEntityUpdateMessage.getDefaultInstance(), null);
         register.register(0xBE000003, Entity.ServerRemoveEntityMessage.getDefaultInstance(), null);
         register.register(0xBE0000FF, Entity.ServerClearEntitiesMessage.getDefaultInstance(), null);
+        register.register(0xBEA00000, Entity.ServerEntityHierarchicalControlMessage.getDefaultInstance(), null);
+        register.register(0xBEA00001, Entity.ServerEntityBindingControlMessage.getDefaultInstance(), null);
 
         // Window (0xBA......)
         register.register(0xBA000000, GUI.ServerWindowOpenMessage.getDefaultInstance(), null);
@@ -137,5 +139,8 @@ public class NetworkServer  {
         register.register(0xE1000001, Inventory.ClientPickUpItemMessage.getDefaultInstance(), new ClientPickUpItemHandler());
         register.register(0xE1FF0000, GUI.ClientWindowInteractMessage.getDefaultInstance(), new ClientWindowInteractHandler());
         register.register(0xE1FEFFFF, GUI.ClientWindowCloseMessage.getDefaultInstance(), new ClientWindowCloseHandler());
+
+        // Entities (0xBE......)
+        register.register(0xBE000000, Entity.ClientEntityInteractMessage.getDefaultInstance(), null); // TODO
     }
 }
