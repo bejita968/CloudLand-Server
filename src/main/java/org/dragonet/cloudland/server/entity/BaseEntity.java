@@ -7,6 +7,9 @@ import org.dragonet.cloudland.server.map.LoadedChunk;
 import org.dragonet.cloudland.server.util.Vector3D;
 import lombok.Getter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created on 2017/1/10.
  */
@@ -33,6 +36,10 @@ public abstract class BaseEntity implements Entity {
     private boolean positionChange = false;
     private boolean rotationChange = false;
     private boolean metaChange = false;
+
+    private int slotTaken = -1;
+    private Entity parent;
+    private Set<Long> children = new HashSet<>();
 
     @Override
     public void setEntityId(long entityId) {
@@ -143,4 +150,88 @@ public abstract class BaseEntity implements Entity {
 
     @Override
     public abstract void spawnTo(PlayerEntity player);
+
+    /* ====== Hierarchical Management (ye, let's make it fancy) ====== */
+
+    @Override
+    public boolean isInSlot() {
+        return slotTaken != -1;
+    }
+
+    @Override
+    public int getSlotIndexTaken() {
+        return slotTaken;
+    }
+
+    @Override
+    public Entity getParent() {
+        return parent;
+    }
+
+    @Override
+    public boolean hasParent() {
+        return parent != null;
+    }
+
+    @Override
+    public boolean hasChild(Entity entity) {
+        return children.contains(entity.getEntityId());
+    }
+
+    @Override
+    public void addChild(Entity entity) {
+        if(entity.hasParent() && entity.getParent() != null) {
+            entity.setParent(this);
+            return;
+        }
+
+        this.children.add(entity.getEntityId());
+
+        if(entity.getParent() != this) {
+            entity.setParent(this);
+
+            // TODO: send messages
+        }
+    }
+
+    @Override
+    public void removeChild(Entity entity) {
+        if(entity.hasParent() && entity.getParent() != null) {
+            return;
+        }
+        this.children.remove(entity.getEntityId());
+
+        if(entity.getParent() != null) {
+            entity.setParent(null);
+
+            // TODO: send messages
+        }
+    }
+
+    @Override
+    public void setParent(Entity parent) {
+        if(this.parent != null) {
+            Entity ref = this.parent;
+            this.parent = null;
+            // first, we disable child, set it to a normal entity
+            if(ref.hasChild(this)) {
+                ref.removeChild(this);
+
+                // TODO: send messages
+                // ...
+            }
+
+            if(parent == null) {
+                return;
+            }
+        }
+
+        this.parent = parent;
+        if(!parent.hasChild(this)) {
+            parent.addChild(this);
+
+            // TODO: send messages
+            // ...
+        }
+    }
 }

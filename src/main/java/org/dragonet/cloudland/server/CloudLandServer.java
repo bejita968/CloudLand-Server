@@ -61,7 +61,9 @@ public class CloudLandServer {
     private Map<String, GameMap> maps;
     private WorldScheduler worldScheduler = new WorldScheduler();
 
-    private final AtomicLong nextWindowUniqueId = new AtomicLong();
+    private AtomicLong entityIdCount = new AtomicLong(1L);
+
+    private final AtomicLong nextWindowUniqueId = new AtomicLong(1L);
     @Getter
     private final UnsignedLongKeyMap<GUIWindow> windowRegister = new UnsignedLongKeyMap<>(false);
 
@@ -125,5 +127,9 @@ public class CloudLandServer {
 
     public long getNextWindowUniqueId() {
         return nextWindowUniqueId.getAndIncrement();
+    }
+
+    public long getNextEntityId() {
+        return entityIdCount.getAndIncrement();
     }
 }

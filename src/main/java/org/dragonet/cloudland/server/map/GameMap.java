@@ -17,8 +17,6 @@ import java.util.function.Consumer;
  */
 public class GameMap  {
 
-    private AtomicLong entityIdCount = new AtomicLong();
-
     @Getter
     private final CloudLandServer server;
 
@@ -49,17 +47,13 @@ public class GameMap  {
         this.generator = g;
     }
 
-    public long nextEntityId(){
-        return entityIdCount.incrementAndGet();
-    }
-
     public Entity getEntity(long entityId) {
         return entities.get(entityId);
     }
 
     public void addEntity(Entity entity) {
         if(entity == null) return;
-        if(entity.getEntityId() <= 0) entity.setEntityId(nextEntityId());
+        if(entity.getEntityId() <= 0) entity.setEntityId(server.getNextEntityId());
         entities.put(entity.getEntityId(), entity);
         entity.setMap(this);
     }
@@ -152,6 +146,13 @@ public class GameMap  {
      */
     public void tick() {
         chunkManager.tick();
-        entities.forEachValue((e) -> e.tick());
+        entities.forEachValue((e) -> {
+            e.tick();
+            if(!e.hasParent()) {
+                e.tickNormal();
+            } else {
+                e.tickChild();
+            }
+        });
     }
 }
