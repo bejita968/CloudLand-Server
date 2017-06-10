@@ -8,7 +8,7 @@ import lombok.Getter;
 /**
  * Created on 2017/1/19.
  */
-public class ItemEntity extends BaseEntity implements Entity {
+public class ItemEntity extends StandaloneEntity implements Entity {
 
     @Getter
     private boolean alreadyPickedUp = false;

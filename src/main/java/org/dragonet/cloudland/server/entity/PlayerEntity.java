@@ -1,5 +1,6 @@
 package org.dragonet.cloudland.server.entity;
 
+import com.google.protobuf.Message;
 import org.dragonet.cloudland.net.protocol.Entity;
 import org.dragonet.cloudland.net.protocol.GUI;
 import org.dragonet.cloudland.net.protocol.Movement;
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created on 2017/1/10.
  */
-public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHolder {
+public class PlayerEntity extends StandaloneEntity implements HumanEntity, InventoryHolder {
 
     public final static long BREAK_LAG_TOLERATION = 200;
 
@@ -124,6 +125,7 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
                 }
             });
             removeUnusedEntities.forEach((eid) -> {
+                ((BaseEntity)getMap().getEntity(eid)).entityHolders.remove(getEntityId());
                 usedEntities.remove(eid);
                 getSession().sendNetworkMessage(Entity.ServerRemoveEntityMessage.newBuilder()
                         .setEntityId(eid)
@@ -145,6 +147,7 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
                         //System.out.println("CHECKING USAGE E[" + e.getEntityId() + "] = " + usedEntities.contains(e.getEntityId()));
                         if (!usedEntities.contains(e.getEntityId())) {
                             e.spawnTo(this);
+                            ((BaseEntity)e).entityHolders.put(getEntityId(), this);
                             usedEntities.add(e.getEntityId());
                         }
                     });
@@ -379,5 +382,11 @@ public class PlayerEntity extends BaseEntity implements HumanEntity, InventoryHo
         this.cursorItem = cursorItem;
         session.sendNetworkMessage(GUI.ServerCursorItemMessage.newBuilder()
                 .setItem((cursorItem == null ? Item.AIR : cursorItem).serialize()).build());
+    }
+
+    @Override
+    public void broadcastToViewers(Message message) {
+        getSession().sendNetworkMessage(message);
+        super.broadcastToViewers(message);
     }
 }

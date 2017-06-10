@@ -1,11 +1,16 @@
 package org.dragonet.cloudland.server.entity;
 
+import com.google.protobuf.Message;
+import org.dragonet.cloudland.net.protocol.DataTypes;
 import org.dragonet.cloudland.net.protocol.Metadata;
 import org.dragonet.cloudland.server.network.BinaryMetadata;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.LoadedChunk;
+import org.dragonet.cloudland.server.util.UnsignedLongKeyMap;
 import org.dragonet.cloudland.server.util.Vector3D;
 import lombok.Getter;
+import org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction;
+import org.dragonet.cloudland.server.util.math.Vector3f;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +31,8 @@ public abstract class BaseEntity implements Entity {
 
     @Getter
     private BinaryMetadata meta = new BinaryMetadata();
+
+    protected UnsignedLongKeyMap<PlayerEntity> entityHolders = new UnsignedLongKeyMap<>(false);
 
     @Getter
     private float yaw;
@@ -151,6 +158,11 @@ public abstract class BaseEntity implements Entity {
     @Override
     public abstract void spawnTo(PlayerEntity player);
 
+    @Override
+    public void broadcastToViewers(Message message) {
+        entityHolders.forEachValue((e) -> e.getSession().sendNetworkMessage(message));
+    }
+
     /* ====== Hierarchical Management (ye, let's make it fancy) ====== */
 
     @Override
@@ -179,59 +191,115 @@ public abstract class BaseEntity implements Entity {
     }
 
     @Override
-    public void addChild(Entity entity) {
+    public void addChild(Entity entity, int gateIndex) {
+        if(!this.enterable()) return;
         if(entity.hasParent() && entity.getParent() != null) {
-            entity.setParent(this);
+            entity.setParent(this, gateIndex);
             return;
         }
 
         this.children.add(entity.getEntityId());
 
         if(entity.getParent() != this) {
-            entity.setParent(this);
-
-            // TODO: send messages
+            entity.setParent(this, gateIndex);
         }
+
+        Vector3f gateInPos = getGatePosition(gateIndex, true);
+
+        broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
+                .setEntityId(entity.getEntityId())
+                .setTargetEntityId(entityId)
+                .setAction(HierarchicalAction.ENTER)
+                .setPosition(gateInPos.encodeToNetwork()).build());
     }
 
     @Override
-    public void removeChild(Entity entity) {
+    public void removeChild(Entity entity, int gateIndex) {
+        if(!this.enterable()) return;
         if(entity.hasParent() && entity.getParent() != null) {
             return;
         }
         this.children.remove(entity.getEntityId());
 
         if(entity.getParent() != null) {
-            entity.setParent(null);
-
-            // TODO: send messages
+            entity.setParent(null, gateIndex);
         }
+
+        Vector3f gateOutPos = getGatePosition(gateIndex, false);
+
+        broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
+                .setEntityId(entity.getEntityId())
+                .setTargetEntityId(entityId)
+                .setAction(HierarchicalAction.LEAVING_TO_OUTSIDE)
+                .setPosition(gateOutPos.encodeToNetwork()).build());
     }
 
     @Override
-    public void setParent(Entity parent) {
+    public void setParent(Entity parent, int gateIndex) {
         if(this.parent != null) {
             Entity ref = this.parent;
+            Vector3D refPos = ref.getPosition();
+            Vector3f gateOutPos = parent.getGatePosition(gateIndex, false);
             this.parent = null;
             // first, we disable child, set it to a normal entity
             if(ref.hasChild(this)) {
-                ref.removeChild(this);
+                ref.removeChild(this, gateIndex);
 
-                // TODO: send messages
-                // ...
+                broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
+                        .setEntityId(entityId)
+                        .setTargetEntityId(0L)
+                        .setAction(HierarchicalAction.LEAVING_TO_OUTSIDE)
+                        .setPosition(gateOutPos.encodeToNetwork()).build());
             }
 
-            if(parent == null) {
+            // exiting, convert relative coordinates to global
+            position = new Vector3D(refPos.x + gateOutPos.x, refPos.y + gateOutPos.y, refPos.z + gateOutPos.z);
+
+            if(parent == null || !parent.enterable()) {
                 return;
             }
         }
 
+        // where to go when enter from a gate
+        Vector3f gateInPos = parent.getGatePosition(gateIndex, true);
+
         this.parent = parent;
         if(!parent.hasChild(this)) {
-            parent.addChild(this);
+            parent.addChild(this, gateIndex);
 
-            // TODO: send messages
-            // ...
+            broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
+                    .setEntityId(entityId)
+                    .setTargetEntityId(0L)
+                    .setAction(HierarchicalAction.ENTER)
+                    .setPosition(gateInPos.encodeToNetwork())
+                    .build());
         }
+
+        // entered an entity, convert to relative coordinates
+        position = new Vector3D(position.x + gateInPos.x, position.y + gateInPos.y, position.z + gateInPos.z);
+    }
+
+    @Override
+    public boolean takeSlot(int slot) {
+        if(parent == null) return false;
+        if(slot >= parent.getEntitySlots()) return false;
+        // don't need to acquire this since client will use its own position
+        // Vector3f pos = parent.getEntitySlotRelativePosition(slot);
+
+        broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.newBuilder()
+        .setEntityId(entityId)
+        .setSlotId(slot)
+        .setTargetEntityId(parent.getEntityId()).build());
+        return true;
+    }
+
+    @Override
+    public void tickNormal() {
+        // default nothing
+    }
+
+    @Override
+    public void tickChild() {
+        // default nothing
     }
 }

@@ -1,5 +1,6 @@
 package org.dragonet.cloudland.server.entity;
 
+import com.google.protobuf.Message;
 import org.dragonet.cloudland.server.map.LoadedChunk;
 import org.dragonet.cloudland.server.network.BinaryMetadata;
 import org.dragonet.cloudland.server.map.GameMap;
@@ -58,6 +59,8 @@ public interface Entity {
      */
     void tickChild();
 
+    void broadcastToViewers(Message message);
+
     /**
      * as a passenger as a slot?
      * @return
@@ -72,7 +75,7 @@ public interface Entity {
 
     /**
      * check whether it has a child
-     * @param entityId
+     * @param entity
      * @return
      */
     boolean hasChild(Entity entity);
@@ -81,20 +84,25 @@ public interface Entity {
      * add a child
      * @param entity
      */
-    void addChild(Entity entity);
+    void addChild(Entity entity, int gateIndex);
 
     /**
      * removes a child
      * @param entity
      */
-    void removeChild(Entity entity);
+    void removeChild(Entity entity, int gateIndex);
 
     /**
      * let this entity enter the parent entity,
      * will not let this entity take slot, just enter.
+     * let's say there's a spaceship with five doors/gates,
+     * so if player enters door/gate 0 then gateIndex will be 0
      * @param parent
+     * @param gateIndex
      */
-    void setParent(Entity parent);
+    void setParent(Entity parent, int gateIndex);
+
+    Vector3f getGatePosition(int gateIndex, boolean enter);
 
     /**
      * have slots?
@@ -108,6 +116,9 @@ public interface Entity {
      */
     int getEntitySlots();
 
+    // can it be entered?
+    boolean enterable();
+
     /**
      * where is that slot?
      * @param index
@@ -117,10 +128,11 @@ public interface Entity {
 
     /**
      * take a slot, eg. sitting on a driver seat.
-     * @param superEntity
+     * MUST be parented first
      * @param slot
+     * @return success or not
      */
-    void takeSlot(Entity superEntity, int slot);
+    boolean takeSlot(int slot);
 
     /**
      * quit that slot, eg. stand up from a driver seat.

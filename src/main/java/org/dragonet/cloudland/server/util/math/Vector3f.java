@@ -1,5 +1,7 @@
 package org.dragonet.cloudland.server.util.math;
 
+import org.dragonet.cloudland.net.protocol.DataTypes;
+
 public class Vector3f implements Cloneable {
     public static final int SIDE_DOWN = 0;
     public static final int SIDE_UP = 1;
@@ -323,5 +325,13 @@ public class Vector3f implements Cloneable {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    public DataTypes.Vector3F encodeToNetwork(){
+        return DataTypes.Vector3F.newBuilder()
+                .setX(x)
+                .setY(y)
+                .setZ(z)
+                .build();
     }
 }
