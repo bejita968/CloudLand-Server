@@ -252,6 +252,10 @@ public abstract class BaseEntity implements Entity {
                         .setPosition(gateOutPos.encodeToNetwork()).build());
             }
 
+            // exiting, convert relative coordinates to global
+            position = new Vector3D(refPos.x + gateOutPos.x, refPos.y + gateOutPos.y, refPos.z + gateOutPos.z);
+            System.out.println("ENTITY " + getClass().getSimpleName() + " switched to world/global coordinate system");
+
             if(parent == null || !parent.enterable()) {
                 return;
             }
@@ -271,6 +275,10 @@ public abstract class BaseEntity implements Entity {
                     .setPosition(gateInPos.encodeToNetwork())
                     .build());
         }
+
+        // entered an entity, convert to relative coordinates
+        position = new Vector3D(position.x + gateInPos.x, position.y + gateInPos.y, position.z + gateInPos.z);
+        System.out.println("ENTITY " + getClass().getSimpleName() + " switched to local/relative coordinate system");
     }
 
     @Override
