@@ -252,9 +252,6 @@ public abstract class BaseEntity implements Entity {
                         .setPosition(gateOutPos.encodeToNetwork()).build());
             }
 
-            // exiting, convert relative coordinates to global
-            position = new Vector3D(refPos.x + gateOutPos.x, refPos.y + gateOutPos.y, refPos.z + gateOutPos.z);
-
             if(parent == null || !parent.enterable()) {
                 return;
             }
@@ -274,9 +271,6 @@ public abstract class BaseEntity implements Entity {
                     .setPosition(gateInPos.encodeToNetwork())
                     .build());
         }
-
-        // entered an entity, convert to relative coordinates
-        position = new Vector3D(position.x + gateInPos.x, position.y + gateInPos.y, position.z + gateInPos.z);
     }
 
     @Override
