@@ -33,4 +33,20 @@ public class Vector3D {
         double dzs = (target.z - z) * (target.z - z);
         return dxs + dys + dzs;
     }
+
+    public Vector3D add(Vector3D v) {
+        Vector3D ret = new Vector3D(x, y, z);
+        ret.x += v.x;
+        ret.y += v.y;
+        ret.z += v.z;
+        return ret;
+    }
+
+    public Vector3D substract(Vector3D v) {
+        Vector3D ret = new Vector3D(x, y, z);
+        ret.x -= v.x;
+        ret.y -= v.y;
+        ret.z -= v.z;
+        return ret;
+    }
 }

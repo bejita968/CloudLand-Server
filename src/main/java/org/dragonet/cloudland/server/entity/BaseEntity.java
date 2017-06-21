@@ -23,7 +23,6 @@ public abstract class BaseEntity implements Entity {
     @Getter
     private long entityId = -1;
 
-    @Getter
     private Vector3D position = new Vector3D();
 
     @Getter
@@ -72,7 +71,11 @@ public abstract class BaseEntity implements Entity {
         //System.out.println("BaseEntity: Setting position to " + String.format("(%.2f, %.2f, %.2f)", position.x, position.y, position.z) + ", map=" + (map == null ? "<NULL>" : map.getName()));
         if(getMap() == null) return;
         LoadedChunk oldChunk = getChunk();
-        this.position = position;
+        if(!hasParent()) {
+            this.position = position;
+        } else {
+            this.position = position.substract(parent.getRelativePosition()); // use relative pos in case of multiple containing relationship
+        }
         if(oldChunk != null) oldChunk.updateEntityReference(this);
         getChunk().updateEntityReference(this);
         positionChange = true;
@@ -117,7 +120,7 @@ public abstract class BaseEntity implements Entity {
             if(positionChange) {
                 positionChange = false;
                 b.setFlagPosition(true);
-                b.setX(getPosition().x).setY(getPosition().y).setZ(getPosition().z);
+                b.setX(getRelativePosition().x).setY(getRelativePosition().y).setZ(getRelativePosition().z);
             }
             if(rotationChange) {
                 rotationChange = false;
@@ -303,5 +306,19 @@ public abstract class BaseEntity implements Entity {
     @Override
     public void tickChild() {
         // default nothing
+    }
+
+    @Override
+    public Vector3D getPosition() {
+        if(!hasParent()) {
+            return position;
+        } else {
+            return parent.getPosition().add(position);
+        }
+    }
+
+    @Override
+    public Vector3D getRelativePosition(){
+        return position;
     }
 }

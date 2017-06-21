@@ -26,6 +26,8 @@ public interface Entity {
 
     Vector3D getPosition();
 
+    Vector3D getRelativePosition();
+
     void setPosition(Vector3D position);
 
     float getYaw();

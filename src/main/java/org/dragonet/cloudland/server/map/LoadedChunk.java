@@ -9,6 +9,7 @@ import org.dragonet.cloudland.server.map.chunk.Chunk;
 import org.dragonet.cloudland.server.map.chunk.ChunkSection;
 import org.dragonet.cloudland.server.network.BinaryMetadata;
 import org.dragonet.cloudland.server.util.UnsignedLongKeyMap;
+import org.dragonet.cloudland.server.util.Vector3D;
 import org.dragonet.cloudland.server.util.math.Vector3;
 import lombok.Getter;
 
@@ -58,8 +59,9 @@ public class LoadedChunk extends Chunk {
             entities.remove(e.getEntityId());
             return;
         }
-        int cx = (int)(e.getPosition().getBlockX() >> 4);
-        int cz = (int)(e.getPosition().getBlockZ() >> 4);
+        Vector3D pos = e.getPosition();
+        int cx = (int)(pos.getBlockX() >> 4);
+        int cz = (int)(pos.getBlockZ() >> 4);
         if(map != e.getMap() || cx != getX() || cz != getZ()) {
             entities.remove(e.getEntityId());
             //if (x == 0 && z == 0) System.out.println("[EREF] C(" + x + ", " + z +  ") De-referencing entity " + e.getEntityId());
