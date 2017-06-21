@@ -125,7 +125,8 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
                 }
             });
             removeUnusedEntities.forEach((eid) -> {
-                ((BaseEntity)getMap().getEntity(eid)).entityHolders.remove(getEntityId());
+                BaseEntity e = (BaseEntity)getMap().getEntity(eid);
+                if (e != null) e.entityHolders.remove(getEntityId());
                 usedEntities.remove(eid);
                 getSession().sendNetworkMessage(Entity.ServerRemoveEntityMessage.newBuilder()
                         .setEntityId(eid)
