@@ -1,6 +1,7 @@
 package org.dragonet.cloudland.server;
 
 import org.dragonet.cloudland.server.behavior.BlockBehavior;
+import org.dragonet.cloudland.server.entity.EntityType;
 import org.dragonet.cloudland.server.gui.GUIWindow;
 import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.item.crafting.CraftingManager;
@@ -86,9 +87,17 @@ public class CloudLandServer {
         generators = Collections.synchronizedMap(new HashMap<>());
 
         // Initiate stuffs
+        EntityType.init();
         ItemPrototype.init();
         BlockBehavior.init();
         CraftingManager.get().init();
+
+        // load mods
+        // ...
+
+        // lock up stuffs
+        EntityType.lock();
+        ItemPrototype.lock();
 
         // Register generators
         generators.put("default", DefaultGenerator.class);
@@ -98,6 +107,9 @@ public class CloudLandServer {
         worldScheduler.addWorld(getMap(DEFAULT_MAP_NAME));
 
         scheduler.start();
+
+        // load plugins
+        // ...
 
         try {
             network = new NetworkServer(this);

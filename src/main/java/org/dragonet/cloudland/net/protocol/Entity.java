@@ -14,104 +14,6 @@ public final class Entity {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  /**
-   * Protobuf enum {@code org.dragonet.cloudland.net.protocol.EntityType}
-   */
-  public enum EntityType
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <code>PLAYER = 0;</code>
-     */
-    PLAYER(0),
-    /**
-     * <code>ITEM = 1;</code>
-     */
-    ITEM(1),
-    UNRECOGNIZED(-1),
-    ;
-
-    /**
-     * <code>PLAYER = 0;</code>
-     */
-    public static final int PLAYER_VALUE = 0;
-    /**
-     * <code>ITEM = 1;</code>
-     */
-    public static final int ITEM_VALUE = 1;
-
-
-    public final int getNumber() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
-      }
-      return value;
-    }
-
-    /**
-     * @deprecated Use {@link #forNumber(int)} instead.
-     */
-    @java.lang.Deprecated
-    public static EntityType valueOf(int value) {
-      return forNumber(value);
-    }
-
-    public static EntityType forNumber(int value) {
-      switch (value) {
-        case 0: return PLAYER;
-        case 1: return ITEM;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<EntityType>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        EntityType> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<EntityType>() {
-            public EntityType findValueByNumber(int number) {
-              return EntityType.forNumber(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return org.dragonet.cloudland.net.protocol.Entity.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final EntityType[] VALUES = values();
-
-    public static EntityType valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      if (desc.getIndex() == -1) {
-        return UNRECOGNIZED;
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int value;
-
-    private EntityType(int value) {
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:org.dragonet.cloudland.net.protocol.EntityType)
-  }
-
   public interface ServerAddEntityMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:org.dragonet.cloudland.net.protocol.ServerAddEntityMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -122,13 +24,9 @@ public final class Entity {
     long getEntityId();
 
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
+     * <code>optional fixed32 entityType = 2;</code>
      */
-    int getEntityTypeValue();
-    /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
-     */
-    org.dragonet.cloudland.net.protocol.Entity.EntityType getEntityType();
+    int getEntityType();
 
     /**
      * <code>optional double x = 3;</code>
@@ -254,10 +152,9 @@ public final class Entity {
               entityId_ = input.readUInt64();
               break;
             }
-            case 16: {
-              int rawValue = input.readEnum();
+            case 21: {
 
-              entityType_ = rawValue;
+              entityType_ = input.readFixed32();
               break;
             }
             case 25: {
@@ -351,17 +248,10 @@ public final class Entity {
     public static final int ENTITYTYPE_FIELD_NUMBER = 2;
     private int entityType_;
     /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
+     * <code>optional fixed32 entityType = 2;</code>
      */
-    public int getEntityTypeValue() {
+    public int getEntityType() {
       return entityType_;
-    }
-    /**
-     * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
-     */
-    public org.dragonet.cloudland.net.protocol.Entity.EntityType getEntityType() {
-      org.dragonet.cloudland.net.protocol.Entity.EntityType result = org.dragonet.cloudland.net.protocol.Entity.EntityType.valueOf(entityType_);
-      return result == null ? org.dragonet.cloudland.net.protocol.Entity.EntityType.UNRECOGNIZED : result;
     }
 
     public static final int X_FIELD_NUMBER = 3;
@@ -493,8 +383,8 @@ public final class Entity {
       if (entityId_ != 0L) {
         output.writeUInt64(1, entityId_);
       }
-      if (entityType_ != org.dragonet.cloudland.net.protocol.Entity.EntityType.PLAYER.getNumber()) {
-        output.writeEnum(2, entityType_);
+      if (entityType_ != 0) {
+        output.writeFixed32(2, entityType_);
       }
       if (x_ != 0D) {
         output.writeDouble(3, x_);
@@ -531,9 +421,9 @@ public final class Entity {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(1, entityId_);
       }
-      if (entityType_ != org.dragonet.cloudland.net.protocol.Entity.EntityType.PLAYER.getNumber()) {
+      if (entityType_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, entityType_);
+          .computeFixed32Size(2, entityType_);
       }
       if (x_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
@@ -585,7 +475,8 @@ public final class Entity {
       boolean result = true;
       result = result && (getEntityId()
           == other.getEntityId());
-      result = result && entityType_ == other.entityType_;
+      result = result && (getEntityType()
+          == other.getEntityType());
       result = result && (
           java.lang.Double.doubleToLongBits(getX())
           == java.lang.Double.doubleToLongBits(
@@ -629,7 +520,7 @@ public final class Entity {
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getEntityId());
       hash = (37 * hash) + ENTITYTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + entityType_;
+      hash = (53 * hash) + getEntityType();
       hash = (37 * hash) + X_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getX()));
@@ -894,8 +785,8 @@ public final class Entity {
         if (other.getEntityId() != 0L) {
           setEntityId(other.getEntityId());
         }
-        if (other.entityType_ != 0) {
-          setEntityTypeValue(other.getEntityTypeValue());
+        if (other.getEntityType() != 0) {
+          setEntityType(other.getEntityType());
         }
         if (other.getX() != 0D) {
           setX(other.getX());
@@ -997,42 +888,24 @@ public final class Entity {
         return this;
       }
 
-      private int entityType_ = 0;
+      private int entityType_ ;
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
+       * <code>optional fixed32 entityType = 2;</code>
        */
-      public int getEntityTypeValue() {
+      public int getEntityType() {
         return entityType_;
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
+       * <code>optional fixed32 entityType = 2;</code>
        */
-      public Builder setEntityTypeValue(int value) {
+      public Builder setEntityType(int value) {
+        
         entityType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
-       */
-      public org.dragonet.cloudland.net.protocol.Entity.EntityType getEntityType() {
-        org.dragonet.cloudland.net.protocol.Entity.EntityType result = org.dragonet.cloudland.net.protocol.Entity.EntityType.valueOf(entityType_);
-        return result == null ? org.dragonet.cloudland.net.protocol.Entity.EntityType.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
-       */
-      public Builder setEntityType(org.dragonet.cloudland.net.protocol.Entity.EntityType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        entityType_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .org.dragonet.cloudland.net.protocol.EntityType entityType = 2;</code>
+       * <code>optional fixed32 entityType = 2;</code>
        */
       public Builder clearEntityType() {
         
@@ -5648,37 +5521,35 @@ public final class Entity {
     java.lang.String[] descriptorData = {
       "\n\014Entity.proto\022#org.dragonet.cloudland.n" +
       "et.protocol\032\016Metadata.proto\032\017DataTypes.p" +
-      "roto\"\323\002\n\026ServerAddEntityMessage\022\020\n\010entit" +
-      "yId\030\001 \001(\004\022C\n\nentityType\030\002 \001(\0162/.org.drag" +
-      "onet.cloudland.net.protocol.EntityType\022\t" +
-      "\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\t\n\001z\030\005 \001(\001\022\013\n\003yaw\030\006" +
-      " \001(\002\022\r\n\005pitch\030\007 \001(\002\022E\n\004meta\030\010 \001(\01327.org." +
-      "dragonet.cloudland.net.protocol.Serializ" +
-      "edMetadata\022\032\n\022entitySlotsEnabled\0302 \001(\010\022B" +
-      "\n\013entitySlots\0303 \003(\0132-.org.dragonet.cloud",
-      "land.net.protocol.Vector3F\"\357\001\n\031ServerEnt" +
-      "ityUpdateMessage\022\020\n\010entityId\030\001 \001(\004\022\024\n\014fl" +
-      "agPosition\030\002 \001(\010\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\t" +
-      "\n\001z\030\005 \001(\001\022\024\n\014flagRotation\030\006 \001(\010\022\013\n\003yaw\030\007" +
-      " \001(\002\022\r\n\005pitch\030\010 \001(\002\022\020\n\010flagMeta\030\t \001(\010\022E\n" +
-      "\004meta\030\n \001(\01327.org.dragonet.cloudland.net" +
-      ".protocol.SerializedMetadata\"-\n\031ServerRe" +
-      "moveEntityMessage\022\020\n\010entityId\030\001 \001(\004\"\034\n\032S" +
-      "erverClearEntitiesMessage\"\326\002\n&ServerEnti" +
-      "tyHierarchicalControlMessage\022\020\n\010entityId",
-      "\030\001 \001(\004\022\026\n\016targetEntityId\030\002 \001(\004\022n\n\006action" +
-      "\030\003 \001(\0162^.org.dragonet.cloudland.net.prot" +
-      "ocol.ServerEntityHierarchicalControlMess" +
-      "age.HierarchicalAction\022?\n\010position\030\n \001(\013" +
-      "2-.org.dragonet.cloudland.net.protocol.V" +
-      "ector3F\"Q\n\022HierarchicalAction\022\t\n\005ENTER\020\000" +
-      "\022\030\n\024LEAVING_TO_PASSENGER\020\001\022\026\n\022LEAVING_TO" +
-      "_OUTSIDE\020\002\"]\n!ServerEntityBindingControl" +
-      "Message\022\020\n\010entityId\030\001 \001(\004\022\026\n\016targetEntit" +
-      "yId\030\002 \001(\004\022\016\n\006slotId\030\003 \001(\005\"J\n\033ClientEntit",
-      "yInteractMessage\022\026\n\016targetEntityId\030\001 \001(\004" +
-      "\022\023\n\013mouseButton\030\002 \001(\007*\"\n\nEntityType\022\n\n\006P" +
-      "LAYER\020\000\022\010\n\004ITEM\020\001b\006proto3"
+      "roto\"\242\002\n\026ServerAddEntityMessage\022\020\n\010entit" +
+      "yId\030\001 \001(\004\022\022\n\nentityType\030\002 \001(\007\022\t\n\001x\030\003 \001(\001" +
+      "\022\t\n\001y\030\004 \001(\001\022\t\n\001z\030\005 \001(\001\022\013\n\003yaw\030\006 \001(\002\022\r\n\005p" +
+      "itch\030\007 \001(\002\022E\n\004meta\030\010 \001(\01327.org.dragonet." +
+      "cloudland.net.protocol.SerializedMetadat" +
+      "a\022\032\n\022entitySlotsEnabled\0302 \001(\010\022B\n\013entityS" +
+      "lots\0303 \003(\0132-.org.dragonet.cloudland.net." +
+      "protocol.Vector3F\"\357\001\n\031ServerEntityUpdate",
+      "Message\022\020\n\010entityId\030\001 \001(\004\022\024\n\014flagPositio" +
+      "n\030\002 \001(\010\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\t\n\001z\030\005 \001(\001" +
+      "\022\024\n\014flagRotation\030\006 \001(\010\022\013\n\003yaw\030\007 \001(\002\022\r\n\005p" +
+      "itch\030\010 \001(\002\022\020\n\010flagMeta\030\t \001(\010\022E\n\004meta\030\n \001" +
+      "(\01327.org.dragonet.cloudland.net.protocol" +
+      ".SerializedMetadata\"-\n\031ServerRemoveEntit" +
+      "yMessage\022\020\n\010entityId\030\001 \001(\004\"\034\n\032ServerClea" +
+      "rEntitiesMessage\"\326\002\n&ServerEntityHierarc" +
+      "hicalControlMessage\022\020\n\010entityId\030\001 \001(\004\022\026\n" +
+      "\016targetEntityId\030\002 \001(\004\022n\n\006action\030\003 \001(\0162^.",
+      "org.dragonet.cloudland.net.protocol.Serv" +
+      "erEntityHierarchicalControlMessage.Hiera" +
+      "rchicalAction\022?\n\010position\030\n \001(\0132-.org.dr" +
+      "agonet.cloudland.net.protocol.Vector3F\"Q" +
+      "\n\022HierarchicalAction\022\t\n\005ENTER\020\000\022\030\n\024LEAVI" +
+      "NG_TO_PASSENGER\020\001\022\026\n\022LEAVING_TO_OUTSIDE\020" +
+      "\002\"]\n!ServerEntityBindingControlMessage\022\020" +
+      "\n\010entityId\030\001 \001(\004\022\026\n\016targetEntityId\030\002 \001(\004" +
+      "\022\016\n\006slotId\030\003 \001(\005\"J\n\033ClientEntityInteract" +
+      "Message\022\026\n\016targetEntityId\030\001 \001(\004\022\023\n\013mouse",
+      "Button\030\002 \001(\007b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

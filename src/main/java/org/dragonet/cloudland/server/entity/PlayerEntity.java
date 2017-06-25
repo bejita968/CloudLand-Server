@@ -206,7 +206,7 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
         Vector3D pos = getPosition();
         player.getSession().sendNetworkMessage(Entity.ServerAddEntityMessage.newBuilder()
                 .setEntityId(getEntityId())
-                .setEntityType(Entity.EntityType.PLAYER)
+                .setEntityType(EntityType.toId("player"))
                 .setX(pos.x)
                 .setY(pos.y)
                 .setZ(pos.z)
