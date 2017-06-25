@@ -36,7 +36,7 @@ public class ItemEntity extends StandaloneEntity implements Entity {
         Vector3D pos = getPosition();
         player.getSession().sendNetworkMessage(org.dragonet.cloudland.net.protocol.Entity.ServerAddEntityMessage.newBuilder()
                 .setEntityId(getEntityId())
-                .setEntityType(org.dragonet.cloudland.net.protocol.Entity.EntityType.ITEM)
+                .setEntityType(EntityType.toId("item"))
                 .setX(pos.x)
                 .setY(pos.y)
                 .setZ(pos.z)

@@ -20,9 +20,9 @@ public class EntityType {
     public static void init(){
         if(initialized) return;
         register(new EntityType(1, "item"));
-        register(new EntityType(2, "item"));
+        register(new EntityType(2, "player"));
 
-        register(new EntityType(100, "item"));
+        register(new EntityType(100, "plane"));
     }
 
     public static void register(EntityType type){
