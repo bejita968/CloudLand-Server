@@ -116,8 +116,7 @@ public class NetworkServer  {
         register.register(0xBE000002, Entity.ServerEntityUpdateMessage.getDefaultInstance(), null);
         register.register(0xBE000003, Entity.ServerRemoveEntityMessage.getDefaultInstance(), null);
         register.register(0xBE0000FF, Entity.ServerClearEntitiesMessage.getDefaultInstance(), null);
-        register.register(0xBEA00000, Entity.ServerEntityHierarchicalControlMessage.getDefaultInstance(), null);
-        register.register(0xBEA00001, Entity.ServerEntityBindingControlMessage.getDefaultInstance(), null);
+        register.register(0xBEA00000, Entity.ServerEntityBindingControlMessage.getDefaultInstance(), null);
 
         // Window (0xBA......)
         register.register(0xBA000000, GUI.ServerWindowOpenMessage.getDefaultInstance(), null);
