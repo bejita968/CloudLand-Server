@@ -148,11 +148,6 @@ public class GameMap  {
         chunkManager.tick();
         entities.forEachValue((e) -> {
             e.tick();
-            if(!e.hasParent()) {
-                e.tickNormal();
-            } else {
-                e.tickChild();
-            }
         });
     }
 }
