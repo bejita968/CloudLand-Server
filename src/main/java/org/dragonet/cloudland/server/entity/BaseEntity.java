@@ -1,7 +1,6 @@
 package org.dragonet.cloudland.server.entity;
 
 import com.google.protobuf.Message;
-import org.dragonet.cloudland.net.protocol.DataTypes;
 import org.dragonet.cloudland.net.protocol.Metadata;
 import org.dragonet.cloudland.server.network.BinaryMetadata;
 import org.dragonet.cloudland.server.map.GameMap;
@@ -9,7 +8,6 @@ import org.dragonet.cloudland.server.map.LoadedChunk;
 import org.dragonet.cloudland.server.util.UnsignedLongKeyMap;
 import org.dragonet.cloudland.server.util.Vector3D;
 import lombok.Getter;
-import org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction;
 import org.dragonet.cloudland.server.util.math.Vector3f;
 
 import java.util.HashSet;
@@ -71,11 +69,7 @@ public abstract class BaseEntity implements Entity {
         //System.out.println("BaseEntity: Setting position to " + String.format("(%.2f, %.2f, %.2f)", position.x, position.y, position.z) + ", map=" + (map == null ? "<NULL>" : map.getName()));
         if(getMap() == null) return;
         LoadedChunk oldChunk = getChunk();
-        if(!hasParent()) {
-            this.position = position;
-        } else {
-            this.position = position.substract(parent.getRelativePosition()); // use relative pos in case of multiple containing relationship
-        }
+        this.position = position;
         if(oldChunk != null) oldChunk.updateEntityReference(this);
         getChunk().updateEntityReference(this);
         positionChange = true;
@@ -120,7 +114,7 @@ public abstract class BaseEntity implements Entity {
             if(positionChange) {
                 positionChange = false;
                 b.setFlagPosition(true);
-                b.setX(getRelativePosition().x).setY(getRelativePosition().y).setZ(getRelativePosition().z);
+                b.setX(position.x).setY(position.y).setZ(position.z);
             }
             if(rotationChange) {
                 rotationChange = false;
@@ -178,147 +172,40 @@ public abstract class BaseEntity implements Entity {
         return slotTaken;
     }
 
-    @Override
-    public Entity getParent() {
-        return parent;
-    }
 
     @Override
-    public boolean hasParent() {
-        return parent != null;
-    }
-
-    @Override
-    public boolean hasChild(Entity entity) {
-        return children.contains(entity.getEntityId());
-    }
-
-    @Override
-    public void addChild(Entity entity, int gateIndex) {
-        if(!this.enterable()) return;
-        if(entity.hasParent() && entity.getParent() != null) {
-            entity.setParent(this, gateIndex);
-            return;
-        }
-
-        this.children.add(entity.getEntityId());
-
-        if(entity.getParent() != this) {
-            entity.setParent(this, gateIndex);
-        }
-
-        Vector3f gateInPos = getGatePosition(gateIndex, true);
-
-        broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
-                .setEntityId(entity.getEntityId())
-                .setTargetEntityId(entityId)
-                .setAction(HierarchicalAction.ENTER)
-                .setPosition(gateInPos.encodeToNetwork()).build());
-    }
-
-    @Override
-    public void removeChild(Entity entity, int gateIndex) {
-        if(!this.enterable()) return;
-        if(entity.hasParent() && entity.getParent() != null) {
-            return;
-        }
-        this.children.remove(entity.getEntityId());
-
-        if(entity.getParent() != null) {
-            entity.setParent(null, gateIndex);
-        }
-
-        Vector3f gateOutPos = getGatePosition(gateIndex, false);
-
-        broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
-                .setEntityId(entity.getEntityId())
-                .setTargetEntityId(entityId)
-                .setAction(HierarchicalAction.LEAVING_TO_OUTSIDE)
-                .setPosition(gateOutPos.encodeToNetwork()).build());
-    }
-
-    @Override
-    public void setParent(Entity parent, int gateIndex) {
-        if(this.parent != null) {
-            Entity ref = this.parent;
-            Vector3D refPos = ref.getPosition();
-            Vector3f gateOutPos = parent.getGatePosition(gateIndex, false);
-            this.parent = null;
-            // first, we disable child, set it to a normal entity
-            if(ref.hasChild(this)) {
-                ref.removeChild(this, gateIndex);
-
-                broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
-                        .setEntityId(entityId)
-                        .setTargetEntityId(0L)
-                        .setAction(HierarchicalAction.LEAVING_TO_OUTSIDE)
-                        .setPosition(gateOutPos.encodeToNetwork()).build());
-            }
-
-            // exiting, convert relative coordinates to global
-            position = new Vector3D(refPos.x + gateOutPos.x, refPos.y + gateOutPos.y, refPos.z + gateOutPos.z);
-            System.out.println("ENTITY " + getClass().getSimpleName() + " switched to world/global coordinate system");
-
-            if(parent == null || !parent.enterable()) {
-                return;
-            }
-        }
-
-        // where to go when enter from a gate
-        Vector3f gateInPos = parent.getGatePosition(gateIndex, true);
-
-        this.parent = parent;
-        if(!parent.hasChild(this)) {
-            parent.addChild(this, gateIndex);
-
-            broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityHierarchicalControlMessage.newBuilder()
-                    .setEntityId(entityId)
-                    .setTargetEntityId(0L)
-                    .setAction(HierarchicalAction.ENTER)
-                    .setPosition(gateInPos.encodeToNetwork())
-                    .build());
-        }
-
-        // entered an entity, convert to relative coordinates
-        position = new Vector3D(position.x + gateInPos.x, position.y + gateInPos.y, position.z + gateInPos.z);
-        System.out.println("ENTITY " + getClass().getSimpleName() + " switched to local/relative coordinate system");
-    }
-
-    @Override
-    public boolean takeSlot(int slot) {
-        if(parent == null) return false;
+    public boolean takeSlot(Entity parent, int slot) {
+        if(parent == null || this.parent != null) return false;
         if(slot >= parent.getEntitySlots()) return false;
-        // don't need to acquire this since client will use its own position
-        // Vector3f pos = parent.getEntitySlotRelativePosition(slot);
 
         broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.newBuilder()
-        .setEntityId(entityId)
-        .setSlotId(slot)
-        .setTargetEntityId(parent.getEntityId()).build());
+                .setEntityId(entityId)
+                .setTargetEntityId(parent.getEntityId())
+                .setSlotId(slot)
+                .setSlotRelativePosition(parent.getEntitySlotRelativePosition(slot).encodeToNetwork())
+                .setTargetEntityId(parent.getEntityId()).build());
+
+        this.parent = parent;
+        slotTaken = slot;
         return true;
     }
 
     @Override
-    public void tickNormal() {
-        // default nothing
-    }
+    public void quitSlot() {
+        if(this.parent == null) return;
+        broadcastToViewers(org.dragonet.cloudland.net.protocol.Entity.ServerEntityBindingControlMessage.newBuilder()
+                .setEntityId(entityId)
+                .setTargetEntityId(0xFFFFFFFF)
+                .setSlotId(0xFFFFFFFF)
+                .clearSlotRelativePosition()
+                .setTargetEntityId(parent.getEntityId()).build());
 
-    @Override
-    public void tickChild() {
-        // default nothing
+        this.parent = null;
+        slotTaken = -1;
     }
 
     @Override
     public Vector3D getPosition() {
-        if(!hasParent()) {
-            return position;
-        } else {
-            return parent.getPosition().add(position);
-        }
-    }
-
-    @Override
-    public Vector3D getRelativePosition(){
         return position;
     }
 }

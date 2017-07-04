@@ -9,14 +9,6 @@ import org.dragonet.cloudland.server.util.math.Vector3f;
  * Created on 2017/6/25.
  */
 public class PlaneEntity extends BaseEntity {
-    @Override
-    public Vector3f getGatePosition(int gateIndex, boolean enter) {
-        if(enter) {
-            return new Vector3f(0.5f, 0.5f, 5f);
-        } else {
-            return new Vector3f(0.5f, 0.5f, 10f);
-        }
-    }
 
     /**
      * have slots?
@@ -38,11 +30,6 @@ public class PlaneEntity extends BaseEntity {
         return 0;
     }
 
-    @Override
-    public boolean enterable() {
-        return true;
-    }
-
     /**
      * where is that slot?
      *
@@ -51,17 +38,6 @@ public class PlaneEntity extends BaseEntity {
      */
     @Override
     public Vector3f getEntitySlotRelativePosition(int index) {
-        return null;
-    }
-
-    /**
-     * quit that slot, eg. stand up from a driver seat.
-     *
-     * @param action
-     * @return where should this entity go? (described more in the ProtoBuf sources)
-     */
-    @Override
-    public Vector3f quitSlot(Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction action) {
         return null;
     }
 

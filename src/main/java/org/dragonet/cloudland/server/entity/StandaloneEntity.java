@@ -22,19 +22,4 @@ public abstract class StandaloneEntity extends BaseEntity {
     public Vector3f getEntitySlotRelativePosition(int index) {
         return null;
     }
-
-    @Override
-    public Vector3f quitSlot(Entity.ServerEntityHierarchicalControlMessage.HierarchicalAction action) {
-        return null;
-    }
-
-    @Override
-    public Vector3f getGatePosition(int gateIndex, boolean enter) {
-        return null;
-    }
-
-    @Override
-    public boolean enterable() {
-        return false;
-    }
 }
