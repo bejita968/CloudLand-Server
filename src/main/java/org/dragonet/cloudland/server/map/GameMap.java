@@ -73,7 +73,7 @@ public class GameMap  {
     }
 
     public boolean setBlockAt(int x, int y, int z, int id, int meta) {
-        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, true, false);
+        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, true);
         if(c == null) {
             c = chunkManager.loadEmptyChunk(x >> 4, z >> 4);
         }
@@ -93,7 +93,7 @@ public class GameMap  {
     }
 
     public boolean removeBlockAt(int x, int y, int z){
-        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, true, true);
+        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, true);
         if(c.getBlock(x, y, z) == 0) return false;
         int bx = x & 0xf;
         int bz = z & 0xf;
@@ -110,7 +110,7 @@ public class GameMap  {
     }
 
     public int getBlockAt(int x, int y, int z) {
-        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false, false);
+        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false);
         if(c == null) return -1;
         return c.getBlock(x & 0xF, y ,z & 0xF);
     }
@@ -120,7 +120,7 @@ public class GameMap  {
     }
 
     public void broadcastBlockUpdate(int x, int y, int z) {
-        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false, false);
+        LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false);
         if(c == null) return;
         c.broadcastBlockUpdate(x & 0xF, y, z & 0xF); // Y MUST *NOT* USE AND OPERATION
     }
@@ -129,7 +129,7 @@ public class GameMap  {
         if(!chunkManager.isChunkLoaded(x >> 4, z >> 4)) {
             return null;
         }
-        LoadedChunk chunk = chunkManager.getChunk(x >> 4, z >> 4, false, false);
+        LoadedChunk chunk = chunkManager.getChunk(x >> 4, z >> 4, false);
         return chunk.getRuntimeMeta(x & 0xF, y, z & 0xF);
     }
 
@@ -137,7 +137,7 @@ public class GameMap  {
         if(!chunkManager.isChunkLoaded(x >> 4, z >> 4)) {
             return;
         }
-        LoadedChunk chunk = chunkManager.getChunk(x >> 4, z >> 4, false, false);
+        LoadedChunk chunk = chunkManager.getChunk(x >> 4, z >> 4, false);
         chunk.setRuntimeMeta(x & 0xF, y, z & 0xF, meta);
     }
 

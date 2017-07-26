@@ -78,12 +78,11 @@ public class DefaultGenerator implements Generator {
     }
 
     @Override
-    public Chunk generate(Chunk chunk, boolean populate) {
+    public Chunk generate(Chunk chunk) {
         int cx = chunk.getX();
         int cz = chunk.getZ();
 
         if(chunk.isGenerated()) {
-            if(!chunk.isPopulated() && populate) populateChunk(chunk);
             return chunk;
         }
         this.nukkitRandom.setSeed(cx * localSeed1 ^ cz * localSeed2 ^ seed);
@@ -203,18 +202,11 @@ public class DefaultGenerator implements Generator {
 
         chunk.markGenerated();
 
-        if(!chunk.isPopulated() && populate) {
-            populateChunk(chunk);
-        }
-
         return chunk;
     }
 
-    private void populateChunk(Chunk chunk) {
-        for(Populator p : populators) {
-            p.populate(chunk, nukkitRandom);
-        }
-
-        chunk.markPopulated();
+    @Override
+    public List<Populator> getPopulators(int x, int z) {
+        return populators;
     }
 }

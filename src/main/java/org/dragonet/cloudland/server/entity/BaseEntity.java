@@ -61,7 +61,7 @@ public abstract class BaseEntity implements Entity {
 
     @Override
     public LoadedChunk getChunk(){
-        return getMap().getChunkManager().getChunk((int)(getPosition().getBlockX() >> 4), (int)(getPosition().getBlockZ() >> 4), true, false);
+        return getMap().getChunkManager().getChunk((int)(getPosition().getBlockX() >> 4), (int)(getPosition().getBlockZ() >> 4), false);
     }
 
     @Override

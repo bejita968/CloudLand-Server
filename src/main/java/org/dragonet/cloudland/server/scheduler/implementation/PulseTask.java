@@ -37,7 +37,7 @@ public class PulseTask implements Runnable {
             task.cancel();
             return;
         }
-        LoadedChunk c = map.getChunkManager().getChunk(chunkPosition[0], chunkPosition[1], false, false);
+        LoadedChunk c = map.getChunkManager().getChunk(chunkPosition[0], chunkPosition[1], false);
         if (c == null) {
             return;
         }

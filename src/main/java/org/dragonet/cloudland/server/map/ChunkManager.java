@@ -3,10 +3,10 @@ package org.dragonet.cloudland.server.map;
 import org.dragonet.cloudland.server.CloudLandServer;
 import org.dragonet.cloudland.server.entity.PlayerEntity;
 import lombok.Getter;
+import org.dragonet.cloudland.server.map.populator.Populator;
+import org.dragonet.cloudland.server.util.NukkitRandom;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created on 2017/1/10.
@@ -26,17 +26,13 @@ public class ChunkManager {
         chunks = Collections.synchronizedMap(new HashMap<>());
     }
 
-    public LoadedChunk getChunk(int x, int z, boolean generate, boolean populate) {
-        if(!chunks.containsKey(x)) return loadChunk(x, z, generate, populate);
+    public LoadedChunk getChunk(int x, int z, boolean generate) {
+        if(!chunks.containsKey(x)) return loadChunk(x, z, generate);
         Map<Integer, LoadedChunk> zMap = chunks.get(x);
-        if(!zMap.containsKey(z)) return loadChunk(x, z, generate, populate);
+        if(!zMap.containsKey(z)) return loadChunk(x, z, generate);
         LoadedChunk c = chunks.get(x).get(z);
-        if(!c.isGenerated()) {
-            if(!generate) return null;
-            map.generator.generate(c, populate);
-        }
-        if(!c.isPopulated() && populate) {
-            map.generator.generate(c, true);
+        if(!c.isGenerated() && generate) {
+            map.generator.generate(c);
         }
         return chunks.get(x).get(z);
     }
@@ -50,18 +46,10 @@ public class ChunkManager {
     }
 
     public LoadedChunk loadChunk(int x, int z, boolean generate) {
-        return loadChunk(x, z, generate, true);
-    }
-
-    public LoadedChunk loadChunk(int x, int z, boolean generate, boolean populate) {
         if(chunks.containsKey(x) && chunks.get(x).containsKey(z)){
             LoadedChunk c = chunks.get(x).get(z);
-            if(!c.isGenerated()) {
-                if(!generate) return null;
-                map.generator.generate(c, populate);
-            }
-            if(!c.isPopulated() && populate) {
-                map.generator.generate(c, true);
+            if(!c.isGenerated() && generate) {
+                map.generator.generate(c);
             }
             return c;
         }
@@ -73,19 +61,19 @@ public class ChunkManager {
         if(!chunks.containsKey(x)) chunks.put(x, Collections.synchronizedMap(new HashMap<>()));
         chunks.get(x).put(z, c);
 
-        map.generator.generate(c, populate);
+        map.generator.generate(c);
         return c;
     }
 
     public void lockChunk(int x, int z, PlayerEntity holder) {
-        LoadedChunk c = getChunk(x, z, false, false);
+        LoadedChunk c = getChunk(x, z, false);
         //server.getLogger().info("[#] Locking chunk at (" + x + ", " + z + "), null? " + (c == null));
         if(c == null) return;
         c.lock(holder);
     }
 
     public void unlockChunk(int x, int z, PlayerEntity holder) {
-        LoadedChunk c = getChunk(x, z, false, false);
+        LoadedChunk c = getChunk(x, z, false);
         //server.getLogger().info("[-] Unlocking chunk at (" + x + ", " + z + "), null? " + (c == null));
         if(c == null) return;
         c.unlock(holder);
@@ -107,7 +95,7 @@ public class ChunkManager {
      * @return
      */
     public boolean setBlockAt(int x, int y, int z, int id) {
-        LoadedChunk c = getChunk(x >> 4, z >> 4, true, false);
+        LoadedChunk c = getChunk(x >> 4, z >> 4, true);
         int bx = x & 0xf;
         int bz = z & 0xf;
         if(c.getBlock(bx, y, bz) == id) return false;
@@ -116,7 +104,7 @@ public class ChunkManager {
     }
 
     public int getBlockAt(int x, int y, int z) {
-        LoadedChunk c = getChunk(x >> 4, z >> 4, false, false);
+        LoadedChunk c = getChunk(x >> 4, z >> 4, false);
         if(c == null) return 0;
         return c.getBlock(x & 0xF, y ,z & 0xF);
     }
@@ -128,5 +116,39 @@ public class ChunkManager {
                 c.tick();
             });
         });
+    }
+
+    public LoadedChunk populateChunk(int x, int z) {
+        LoadedChunk c = getChunk(x, z, true);
+        if(c == null) return null;
+        if(c.isPopulated()) {
+            return c;
+        }
+
+        // cancel out if the 3x3 around it isn't available
+        for (int x2 = x - 1; x2 <= x + 1; ++x2) {
+            for (int z2 = z - 1; z2 <= z + 1; ++z2) {
+                if (!isChunkLoaded(x2, z2) && loadChunk(x2, z2, true) == null) {
+                    return null;
+                }
+            }
+        }
+
+        // check again
+        if(c.isPopulated()) {
+            return c;
+        }
+        System.out.println(String.format("populating chunk XZ at [%d, %d]", x, z));
+        List<Populator> populators = map.getGenerator().getPopulators(x, z);
+        Random random = new Random(map.getSeed());
+        long xRand = random.nextLong() / 2 * 2 + 1;
+        long zRand = random.nextLong() / 2 * 2 + 1;
+        long populatorSeed = x * xRand + z * zRand ^ map.getSeed();
+        for(Populator p : populators) {
+            p.populate(c, new NukkitRandom(populatorSeed));
+        }
+        c.markPopulated();
+
+        return c;
     }
 }

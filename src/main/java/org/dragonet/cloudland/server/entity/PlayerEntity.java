@@ -143,6 +143,9 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
                         loadCount++;
                     }
                     LoadedChunk c = getMap().getChunkManager().loadChunk(cx, cz, true);
+                    if(!c.isPopulated()) {
+                        getMap().getChunkManager().populateChunk(cx, cz);
+                    }
                     c.getEntities().forEachValue((e) -> {
                         if (e == this) return;
                         //System.out.println("CHECKING USAGE E[" + e.getEntityId() + "] = " + usedEntities.contains(e.getEntityId()));
@@ -233,8 +236,9 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
         breakX = x;
         breakY = y;
         breakZ = z;
-        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, true, true);
-        if(c == null) return;
+        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, true);
+
+        if(c == null) return; // not likely to happen
         int bx = x & 0xF;
         int bz = z & 0xF;
         int id = c.getBlock(bx, y, bz);
@@ -255,7 +259,11 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
             sendBlockChange(x, y, z);
             return;
         }
-        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, true, true);
+        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, false);
+        if(c == null) {
+            getSession().disconnect("accessing block out of distance");
+            return;
+        }
         int bx = x & 0xF;
         int bz = z & 0xF;
         int id = c.getBlock(bx, y, bz);
@@ -296,7 +304,7 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
     }
 
     public void sendBlockChange(int x, int y, int z) {
-        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, false, false);
+        LoadedChunk c = getMap().getChunkManager().getChunk(x >> 4, z >> 4, false);
         if(c == null) return;
         getSession().sendNetworkMessage(org.dragonet.cloudland.net.protocol.Map.ServerUpdateBlockMessage.newBuilder()
                 .setX(x)
