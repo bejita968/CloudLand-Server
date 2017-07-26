@@ -3,10 +3,7 @@ package org.dragonet.cloudland.server.map.generator;
 import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.chunk.Chunk;
-import org.dragonet.cloudland.server.map.populator.CavePopulator;
-import org.dragonet.cloudland.server.map.populator.GroundPopulator;
-import org.dragonet.cloudland.server.map.populator.Populator;
-import org.dragonet.cloudland.server.map.populator.TreePopulator;
+import org.dragonet.cloudland.server.map.populator.*;
 import org.dragonet.cloudland.server.util.NukkitRandom;
 import org.dragonet.cloudland.server.util.noise.NoiseGenerator;
 import org.dragonet.cloudland.server.util.noise.Simplex;
@@ -75,6 +72,8 @@ public class DefaultGenerator implements Generator {
         populators.add(new CavePopulator(map));
         populators.add(new GroundPopulator());
         populators.add(new TreePopulator(map, 0, 5));
+        // ore populator is not working yet
+        // populators.add(new OrePopulator());
     }
 
     @Override

@@ -41,7 +41,7 @@ public class CavePopulator implements Populator {
     }
 
     @Override
-    public void populate(Chunk chunk, NukkitRandom random) {
+    public void populate(Chunk chunk, Random random) {
         int chunkX = chunk.getX();
         int chunkZ = chunk.getZ();
 

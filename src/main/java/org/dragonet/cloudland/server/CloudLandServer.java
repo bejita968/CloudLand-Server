@@ -87,8 +87,8 @@ public class CloudLandServer {
         generators = Collections.synchronizedMap(new HashMap<>());
 
         // Initiate stuffs
-        EntityType.init();
         ItemPrototype.init();
+        EntityType.init();
         BlockBehavior.init();
         CraftingManager.get().init();
 

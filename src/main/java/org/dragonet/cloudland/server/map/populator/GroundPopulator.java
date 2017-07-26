@@ -5,6 +5,8 @@ import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.chunk.Chunk;
 import org.dragonet.cloudland.server.util.NukkitRandom;
 
+import java.util.Random;
+
 /**
  * Created on 2017/2/26.
  */
@@ -21,7 +23,7 @@ public class GroundPopulator implements Populator {
             DIRT};
 
     @Override
-    public void populate(Chunk chunk, NukkitRandom random) {
+    public void populate(Chunk chunk, Random random) {
 
         for (int x = 0; x < 16; ++x) {
             for (int z = 0; z < 16; ++z) {

@@ -24,9 +24,6 @@ import java.util.function.Consumer;
  */
 public class LoadedChunk extends Chunk {
 
-    @Getter
-    private final GameMap map;
-
     private Set<PlayerEntity> holders = Collections.synchronizedSet(new HashSet<>());
 
     @Getter
@@ -35,13 +32,11 @@ public class LoadedChunk extends Chunk {
     public final BinaryMetadata[][][] runtimeMeta = new BinaryMetadata[16][512][16];
 
     public LoadedChunk(GameMap map, int x, int z) {
-        super(x, z);
-        this.map = map;
+        super(map, x, z);
     }
 
     public LoadedChunk(GameMap map, int x, int z, ChunkSection[] sections){
-        super(x, z, sections);
-        this.map = map;
+        super(map, x, z, sections);
     }
 
     public void lock(PlayerEntity holder) {
@@ -62,7 +57,7 @@ public class LoadedChunk extends Chunk {
         Vector3D pos = e.getPosition();
         int cx = (int)(pos.getBlockX() >> 4);
         int cz = (int)(pos.getBlockZ() >> 4);
-        if(map != e.getMap() || cx != getX() || cz != getZ()) {
+        if(getMap() != e.getMap() || cx != getX() || cz != getZ()) {
             entities.remove(e.getEntityId());
             //if (x == 0 && z == 0) System.out.println("[EREF] C(" + x + ", " + z +  ") De-referencing entity " + e.getEntityId());
         } else {

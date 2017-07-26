@@ -145,7 +145,12 @@ public class ChunkManager {
         long zRand = random.nextLong() / 2 * 2 + 1;
         long populatorSeed = x * xRand + z * zRand ^ map.getSeed();
         for(Populator p : populators) {
-            p.populate(c, new NukkitRandom(populatorSeed));
+            try {
+                p.populate(c, new Random(populatorSeed));
+            } catch(Exception e){
+                e.printStackTrace();
+                System.out.println("Error whilst populating chunk! ");
+            }
         }
         c.markPopulated();
 

@@ -7,6 +7,8 @@ import org.dragonet.cloudland.server.map.object.ObjectTree;
 import org.dragonet.cloudland.server.util.NukkitRandom;
 import org.dragonet.cloudland.server.util.math.NukkitMath;
 
+import java.util.Random;
+
 /**
  * Created on 2017/2/26.
  */
@@ -48,11 +50,11 @@ public class TreePopulator implements Populator {
     }
 
     @Override
-    public void populate(Chunk chunk, NukkitRandom random) {
+    public void populate(Chunk chunk, Random random) {
         int chunkX = chunk.getX();
         int chunkZ = chunk.getZ();
 
-        int amount = random.nextBoundedInt(this.randomAmount + 1) + this.baseAmount;
+        int amount = random.nextInt(this.randomAmount + 1) + this.baseAmount;
         for (int i = 0; i < amount; ++i) {
             int x = NukkitMath.randomRange(random, chunkX << 4, (chunkX << 4) + 15);
             int z = NukkitMath.randomRange(random, chunkZ << 4, (chunkZ << 4) + 15);

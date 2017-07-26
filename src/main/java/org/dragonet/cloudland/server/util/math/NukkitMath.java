@@ -2,6 +2,8 @@ package org.dragonet.cloudland.server.util.math;
 
 import org.dragonet.cloudland.server.util.NukkitRandom;
 
+import java.util.Random;
+
 /**
  * author: MagicDroidX
  * Nukkit Project
@@ -33,10 +35,14 @@ public class NukkitMath {
     }
 
     public static int randomRange(NukkitRandom random, int start) {
-        return randomRange(random, 0, 0x7fffffff);
+        return randomRange(random, start, 0x7fffffff);
     }
 
     public static int randomRange(NukkitRandom random, int start, int end) {
+        return start + (random.nextInt() % (end + 1 - start));
+    }
+
+    public static int randomRange(Random random, int start, int end) {
         return start + (random.nextInt() % (end + 1 - start));
     }
 

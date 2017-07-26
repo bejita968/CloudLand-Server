@@ -1,5 +1,6 @@
 package org.dragonet.cloudland.server.map.chunk;
 
+import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.util.math.Vector3;
 import lombok.Getter;
 
@@ -11,6 +12,12 @@ import java.util.Set;
  */
 public class Chunk {
     public final static int SECTION_COUNT = 32;
+
+    /**
+     * this can be null
+     */
+    @Getter
+    private final GameMap map;
 
     @Getter
     private final int x;
@@ -37,24 +44,27 @@ public class Chunk {
             if(sections[y] == null) continue;
             clonedSections[y] = sections[y].clone();
         }
-        return new Chunk(x, z, clonedSections);
+        return new Chunk(map, x, z, clonedSections);
     }
 
-    public Chunk(int x, int z){
+    public Chunk(GameMap map, int x, int z){
+        this.map = map;
         this.x = x;
         this.z = z;
         this.sections = new ChunkSection[SECTION_COUNT];
         dynamicBlocks = new HashSet<>();
     }
 
-    public Chunk(int x, int z, ChunkSection[] sections){
+    public Chunk(GameMap map, int x, int z, ChunkSection[] sections){
+        this.map = map;
         this.x = x;
         this.z = z;
         this.sections = sections;
         dynamicBlocks = new HashSet<>();
     }
 
-    public Chunk(int x, int z, ChunkSection[] sections, Set<Vector3> dynamicBlocks){
+    public Chunk(GameMap map, int x, int z, ChunkSection[] sections, Set<Vector3> dynamicBlocks){
+        this.map = map;
         this.x = x;
         this.z = z;
         this.sections = sections;

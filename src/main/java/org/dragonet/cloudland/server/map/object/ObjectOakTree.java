@@ -4,6 +4,8 @@ import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.ChunkManager;
 import org.dragonet.cloudland.server.util.NukkitRandom;
 
+import java.util.Random;
+
 /**
  * author: MagicDroidX
  * Nukkit Project
@@ -36,8 +38,8 @@ public class ObjectOakTree extends ObjectTree {
     }
 
     @Override
-    public void placeObject(ChunkManager map, int x, int y, int z, NukkitRandom random) {
-        this.treeHeight = random.nextBoundedInt(3) + 4;
+    public void placeObject(ChunkManager map, int x, int y, int z, Random random) {
+        this.treeHeight = random.nextInt(3) + 4;
         super.placeObject(map, x, y, z, random);
     }
 }

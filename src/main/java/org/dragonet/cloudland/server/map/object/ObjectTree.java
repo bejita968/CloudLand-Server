@@ -7,6 +7,7 @@ import org.dragonet.cloudland.server.util.NukkitRandom;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * author: MagicDroidX
@@ -49,11 +50,11 @@ public abstract class ObjectTree {
         return 7;
     }
 
-    public static void growTree(ChunkManager map, int x, int y, int z, NukkitRandom random) {
+    public static void growTree(ChunkManager map, int x, int y, int z, Random random) {
         growTree(map, x, y, z, random, 0);
     }
 
-    public static void growTree(ChunkManager map, int x, int y, int z, NukkitRandom random, int type) {
+    public static void growTree(ChunkManager map, int x, int y, int z, Random random, int type) {
         ObjectTree tree;
         switch (type) {
             /*
@@ -87,7 +88,7 @@ public abstract class ObjectTree {
     }
 
 
-    public boolean canPlaceObject(ChunkManager map, int x, int y, int z, NukkitRandom random) {
+    public boolean canPlaceObject(ChunkManager map, int x, int y, int z, Random random) {
         int radiusToCheck = 0;
         for (int yy = 0; yy < this.getTreeHeight() + 3; ++yy) {
             if (yy == 1 || yy == this.getTreeHeight()) {
@@ -105,7 +106,7 @@ public abstract class ObjectTree {
         return true;
     }
 
-    public void placeObject(ChunkManager map, int x, int y, int z, NukkitRandom random) {
+    public void placeObject(ChunkManager map, int x, int y, int z, Random random) {
 
         this.placeTrunk(map, x, y, z, random, this.getTreeHeight() - 1);
 
@@ -116,7 +117,7 @@ public abstract class ObjectTree {
                 int xOff = Math.abs(xx - x);
                 for (int zz = z - mid; zz <= z + mid; ++zz) {
                     int zOff = Math.abs(zz - z);
-                    if (xOff == mid && zOff == mid && (yOff == 0 || random.nextBoundedInt(2) == 0)) {
+                    if (xOff == mid && zOff == mid && (yOff == 0 || random.nextInt(2) == 0)) {
                         continue;
                     }
                     int id = map.getBlockAt(xx, yy, zz);
@@ -128,7 +129,7 @@ public abstract class ObjectTree {
         }
     }
 
-    protected void placeTrunk(ChunkManager map, int x, int y, int z, NukkitRandom random, int trunkHeight) {
+    protected void placeTrunk(ChunkManager map, int x, int y, int z, Random random, int trunkHeight) {
         // The base dirt block
         map.setBlockAt(x, y - 1, z, DIRT_ID);
 

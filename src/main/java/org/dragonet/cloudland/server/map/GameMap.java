@@ -72,7 +72,7 @@ public class GameMap  {
         entities.forEachValue(e);
     }
 
-    public boolean setBlockAt(int x, int y, int z, int id, int meta) {
+    public boolean setBlockAt(int x, int y, int z, int id) {
         LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, true);
         if(c == null) {
             c = chunkManager.loadEmptyChunk(x >> 4, z >> 4);
@@ -113,10 +113,6 @@ public class GameMap  {
         LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false);
         if(c == null) return -1;
         return c.getBlock(x & 0xF, y ,z & 0xF);
-    }
-
-    public void setBlockAt(int x, int y, int z, int id) {
-        setBlockAt(x, y, z, id, 0);
     }
 
     public void broadcastBlockUpdate(int x, int y, int z) {
