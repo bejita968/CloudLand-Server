@@ -30,7 +30,6 @@ public class PlayerInventory extends BaseInventory {
             super.onAction(player, elementId, action, param1, param2);
 
             crafting.detectCrafting();
-            sendContents();
         }
     };
     private InventoryElement craftingOutput = new InventoryElement() {
@@ -40,7 +39,6 @@ public class PlayerInventory extends BaseInventory {
             super.onAction(player, elementId, action, param1, param2);
 
             crafting.detectCrafting();
-            sendContents();
         }
 
         @Override

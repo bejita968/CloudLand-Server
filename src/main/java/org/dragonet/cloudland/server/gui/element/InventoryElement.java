@@ -44,51 +44,65 @@ public class InventoryElement extends BaseGUIElement {
 
     @Override
     public void onAction(PlayerEntity player, int elementId, GUI.ClientWindowInteractMessage.WindowAction action, int param1, int param2) {
-        if(player.getCursorItem() != null && player.getCursorItem().getId() != 0) {
-            // there is something on his/her hand
-            if(param1 < items.length && items[param1] != null && items[param1].getId() != 0) {
-                ItemPrototype slotItem = ItemPrototype.get(items[param1]);
-                if(player.getCursorItem().isMergeableWith(items[param1])) {
-                    if(!onItemMerge(param1, player)) return; // call event
-                    // try to merge
-                    if(items[param1].getCount() + player.getCursorItem().getCount() <= slotItem.getMaxStack()) {
-                        // merge all
-                        items[param1].setCount(items[param1].getCount() + player.getCursorItem().getCount());
-                        player.setCursorItem(null);
-                        //sendContents();
+        if(param2 == 0) { // left click
+            if (player.getCursorItem() != null && player.getCursorItem().getId() != 0) {
+                // there is something on his/her hand
+                if (param1 < items.length && items[param1] != null && items[param1].getId() != 0) {
+                    ItemPrototype slotItem = ItemPrototype.get(items[param1]);
+                    if (player.getCursorItem().isMergeableWith(items[param1])) {
+                        if (!onItemMerge(param1, player)) return; // call event
+                        // try to merge
+                        if (items[param1].getCount() + player.getCursorItem().getCount() <= slotItem.getMaxStack()) {
+                            // merge all
+                            items[param1].setCount(items[param1].getCount() + player.getCursorItem().getCount());
+                            player.setCursorItem(null);
+                            //sendContents();
+                        } else {
+                            // merge partially
+                            int canBeMerged = slotItem.getMaxStack() - items[param1].getCount();
+                            items[param1].setCount(slotItem.getMaxStack());
+                            Item cursor = player.getCursorItem();
+                            cursor.setCount(cursor.getCount() - canBeMerged);
+                            player.setCursorItem(cursor);
+                            //sendContents();
+                        }
                     } else {
-                        // merge partially
-                        int canBeMerged = slotItem.getMaxStack() - items[param1].getCount();
-                        items[param1].setCount(slotItem.getMaxStack());
-                        Item cursor = player.getCursorItem();
-                        cursor.setCount(cursor.getCount() - canBeMerged);
-                        player.setCursorItem(cursor);
+                        // there is also something on that slot, so we swap them
+                        if (!onItemSwap(param1, player)) return; // call event
+                        Item toSwap = items[param1];
+                        items[param1] = player.getCursorItem();
+                        player.setCursorItem(toSwap);
                         //sendContents();
                     }
                 } else {
-                    // there is also something on that slot, so we swap them
-                    if(!onItemSwap(param1, player)) return; // call event
-                    Item toSwap = items[param1];
+                    // there is NOTHING on the slot, so we just place the item there
+                    if (!onItemPlacedInside(param1, player)) return; // call event
                     items[param1] = player.getCursorItem();
-                    player.setCursorItem(toSwap);
+                    player.setCursorItem(null);
                     //sendContents();
                 }
             } else {
-                // there is NOTHING on the slot, so we just place the item there
-                if(!onItemPlacedInside(param1, player)) return; // call event
-                items[param1] = player.getCursorItem();
-                player.setCursorItem(null);
-                //sendContents();
-            }
-        } else {
-            // there is NOTHING on his/her hand
-            if(param1 < items.length && items[param1] != null && items[param1].getId() != 0) {
-                if(!onItemPickedUp(param1, player)) return; // call event
+                // there is NOTHING on his/her hand
+                if (param1 < items.length && items[param1] != null && items[param1].getId() != 0) {
+                    if (!onItemPickedUp(param1, player)) return; // call event
 
-                // there is something on that slot, so we just pick that slot up
-                player.setCursorItem(items[param1]);
-                items[param1] = null;
-                //sendContents();
+                    // there is something on that slot, so we just pick that slot up
+                    player.setCursorItem(items[param1]);
+                    items[param1] = null;
+                    //sendContents();
+                }
+            }
+        } else if(param2 == 1) { // right click
+            if(param1 < items.length && items[param1] != null && (player.getCursorItem() == null || player.getCursorItem().getCount() == 0)) {
+                // player hand is empty
+                if(!onHalve(param1, player)) return;
+                if(items[param1].getCount() <= 1) return;
+                int all = items[param1].getCount();
+                int keep = items[param1].getCount() / 2;
+                items[param1].setCount(keep);
+                Item cursor = items[param1].clone();
+                cursor.setCount(all - keep);
+                player.setCursorItem(cursor);
             }
         }
     }
@@ -160,5 +174,10 @@ public class InventoryElement extends BaseGUIElement {
     public boolean onChange(int slot, PlayerEntity player) {
         // can be used for listeners, eg. crafting
         return true;
+    }
+
+    public boolean onHalve(int slot, PlayerEntity player) {
+        // can be used for listeners, eg. crafting
+        return onChange(slot, player);
     }
 }
