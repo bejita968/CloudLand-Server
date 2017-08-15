@@ -81,14 +81,9 @@ public class GameMap  {
         int bz = z & 0xf;
         if(c.getBlock(bx, y, bz) == id) return false;
         c.setBlock(bx, y, bz, id);
-        c.forAllHolders((p) -> p.getSession().sendNetworkMessage(Map.ServerUpdateBlockMessage.newBuilder()
-                .setX(x)
-                .setY(y)
-                .setZ(z)
-                .setId(id)
-                .build())
-        );
-        broadcastBlockUpdate(x, y, z); // function of GameMap
+        if(c.isPopulated()) {
+            broadcastBlockUpdate(x, y, z); // function of GameMap
+        }
         return true;
     }
 
@@ -98,14 +93,9 @@ public class GameMap  {
         int bx = x & 0xf;
         int bz = z & 0xf;
         c.setBlock(bx, y, bz, 0);
-        c.forAllHolders((p) -> p.getSession().sendNetworkMessage(Map.ServerUpdateBlockMessage.newBuilder()
-                .setX(x)
-                .setY(y)
-                .setZ(z)
-                .setId(0)
-                .build())
-        );
-        broadcastBlockUpdate(x, y, z); // function of GameMap
+        if(c.isPopulated()) {
+            broadcastBlockUpdate(x, y, z); // function of GameMap
+        }
         return true;
     }
 
