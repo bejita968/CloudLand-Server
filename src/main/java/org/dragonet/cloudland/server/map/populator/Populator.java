@@ -1,5 +1,6 @@
 package org.dragonet.cloudland.server.map.populator;
 
+import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.chunk.Chunk;
 
 import java.util.Random;

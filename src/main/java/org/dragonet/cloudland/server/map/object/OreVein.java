@@ -37,10 +37,7 @@ public class OreVein {
                 double pX = (x + 0.5D - originX) / hRadius;
                 pX *= pX;
                 if (pX < 1) {
-                    int startY = (int) (originY - vRadius);
-                    System.out.println("original start Y=" + startY);
-                    if(startY < 0) startY = 0;
-                    for (int y = startY; y <= (int) (originY + vRadius); y++) {
+                    for (int y = (int) (originY - vRadius); y <= (int) (originY + vRadius); y++) {
                         double pY = (y + 0.5D - originY) / vRadius;
                         pY *= pY;
                         if (pX + pY < 1) {
@@ -48,6 +45,12 @@ public class OreVein {
                                 double pZ = (z + 0.5D - originZ) / hRadius;
                                 pZ *= pZ;
                                 if (pX + pY + pZ < 1 && world.getBlockAt(x, y, z) == targetType) {
+                                    /*
+                                    BlockState state = world.getBlockAt(x, y, z).getState();
+                                    state.setType(type);
+                                    state.setData(data);
+                                    state.update(true);
+                                    */
                                     world.setBlockAt(x, y, z, type);
                                 }
                             }

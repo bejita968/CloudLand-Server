@@ -149,7 +149,7 @@ public class ChunkManager {
                 p.populate(c, new Random(populatorSeed));
             } catch(Exception e){
                 e.printStackTrace();
-                System.out.println("Error whilst populating chunk! ");
+                System.out.println("Error whilst using <" + p.getClass().getSimpleName() + "> to populate the chunk: " + e.getMessage());
             }
         }
         c.markPopulated();

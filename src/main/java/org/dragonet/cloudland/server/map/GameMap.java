@@ -111,7 +111,7 @@ public class GameMap  {
 
     public int getBlockAt(int x, int y, int z) {
         LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, false);
-        if(c == null) return -1;
+        if(c == null) return 0;
         return c.getBlock(x & 0xF, y ,z & 0xF);
     }
 

@@ -1,8 +1,6 @@
 package org.dragonet.cloudland.server.map.object;
 
-/**
- * Created on 2017/2/26.
- */
+
 public class OreType {
     private final int type;
     private final int minY;
