@@ -33,11 +33,14 @@ public class OreVein {
             double hRadius = (Math.sin(i * (float) Math.PI / amount) + 1 * q + 1) / 2.0D;
             double vRadius = (Math.sin(i * (float) Math.PI / amount) + 1 * q + 1) / 2.0D;
 
+            int startY = (int) (originY - vRadius);
+            if(startY < 0) startY = 0; // idk why but we should add this
+
             for (int x = (int) (originX - hRadius); x <= (int) (originX - hRadius); x++) {
                 double pX = (x + 0.5D - originX) / hRadius;
                 pX *= pX;
                 if (pX < 1) {
-                    for (int y = (int) (originY - vRadius); y <= (int) (originY + vRadius); y++) {
+                    for (int y = startY; y <= (int) (originY + vRadius); y++) {
                         double pY = (y + 0.5D - originY) / vRadius;
                         pY *= pY;
                         if (pX + pY < 1) {
