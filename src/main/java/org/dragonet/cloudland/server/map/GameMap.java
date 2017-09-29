@@ -1,6 +1,5 @@
 package org.dragonet.cloudland.server.map;
 
-import org.dragonet.cloudland.net.protocol.Map;
 import org.dragonet.cloudland.server.CloudLandServer;
 import org.dragonet.cloudland.server.entity.Entity;
 import org.dragonet.cloudland.server.entity.PlayerEntity;
@@ -9,7 +8,6 @@ import org.dragonet.cloudland.server.network.BinaryMetadata;
 import org.dragonet.cloudland.server.util.UnsignedLongKeyMap;
 import lombok.Getter;
 
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 /**
@@ -74,9 +72,6 @@ public class GameMap  {
 
     public boolean setBlockAt(int x, int y, int z, int id) {
         LoadedChunk c = chunkManager.getChunk(x >> 4, z >> 4, true);
-        if(c == null) {
-            c = chunkManager.loadEmptyChunk(x >> 4, z >> 4);
-        }
         int bx = x & 0xf;
         int bz = z & 0xf;
         if(c.getBlock(bx, y, bz) == id) return false;

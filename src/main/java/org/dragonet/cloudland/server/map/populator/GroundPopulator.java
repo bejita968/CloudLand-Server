@@ -3,7 +3,6 @@ package org.dragonet.cloudland.server.map.populator;
 import org.dragonet.cloudland.server.behavior.BlockBehavior;
 import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.chunk.Chunk;
-import org.dragonet.cloudland.server.util.NukkitRandom;
 
 import java.util.Random;
 

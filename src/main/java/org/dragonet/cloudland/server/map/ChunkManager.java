@@ -79,13 +79,6 @@ public class ChunkManager {
         c.unlock(holder);
     }
 
-    public LoadedChunk loadEmptyChunk(int x, int z) {
-        LoadedChunk c = new LoadedChunk(map, x, z);
-        if(!chunks.containsKey(x)) chunks.put(x, Collections.synchronizedMap(new HashMap<>()));
-        chunks.get(x).put(z, c);
-        return c;
-    }
-
     /**
      * THIS FUNCTION WILL NOT UPDATE CLIENTS, CALL FROM GAMEMAP ONLY!!
      * @param x
