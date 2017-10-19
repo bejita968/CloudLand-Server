@@ -17,6 +17,7 @@ import org.dragonet.cloudland.server.network.BinaryMetadata;
 import org.dragonet.cloudland.server.network.Session;
 import org.dragonet.cloudland.server.network.tasks.SendChunkTask;
 import lombok.Getter;
+import org.dragonet.cloudland.server.scheduler.ScheduledTask;
 import org.dragonet.cloudland.server.util.LongSet;
 import org.dragonet.cloudland.server.util.PlayerProfile;
 import org.dragonet.cloudland.server.util.UnsignedLongSet;
@@ -44,7 +45,7 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
 
     @Getter
     private SendChunkTask chunkTask;
-    private ScheduledFuture chunkTaskFuture;
+    private ScheduledTask chunkTaskFuture;
 
     @Getter
     private PlayerInventory inventory;
@@ -63,7 +64,8 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
         this.session = session;
         this.profile = profile;
         chunkTask = new SendChunkTask(this);
-        chunkTaskFuture = session.getServer().getThreadPool().scheduleAtFixedRate(chunkTask, 0L, 10L, TimeUnit.MILLISECONDS);
+        // chunkTaskFuture = session.getServer().getThreadPool().scheduleAtFixedRate(chunkTask, 0L, 10L, TimeUnit.MILLISECONDS);
+        chunkTaskFuture = session.getServer().getScheduler().runTaskTimer(null, chunkTask, 0L, 5L);
 
         // TODO: Load inventory from data store
         inventory = new PlayerInventory(this);
@@ -79,7 +81,7 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
     public void setMap(GameMap map) {
         usedChunks.clear();
         if(map == null) {
-            chunkTaskFuture.cancel(true);
+            chunkTaskFuture.cancel();
             if(getMap() != null){
                 setRawPosition(null);
                 getChunk().updateEntityReference(this);

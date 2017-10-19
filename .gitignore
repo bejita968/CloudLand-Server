@@ -42,3 +42,6 @@ plugins
 plugins/*
 players
 players/*
+
+# CloudLand Custom
+/logs

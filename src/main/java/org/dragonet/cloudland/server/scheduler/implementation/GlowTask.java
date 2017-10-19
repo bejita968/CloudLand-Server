@@ -1,7 +1,7 @@
 package org.dragonet.cloudland.server.scheduler.implementation;
 
 
-import org.dragonet.cloudland.server.scheduler.BukkitTask;
+import org.dragonet.cloudland.server.scheduler.ScheduledTask;
 import org.dragonet.cloudland.server.scheduler.BukkitWorker;
 
 import java.util.concurrent.ExecutionException;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Graham Edgecombe
  */
-public class GlowTask extends FutureTask<Void> implements BukkitTask, BukkitWorker {
+public class GlowTask extends FutureTask<Void> implements ScheduledTask, BukkitWorker {
 
     /**
      * The next task ID pending.

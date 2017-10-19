@@ -4,7 +4,6 @@ import org.dragonet.cloudland.server.CloudLandServer;
 import org.dragonet.cloudland.server.entity.PlayerEntity;
 import lombok.Getter;
 import org.dragonet.cloudland.server.map.populator.Populator;
-import org.dragonet.cloudland.server.util.NukkitRandom;
 
 import java.util.*;
 
@@ -23,7 +22,7 @@ public class ChunkManager {
     public ChunkManager(GameMap map){
         this.map = map;
         this.server = map.getServer();
-        chunks = Collections.synchronizedMap(new HashMap<>());
+        chunks = new HashMap<>();
     }
 
     public LoadedChunk getChunk(int x, int z, boolean generate) {
@@ -58,7 +57,7 @@ public class ChunkManager {
         //...
         //Generate
         LoadedChunk c = new LoadedChunk(map, x, z);
-        if(!chunks.containsKey(x)) chunks.put(x, Collections.synchronizedMap(new HashMap<>()));
+        if(!chunks.containsKey(x)) chunks.put(x, new HashMap<>());
         chunks.get(x).put(z, c);
 
         map.generator.generate(c);
@@ -112,7 +111,7 @@ public class ChunkManager {
     }
 
     public LoadedChunk populateChunk(int x, int z) {
-        LoadedChunk c = getChunk(x, z, true);
+        LoadedChunk c = getChunk(x, z, false);
         if(c == null) return null;
         if(c.isPopulated()) {
             return c;
@@ -131,7 +130,6 @@ public class ChunkManager {
         if(c.isPopulated()) {
             return c;
         }
-        System.out.println(String.format("populating chunk XZ at [%d, %d]", x, z));
         List<Populator> populators = map.getGenerator().getPopulators(x, z);
         Random random = new Random(map.getSeed());
         long xRand = random.nextLong() / 2 * 2 + 1;

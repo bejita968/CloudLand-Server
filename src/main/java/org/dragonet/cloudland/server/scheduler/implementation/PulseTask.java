@@ -3,7 +3,7 @@ package org.dragonet.cloudland.server.scheduler.implementation;
 import org.dragonet.cloudland.server.item.ItemPrototype;
 import org.dragonet.cloudland.server.map.GameMap;
 import org.dragonet.cloudland.server.map.LoadedChunk;
-import org.dragonet.cloudland.server.scheduler.BukkitTask;
+import org.dragonet.cloudland.server.scheduler.ScheduledTask;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +18,7 @@ public class PulseTask implements Runnable {
 
     @Setter
     @Getter
-    private BukkitTask task;
+    private ScheduledTask task;
 
     public PulseTask(GameMap map, int[] location, long delay, boolean single) {
         this.map = map;

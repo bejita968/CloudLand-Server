@@ -3,7 +3,7 @@ package org.dragonet.cloudland.server.scheduler;
 /**
  * Represents a task being executed by the scheduler
  */
-public interface BukkitTask {
+public interface ScheduledTask {
 
     /**
      * Returns the taskId for the task.

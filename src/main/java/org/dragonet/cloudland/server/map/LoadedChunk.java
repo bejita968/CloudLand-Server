@@ -76,6 +76,7 @@ public class LoadedChunk extends Chunk {
     }
 
     public void broadcastBlockUpdate(int x, int y, int z) {
+        if(!isPopulated()) return;
         forAllHolders((p) -> p.getSession().sendNetworkMessage(Map.ServerUpdateBlockMessage.newBuilder()
                         .setX((getX() << 4) + x)
                         .setY(y)

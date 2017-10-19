@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public final class SendChunkTask implements Runnable{
 
-    public final static int MAX_QUEUE_SIZE = 8;
+    public final static int MAX_QUEUE_SIZE = 16;
 
     private final PlayerEntity player;
 
@@ -24,13 +24,21 @@ public final class SendChunkTask implements Runnable{
     }
 
     public boolean queue(Chunk chunk) {
-        if(jobs.size() >= MAX_QUEUE_SIZE) return false;
+        if (jobs.size() >= MAX_QUEUE_SIZE) return false;
         jobs.add(chunk.clone());
         return true;
     }
 
     @Override
     public void run() {
+        int count = 0;
+        while(jobs.size() > 0 && count < 4) {
+            sendOne();
+            count++;
+        }
+    }
+
+    public void sendOne() {
         if (jobs.isEmpty()) return;
         Chunk c = jobs.poll();
         if (c == null) return;

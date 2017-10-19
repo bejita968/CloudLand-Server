@@ -3,7 +3,7 @@ package org.dragonet.cloudland.server.scheduler.implementation;
 import org.dragonet.cloudland.server.CloudLandServer;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import org.dragonet.cloudland.server.scheduler.BukkitTask;
+import org.dragonet.cloudland.server.scheduler.ScheduledTask;
 import org.dragonet.cloudland.server.scheduler.BukkitWorker;
 
 import java.util.ArrayList;
@@ -222,27 +222,27 @@ public final class GlowScheduler {
         }
     }
 
-    public BukkitTask runTask(String plugin, Runnable task) throws IllegalArgumentException {
+    public ScheduledTask runTask(String plugin, Runnable task) throws IllegalArgumentException {
         return runTaskLater(plugin, task, 0);
     }
 
-    public BukkitTask runTaskAsynchronously(String plugin, Runnable task) throws IllegalArgumentException {
+    public ScheduledTask runTaskAsynchronously(String plugin, Runnable task) throws IllegalArgumentException {
         return runTaskLaterAsynchronously(plugin, task, 0);
     }
 
-    public BukkitTask runTaskLater(String plugin, Runnable task, long delay) throws IllegalArgumentException {
+    public ScheduledTask runTaskLater(String plugin, Runnable task, long delay) throws IllegalArgumentException {
         return runTaskTimer(plugin, task, delay, -1);
     }
 
-    public BukkitTask runTaskLaterAsynchronously(String plugin, Runnable task, long delay) throws IllegalArgumentException {
+    public ScheduledTask runTaskLaterAsynchronously(String plugin, Runnable task, long delay) throws IllegalArgumentException {
         return runTaskTimerAsynchronously(plugin, task, delay, -1);
     }
 
-    public BukkitTask runTaskTimer(String plugin, Runnable task, long delay, long period) throws IllegalArgumentException {
+    public ScheduledTask runTaskTimer(String plugin, Runnable task, long delay, long period) throws IllegalArgumentException {
         return schedule(new GlowTask(plugin, task, true, delay, period));
     }
 
-    public BukkitTask runTaskTimerAsynchronously(String plugin, Runnable task, long delay, long period) throws IllegalArgumentException {
+    public ScheduledTask runTaskTimerAsynchronously(String plugin, Runnable task, long delay, long period) throws IllegalArgumentException {
         return schedule(new GlowTask(plugin, task, false, delay, period));
     }
 
@@ -285,7 +285,7 @@ public final class GlowScheduler {
      *
      * @return the tasks to be run
      */
-    public List<BukkitTask> getPendingTasks() {
+    public List<ScheduledTask> getPendingTasks() {
         return new ArrayList<>(tasks.values());
     }
 

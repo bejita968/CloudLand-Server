@@ -83,8 +83,8 @@ public class CloudLandServer {
         logger.info("Starting CloudLand server " + Versioning.SERVER_VERION + " for game version " + Versioning.GAME_VERSION + "(" + Versioning.GAME_PROTOCOL + ")");
 
         // Create values
-        maps = Collections.synchronizedMap(new HashMap<>());
-        generators = Collections.synchronizedMap(new HashMap<>());
+        maps = new HashMap<>();
+        generators = new HashMap<>();
 
         // Initiate stuffs
         ItemPrototype.init();
@@ -104,7 +104,6 @@ public class CloudLandServer {
 
         // Load map
         registerMap(new GameMap(this, DEFAULT_MAP_NAME, "default", new Random(System.currentTimeMillis()).nextLong()));
-        worldScheduler.addWorld(getMap(DEFAULT_MAP_NAME));
 
         scheduler.start();
 
@@ -127,6 +126,7 @@ public class CloudLandServer {
 
     public void registerMap(GameMap map){
         maps.put(map.getName(), map);
+        worldScheduler.addWorld(map);
     }
 
     public Class<? extends Generator> getGenerator(String name){
