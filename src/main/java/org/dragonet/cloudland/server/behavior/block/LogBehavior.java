@@ -18,6 +18,12 @@ public class LogBehavior extends BlockBehavior {
 
     @Override
     public long getBreakTime(Item tool) {
+        String name = ItemPrototype.toName(tool.getId());
+        if(name.endsWith("_axe")) { // hacky way
+            if(name.equals("cloudland:wood_axe")) {
+                return 1000L;
+            }
+        }
         return 2000L;
     }
 

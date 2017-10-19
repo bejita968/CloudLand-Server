@@ -18,7 +18,7 @@ public class PlankBehavior extends BlockBehavior {
 
     @Override
     public long getBreakTime(Item tool) {
-        return 1200L;
+        return 1500L;
     }
 
     @Override

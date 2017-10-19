@@ -36,6 +36,8 @@ public final class ItemPrototype {
 
         // items
         register(32768, "cloudland:wood_stick", createSimpleItem(32768, 64));
+        // tools
+        register(32769, "cloudland:wood_axe", createSimpleItem(32769, 1));
 
         initiated = true;
     }
