@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created on 2017/3/2.
@@ -14,10 +17,7 @@ import java.util.ArrayList;
 public abstract class BaseGUIWindow implements GUIWindow {
 
     @Getter
-    protected final long uniqueId = CloudLandServer.getServer().getNextWindowUniqueId();
-
-    @Getter
-    protected int windowId = -1;
+    protected final int uniqueId = CloudLandServer.getServer().getNextWindowUniqueId();
 
     @Getter
     @Setter
@@ -31,10 +31,9 @@ public abstract class BaseGUIWindow implements GUIWindow {
     protected String title;
 
     @Getter
-    protected PlayerEntity owner;
-
-    @Getter
     public InternalGUIElement[] elements;
+
+    public List<PlayerEntity> viewers = new LinkedList<>();
 
     public BaseGUIWindow(String title){
         this.title = title;
@@ -47,6 +46,8 @@ public abstract class BaseGUIWindow implements GUIWindow {
 
     @Override
     public void openTo(PlayerEntity owner) {
+        if(viewers.contains(owner)) return;
+        viewers.add(owner);
         owner.openWindow(this);
     }
 
@@ -55,37 +56,41 @@ public abstract class BaseGUIWindow implements GUIWindow {
         if(!isOpenedTo(owner)){
             return;
         }
+        owner.closeWindow(uniqueId, false);
+        viewers.remove(owner);
         onClose();
-        owner.closeWindow(windowId, false);
     }
 
     @Override
     public void onClose() {
-        windowId = -1;
+        if (viewers.size() <= 0) {
+            // this window can be closed and de-referenced
+            // TODO: save data? maybe?
 
-        // TODO: Close all viewers' window as well
+        }
     }
 
     @Override
     public void refresh() {
-        if(windowId == -1) return;
         ArrayList<GUI.GUIElement> elements = new ArrayList<>();
         for(InternalGUIElement element : getElements()) {
             elements.add(element.serialize());
         }
-        owner.getSession().sendNetworkMessage((GUI.ServerWindowOpenMessage.newBuilder()
-                .setWindowId(getWindowId())
+        viewers.forEach(p ->p.getSession().sendNetworkMessage((GUI.ServerWindowOpenMessage.newBuilder()
+                .setWindowId(uniqueId)
                 .addAllItems(elements)
                 .setWidth(getWidth())
                 .setHeight(getHeight())
                 .setTitle(title)
-                .build()));
+                .build())));
     }
 
-    public void setWindowId(int windowId) {
-        if(this.windowId != -1) {
-            throw new IllegalStateException("window already opened! ");
-        }
-        this.windowId = windowId;
+    public void setRawSize(int w, int h) {
+        width = w;
+        height = h;
+    }
+
+    public List<PlayerEntity> getViewers() {
+        return Collections.unmodifiableList(viewers);
     }
 }

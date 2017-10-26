@@ -13,4 +13,6 @@ public interface InternalGUIElement {
     GUI.GUIElementType getType();
 
     GUI.GUIElement serialize();
+
+    InternalGUIElement setRawDimensions(int x, int y, int w, int h);
 }

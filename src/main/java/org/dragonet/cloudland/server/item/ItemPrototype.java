@@ -33,6 +33,7 @@ public final class ItemPrototype {
         register(7, "cloudland:leaves", createSimpleBlock(7, 16));
         register(8, "cloudland:plank", createSimpleBlock(8, 32));
         register(9, "cloudland:torch", createSimpleBlock(9, 64));
+        register(10, "cloudland:crafting_table", createSimpleBlock(10, 64));
 
         // items
         register(32768, "cloudland:wood_stick", createSimpleItem(32768, 64));

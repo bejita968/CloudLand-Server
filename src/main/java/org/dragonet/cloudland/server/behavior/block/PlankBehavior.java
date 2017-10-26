@@ -18,6 +18,14 @@ public class PlankBehavior extends BlockBehavior {
 
     @Override
     public long getBreakTime(Item tool) {
+        if (tool != null) {
+            String name = ItemPrototype.toName(tool.getId());
+            if (name.endsWith("_axe")) { // hacky way
+                if (name.equals("cloudland:wood_axe")) {
+                    return 800L;
+                }
+            }
+        }
         return 1500L;
     }
 

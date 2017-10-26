@@ -24,9 +24,6 @@ import org.dragonet.cloudland.server.util.UnsignedLongSet;
 import org.dragonet.cloudland.server.util.Vector3D;
 
 import java.util.*;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created on 2017/1/10.
@@ -50,8 +47,6 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
     @Getter
     private PlayerInventory inventory;
 
-    private final Set<Long> openedWindows = new HashSet<>();
-    private final AtomicInteger nextWindowId = new AtomicInteger(1); //0 is reserved for player inventory
     private final java.util.Map<Integer, GUIWindow> windows = new HashMap<>();
 
     private long breakTime;
@@ -221,10 +216,6 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
                 .build());
     }
 
-    public int getNextWindowId() {
-        return nextWindowId.getAndIncrement();
-    }
-
     public void cancelBreaking(){
         breakTime = -1;
         breakX = Integer.MAX_VALUE;
@@ -328,42 +319,37 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
         //TODO: Update player's holding slot
     }
 
-    public boolean isWindowOpenedUniqueId(long uniqueId) {
-        return openedWindows.contains(uniqueId);
-    }
-
-    public boolean isWindowOpenedWindowId(int windowId) {
-        if(windowId == 0) return true;
-        return windows.containsKey(windowId);
+    public boolean isWindowOpened(int uniqueId) {
+        if(uniqueId == 0) return true;
+        return windows.containsKey(uniqueId);
     }
 
     public boolean isWindowOpened(GUIWindow window) {
-        return openedWindows.contains(window.getUniqueId());
+        if(window == inventory) return true;
+        return windows.containsValue(window.getUniqueId());
     }
 
-    public GUIWindow getWindowByWindowId(int windowId) {
+    public GUIWindow getWindow(int windowId) {
         if(windowId == 0) return inventory;
         return windows.get(windowId);
     }
 
     public void openWindow(GUIWindow window) {
-        if(window.isOpenedTo(this)){
-            throw new IllegalStateException("Already owned by " + window.getOwner().getProfile().getUsername());
+        if(!window.isOpenedTo(this)){
+            window.openTo(this);
         }
-        window.setWindowId(getNextWindowId());
         ArrayList<GUI.GUIElement> elements = new ArrayList<>();
         for(InternalGUIElement element : window.getElements()) {
             elements.add(element.serialize());
         }
         getSession().sendNetworkMessage((GUI.ServerWindowOpenMessage.newBuilder()
-                .setWindowId(window.getWindowId())
+                .setWindowId(window.getUniqueId())
                 .addAllItems(elements)
                 .setWidth(window.getWidth())
                 .setHeight(window.getHeight())
                 .setTitle(window.getTitle())
                 .build()));
-        openedWindows.add(window.getUniqueId());
-        windows.put(window.getWindowId(), window);
+        windows.put(window.getUniqueId(), window);
     }
 
     public void closeWindow(int windowId, boolean fromClient) {
@@ -375,15 +361,16 @@ public class PlayerEntity extends StandaloneEntity implements HumanEntity, Inven
             // Already called onClose()
             session.sendNetworkMessage(GUI.ServerWindowCloseMessage.newBuilder().setWindowId(windowId).build());
         }
-        openedWindows.remove(window.getUniqueId());
-        windows.remove(window.getWindowId());
+        windows.remove(window.getUniqueId());
 
         if(windows.size() <= 0 && cursorItem != null) {
             if(cursorItem.getId() == 0) {
                 setCursorItem(null);
                 return;
             }
-            // TODO: Throw this item away
+            getMap().addEntity(new ItemEntity(cursorItem.clone()))
+                .setPosition(getPosition());
+
             // then finally set this to null
             setCursorItem(null);
         }

@@ -12,13 +12,10 @@ import org.dragonet.cloudland.server.item.crafting.recipe.ShapelessRecipe;
  */
 public abstract class CraftingHandler {
 
-    public final PlayerEntity player;
-
     public final InventoryElement input;
     public final InventoryElement output;
 
-    public CraftingHandler(PlayerEntity player, InventoryElement input, InventoryElement output) {
-        this.player = player;
+    public CraftingHandler(InventoryElement input, InventoryElement output) {
         this.input = input;
         this.output = output;
     }

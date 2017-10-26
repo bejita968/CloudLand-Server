@@ -206,6 +206,6 @@ public abstract class BaseEntity implements Entity {
 
     @Override
     public Vector3D getPosition() {
-        return position;
+        return position.clone();
     }
 }

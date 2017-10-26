@@ -13,11 +13,11 @@ public class ClientWindowInteractHandler implements CLMessageHandler<GUI.ClientW
     public void handle(Session session, GUI.ClientWindowInteractMessage message) {
         // System.out.println("INTERACTING WINDOW #" + message.getWindowId() + " AT ELEMENT #" + message.getElementIndex() + " BY " + message.getAction().toString() + ", PARAMS = " + message.getParam1() + "/" + message.getParam2());
         if(!session.isAuthenticated()) return;
-        if(!session.getPlayer().isWindowOpenedWindowId(message.getWindowId())){
+        if(!session.getPlayer().isWindowOpened(message.getWindowId())){
             session.getPlayer().closeWindow(message.getWindowId(), false);
             return;
         }
-        GUIWindow window = session.getPlayer().getWindowByWindowId(message.getWindowId());
+        GUIWindow window = session.getPlayer().getWindow(message.getWindowId());
         window.onAction(session.getPlayer(), message.getElementIndex(), message.getAction(), message.getParam1(), message.getParam2());
     }
 }

@@ -1,3 +1,3 @@
 @ECHO OFF
-mvn clean package
-pause
+CALL mvn clean package
+PAUSE

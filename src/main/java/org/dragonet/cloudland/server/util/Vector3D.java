@@ -49,4 +49,9 @@ public class Vector3D {
         ret.z -= v.z;
         return ret;
     }
+
+    @Override
+    public Vector3D clone() {
+        return new Vector3D(x, y, z);
+    }
 }

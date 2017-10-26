@@ -49,11 +49,12 @@ public class GameMap  {
         return entities.get(entityId);
     }
 
-    public void addEntity(Entity entity) {
-        if(entity == null) return;
+    public Entity addEntity(Entity entity) {
+        if(entity == null) return null;
         if(entity.getEntityId() <= 0) entity.setEntityId(server.getNextEntityId());
         entities.put(entity.getEntityId(), entity);
         entity.setMap(this);
+        return entity;
     }
 
     public void removeEntity(Entity entity) {

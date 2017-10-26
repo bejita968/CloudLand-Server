@@ -13,7 +13,7 @@ public class DirtBehavior extends BlockBehavior {
 
     @Override
     public long getBreakTime(Item tool) {
-        return 200L;
+        return 600L;
     }
 
     @Override

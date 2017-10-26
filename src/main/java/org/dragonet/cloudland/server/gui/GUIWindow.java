@@ -3,6 +3,8 @@ package org.dragonet.cloudland.server.gui;
 import org.dragonet.cloudland.net.protocol.GUI;
 import org.dragonet.cloudland.server.entity.PlayerEntity;
 
+import java.util.List;
+
 /**
  * Created on 2017/3/2.
  */
@@ -10,14 +12,10 @@ public interface GUIWindow {
 
     /**
      * Window unique ID is globally unique
-     * @return
      */
-    long getUniqueId();
+    int getUniqueId();
 
     String getTitle();
-
-    int getWindowId();
-    void setWindowId(int id);
 
     InternalGUIElement[] getElements();
 
@@ -26,7 +24,7 @@ public interface GUIWindow {
 
     boolean isOpenedTo(PlayerEntity player);
 
-    PlayerEntity getOwner();
+    List<PlayerEntity> getViewers();
 
     void openTo(PlayerEntity owner);
 

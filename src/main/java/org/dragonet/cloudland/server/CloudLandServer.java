@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -64,7 +65,7 @@ public class CloudLandServer {
 
     private AtomicLong entityIdCount = new AtomicLong(1L);
 
-    private final AtomicLong nextWindowUniqueId = new AtomicLong(1L);
+    private final AtomicInteger nextWindowUniqueId = new AtomicInteger(1);
     @Getter
     private final UnsignedLongKeyMap<GUIWindow> windowRegister = new UnsignedLongKeyMap<>(false);
 
@@ -137,7 +138,7 @@ public class CloudLandServer {
         network.shutdown();
     }
 
-    public long getNextWindowUniqueId() {
+    public int getNextWindowUniqueId() {
         return nextWindowUniqueId.getAndIncrement();
     }
 

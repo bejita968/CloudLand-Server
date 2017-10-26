@@ -63,11 +63,10 @@ public class PlayerInventory extends BaseInventory {
         elements = new InternalGUIElement[1];
         width = 1200;
         height = 900;
-        windowId = 0;
         craftingInput.items = new Item[4];
         craftingOutput.items = new Item[1];
 
-        crafting = new CraftingHandler(player, craftingInput, craftingOutput){
+        crafting = new CraftingHandler(craftingInput, craftingOutput){
             @Override
             public void sendContents() {
                 PlayerInventory.this.sendContents();

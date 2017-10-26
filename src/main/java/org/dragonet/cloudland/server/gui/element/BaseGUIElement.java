@@ -33,4 +33,13 @@ public abstract class BaseGUIElement implements InternalGUIElement {
     @Override
     public void onAction(PlayerEntity player, int elementId, GUI.ClientWindowInteractMessage.WindowAction action, int param1, int param2) {
     }
+
+    @Override
+    public BaseGUIElement setRawDimensions(int x, int y, int w, int h) {
+        this.x = x;
+        this.y = y;
+        this.width = w;
+        this.height = h;
+        return this;
+    }
 }

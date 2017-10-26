@@ -308,6 +308,10 @@ public final class CraftingManager implements Iterable<Recipe> {
                 .setIngredient('s', ItemPrototype.get("cloudland:wood_stick"))
         );
 
+        addRecipe(new ShapedRecipe(NamespacedKey.cloudland("craft_crafting_table"), ItemPrototype.get("cloudland:crafting_table").newItemInstance(1))
+                .shape("pp", "pp")
+                .setIngredient('p', ItemPrototype.get("cloudland:plank")));
+
         addRecipe(new ShapedRecipe(NamespacedKey.cloudland("craft_wood_axe"), ItemPrototype.get("cloudland:wood_axe").newItemInstance(1))
                 .shape("www", " s ", " s ")
                 .setIngredient('w', ItemPrototype.get("cloudland:plank"))

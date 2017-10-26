@@ -9,8 +9,6 @@ import org.dragonet.cloudland.server.item.ItemPrototype;
  */
 public class SandBehavior extends BlockBehavior {
 
-
-
     @Override
     public long getBreakTime(Item tool) {
         return 200;
