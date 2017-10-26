@@ -10,7 +10,7 @@ import org.dragonet.cloudland.server.item.crafting.recipe.ShapelessRecipe;
 /**
  * Created on 2017/5/19.
  */
-public abstract class CraftingHandler {
+public class CraftingHandler {
 
     public final InventoryElement input;
     public final InventoryElement output;
@@ -69,6 +69,4 @@ public abstract class CraftingHandler {
 
         return true;
     }
-
-    public abstract void sendContents();
 }

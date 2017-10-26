@@ -66,12 +66,7 @@ public class PlayerInventory extends BaseInventory {
         craftingInput.items = new Item[4];
         craftingOutput.items = new Item[1];
 
-        crafting = new CraftingHandler(craftingInput, craftingOutput){
-            @Override
-            public void sendContents() {
-                PlayerInventory.this.sendContents();
-            }
-        };
+        crafting = new CraftingHandler(craftingInput, craftingOutput);
     }
 
     @Override

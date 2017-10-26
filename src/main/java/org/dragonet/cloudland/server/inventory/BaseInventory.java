@@ -83,7 +83,6 @@ public abstract class BaseInventory extends BaseGUIWindow implements Inventory {
     public void onAction(PlayerEntity player, int elementId, GUI.ClientWindowInteractMessage.WindowAction action, int param1, int param2) {
         if(elementId == 0) {
             inventoryElement.onAction(player, elementId, action, param1, param2);
-            sendContents();
         }
     }
 }

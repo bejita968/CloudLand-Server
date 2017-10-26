@@ -65,8 +65,8 @@ public abstract class BaseGUIWindow implements GUIWindow {
     public void onClose() {
         if (viewers.size() <= 0) {
             // this window can be closed and de-referenced
+            System.out.println("Window un-referenced! ");
             // TODO: save data? maybe?
-
         }
     }
 

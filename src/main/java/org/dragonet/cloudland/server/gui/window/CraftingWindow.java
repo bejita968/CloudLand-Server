@@ -28,6 +28,7 @@ public class CraftingWindow extends BaseGUIWindow {
                 super.onAction(player, elementId, action, param1, param2);
 
                 crafting.detectCrafting();
+                sendContents();
             }
         };
         craftingOut = new InventoryElement() {
@@ -36,6 +37,7 @@ public class CraftingWindow extends BaseGUIWindow {
                 super.onAction(player, elementId, action, param1, param2);
 
                 crafting.detectCrafting();
+                sendContents();
             }
 
             @Override
@@ -60,18 +62,12 @@ public class CraftingWindow extends BaseGUIWindow {
             craftingOut.setRawDimensions(260, 60, 70, 70)
         };
 
-        crafting = new CraftingHandler(craftingIn, craftingOut) {
-            @Override
-            public void sendContents() {
-                CraftingWindow.this.sendContents();
-            }
-        };
+        crafting = new CraftingHandler(craftingIn, craftingOut);
     }
 
     @Override
     public void onAction(PlayerEntity player, int elementId, GUI.ClientWindowInteractMessage.WindowAction action, int param1, int param2) {
         elements[elementId].onAction(player, elementId, action, param1, param2);
-        sendContents();
     }
 
     public void sendContents() {

@@ -139,7 +139,9 @@ public class CloudLandServer {
     }
 
     public int getNextWindowUniqueId() {
-        return nextWindowUniqueId.getAndIncrement();
+        int n = nextWindowUniqueId.getAndIncrement();
+        System.out.println("Assigned window id: " + n);
+        return n;
     }
 
     public long getNextEntityId() {
